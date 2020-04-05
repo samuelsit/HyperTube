@@ -1,5 +1,6 @@
 import React, { Component } from 'react'
 import logo from '../img/logo.png'
+import '../css/Header.css'
 
 class Header extends Component {
 
@@ -41,6 +42,10 @@ class Header extends Component {
                                 <li className="nav-item"></li>
                             </ul>
                         </div>
+                        <form className="form-inline d-flex justify-content-center md-form form-sm mt-2">
+                        <button type="submit" className="btn btn-danger btn-sm text-light" value="SEARCH"><i className="fas fa-search"></i></button>
+                        <input className="form-control form-control-sm ml-3 w-75" type="text" placeholder="" aria-label="Search" />
+                        </form>
                         <div className="text-light btn btn-light mr-2"><i className="fas fa-heart text-danger"></i></div>
                         <div className="text-light btn btn-secondary mr-2"><i className="fas fa-user"></i></div>
                         <div className="text-light btn btn-danger mr-2" onClick={this.handleClick}>Déconnexion</div>
