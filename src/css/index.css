@@ -20,3 +20,11 @@ code {
 * {
   font-family: "Josefin Sans";
 }
+
+.btn-danger {
+  background: #DE6262!important;
+}
+
+.text-danger {
+  color: #DE6262!important;
+}

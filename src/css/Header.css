@@ -1,2 +1,86 @@
-.btn-grad {background-image: linear-gradient(to right, #e52d27 0%, #b31217 51%, #e52d27 100%)}
-.btn-grad:hover { background-position: right center; }
+.searchbar {
+    margin-bottom: auto;
+    margin-top: auto;
+    height: 50px;
+    background-color: #6C757C;
+    border-radius: 30px;
+    padding: 10px;
+}
+
+.search_input {
+    color: white;
+    border: 0;
+    outline: 0;
+    background: none;
+    width: 0;
+    caret-color:transparent;
+    line-height: 30px;
+    transition: width 0.3s linear;
+}
+
+.searchbar:hover > .search_input {
+    padding: 0 10px;
+    width: 17vw;
+    caret-color:#DE6262;
+    transition: width 0.3s linear;
+    color: white;
+}
+
+.searchbar:hover > .search_icon {
+    cursor: pointer;
+    background: white;
+    color: #DE6262;
+}
+
+.search_icon {
+    height: 30px;
+    width: 30px;
+    float: right;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 50%;
+    color:white;
+    text-decoration:none;
+}
+
+@media screen and (max-width: 500px) {
+    .logoAuth {
+        position: absolute;
+        opacity: 0;
+        transition: opacity .3s;
+    }
+    .logoAuthText {
+        position: absolute;
+        opacity: 0;
+        transition: opacity .3s;
+    }
+}
+
+@media screen and (min-width: 500px) and (max-width: 750px) {
+    .logoAuth {
+        opacity: 1;
+        transition: opacity .3s;
+    }
+    .logoAuthText {
+        position: absolute;
+        opacity: 0;
+        transition: opacity .3s;
+    }
+}
+
+@media screen and (min-width: 750px) {
+    .logoAuth {
+        position: absolute;
+        opacity: 0;
+        transition: opacity .3s;
+    }
+    .logoAuthText {
+        opacity: 1;
+        cursor: pointer;
+    }
+}
+
+.logoText {
+    cursor: pointer;
+}
