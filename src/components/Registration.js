@@ -8,8 +8,8 @@ class Registration extends Component {
     _isMounted = false;
 
     componentDidMount() {
-        this.slideGalerie()
         this._isMounted = true
+        this.slideGalerie()
     }
 
     componentWillUnmount() {
@@ -20,14 +20,13 @@ class Registration extends Component {
         const galerie = document.getElementById("galerie")
         let top = 0
         setInterval(() => {
-            if (top === -900) {
+            if (top === -550) {
                 top = 0
             }
             else {
                 top -= 0.5
             }
             galerie.style.top = top + 'px'
-            console.log(document.getElementById("galerie").style.top);            
         }, 20)
     }
 

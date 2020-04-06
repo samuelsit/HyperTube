@@ -1,35 +1,65 @@
-.searchbar {
-    margin-bottom: auto;
-    margin-top: auto;
-    height: 50px;
-    background-color: #6C757C;
-    border-radius: 30px;
-    padding: 10px;
+@media screen and (max-width: 550px) {
+    .searchbar {
+        position: fixed;
+        top: 54px;
+        left: 0;
+        margin-bottom: auto;
+        margin-top: auto;
+        height: 50px;
+        width: 100%;
+        background-color: #6C757C;
+        padding: 10px;
+    }
+    .search_input {
+        color: white;
+        border: 0;
+        outline: 0;
+        background: none;
+        width: 90%;
+        caret-color:red;
+        line-height: 30px;
+    }
+    .searchbar:hover > .search_input {
+        padding: 0 10px;
+        width: 90%;
+        caret-color:#DE6262;
+        transition: width 0.3s linear;
+        color: white;
+    }
 }
 
-.search_input {
-    color: white;
-    border: 0;
-    outline: 0;
-    background: none;
-    width: 0;
-    caret-color:transparent;
-    line-height: 30px;
-    transition: width 0.3s linear;
-}
-
-.searchbar:hover > .search_input {
-    padding: 0 10px;
-    width: 17vw;
-    caret-color:#DE6262;
-    transition: width 0.3s linear;
-    color: white;
-}
-
-.searchbar:hover > .search_icon {
-    cursor: pointer;
-    background: white;
-    color: #DE6262;
+@media screen and (min-width: 550px) {
+    .searchbar {
+        margin-bottom: auto;
+        margin-top: auto;
+        height: 50px;
+        background-color: #6C757C;
+        border-radius: 30px;
+        padding: 10px;
+    }
+    .search_input {
+        color: white;
+        border: 0;
+        outline: 0;
+        background: none;
+        width: 0;
+        caret-color:transparent;
+        line-height: 30px;
+        transition: width 0.3s linear;
+    }
+    .searchbar:hover > .search_input {
+        padding: 0 10px;
+        width: 17vw;
+        caret-color:#DE6262;
+        transition: width 0.3s linear;
+        color: white;
+    }
+    
+    .searchbar:hover > .search_icon {
+        cursor: pointer;
+        background: white;
+        color: #DE6262;
+    }
 }
 
 .search_icon {
@@ -42,6 +72,7 @@
     border-radius: 50%;
     color:white;
     text-decoration:none;
+    cursor: pointer;
 }
 
 @media screen and (max-width: 500px) {
