@@ -1,11 +1,17 @@
 import React, { Component, Fragment } from 'react'
 import Header from './Header'
-import '../css/Registration.css'
+import '../css/Connection.css'
 import galerie from '../img/galerie.png'
+import { Redirect } from 'react-router-dom';
+import { connect } from 'react-redux'
 
-class Registration extends Component {
+class Connection extends Component {
 
     _isMounted = false;
+
+    state = {
+        redirect: false
+    }
 
     componentDidMount() {
         this._isMounted = true
@@ -14,6 +20,19 @@ class Registration extends Component {
 
     componentWillUnmount() {
         this._isMounted = false;
+    }
+
+    handleOnSubmit = () => {
+        this.props.setUserIsAuth(true)
+        this.setState({redirect: true})
+    }
+
+    handleRedirect = () => {
+        if (this.state.redirect) {
+            return (
+                <Redirect to={"/galerie"} />
+            )
+        }
     }
 
     slideGalerie = () => {
@@ -33,13 +52,14 @@ class Registration extends Component {
     render () {
         return (
             <Fragment>
+                {this.handleRedirect()}
                 <Header/>
-                <div className="login-block">
-                    <div className="container">
+                <div className="grad-block">
+                    <div className="container-fluid container-log">
                         <div className="row">
                             <div className="col-md-4 login-sec">
                                 <h2 className="text-center">Connectez vous !</h2>
-                                <form className="login-form">
+                                <form className="login-form" onSubmit={this.handleOnSubmit}>
                                     <div className="form-group">
                                         <label htmlFor="exampleInputEmail1" className="text-uppercase">Pseudo</label>
                                         <input type="text" className="form-control" placeholder="" id="exampleInputEmail1"/>
@@ -49,11 +69,11 @@ class Registration extends Component {
                                         <input type="password" className="form-control" placeholder="" id="exampleInputPassword1"/>
                                     </div>
                                     <div className="form-check">
-                                        <button type="submit" className="btn btn-login float-right">Connexion</button>
+                                        <button type="submit" className="btn btn-login float-right" onClick={this.handleOnSubmit}>Connexion</button>
                                     </div>
                                 </form>
                             </div>
-                            <div className="col-md-8 banner-sec">
+                            <div className="slider col-md-8 banner-sec">
                                 <div id="" className="carousel slide">
                                     <div className="carousel-inner">
                                         <div className="active">
@@ -75,4 +95,12 @@ class Registration extends Component {
     }
 }
 
-export default Registration
+const mapDispatchToProps = dispatch => {
+    return {
+        setUserIsAuth: (isAuth) => {
+            dispatch({ type: 'SET_USER_AUTH', isAuth: isAuth })
+        }
+    }
+}
+
+export default connect(null, mapDispatchToProps)(Connection)

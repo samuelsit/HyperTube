@@ -51,3 +51,25 @@ input[type="color"]:focus,
   outline: 0 none;
   border: 0;
 }
+
+@media screen and (max-width: 550px) {
+  .grad-block {
+    margin: 140px 20px;
+  }
+  body {
+    background: #DC3445;
+    background: -webkit-linear-gradient(to bottom right, #FFB88C, #DC3445);
+    background: linear-gradient(to bottom right, #FFB88C, #DC3445) no-repeat center center fixed;
+  }
+}
+
+@media screen and (min-width: 550px) {
+  .grad-block {
+    margin: 120px 50px;
+  }
+  body {
+    background: #DC3445;
+    background: -webkit-linear-gradient(to bottom right, #FFB88C, #DC3445);
+    background: linear-gradient(to bottom right, #FFB88C, #DC3445) no-repeat center center fixed;
+  }
+}
