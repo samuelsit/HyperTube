@@ -73,3 +73,39 @@ input[type="color"]:focus,
     background: linear-gradient(to bottom right, #FFB88C, #DC3445) no-repeat center center fixed;
   }
 }
+
+.block-shadow {
+    background:#fff;
+    border-radius: 10px;
+    box-shadow:15px 20px 0px rgba(0,0,0,0.1);
+}
+
+.fade-appear {
+  opacity: 0;
+  z-index: 1;
+}
+
+.fade-appear.fade-appear-active {
+  opacity: 1;
+  transition: opacity 600ms linear;
+}
+
+.btn-warning {
+  background-color: #FEB48A;
+  color: white;
+}
+
+.btn-warning:hover {
+  background-color: #F38C73;
+  color: white;
+}
+
+.btn-danger {
+  background-color: #DE6162;
+  color: white;
+}
+
+.btn-danger:hover {
+  background-color: #DC3445!important;
+  color: white;
+}

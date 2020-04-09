@@ -4,6 +4,7 @@ import '../css/Connection.css'
 import galerie from '../img/galerie.png'
 import { Redirect } from 'react-router-dom';
 import { connect } from 'react-redux'
+import { CSSTransition } from 'react-transition-group'
 
 class Connection extends Component {
 
@@ -54,8 +55,14 @@ class Connection extends Component {
             <Fragment>
                 {this.handleRedirect()}
                 <Header/>
+                <CSSTransition
+                    in={true}
+                    appear={true}
+                    timeout={500}
+                    classNames="fade"
+                >
                 <div className="grad-block">
-                    <div className="container-fluid container-log">
+                    <div className="container container-log">
                         <div className="row">
                             <div className="col-md-4 login-sec">
                                 <h2 className="text-center">Connectez vous !</h2>
@@ -90,6 +97,7 @@ class Connection extends Component {
                         </div>
                     </div>
                 </div>
+                </CSSTransition>
             </Fragment>
         )
     }

@@ -1,0 +1,15 @@
+.film:hover {
+    animation-duration: 3s;
+    animation-name: slidein;
+    animation-iteration-count: infinite;
+    animation-direction: alternate;
+}
+
+@keyframes pulse {
+    from {
+      transform: scale3d(1, 1, 1);
+    }
+    to {
+      transform: scale3d(2, 2, 2);
+    }
+}
