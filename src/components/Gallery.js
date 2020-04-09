@@ -21,9 +21,7 @@ class Gallery extends Component {
     render () {
         const films = this.state.movies.map((el, i) => {
             return (
-                <>
-                    <Film key={i} img={el.large_cover_image} />
-                </>
+                <Film key={i} img={el.large_cover_image} />
             )
         })
 
