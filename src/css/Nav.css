@@ -23,7 +23,7 @@
     .displayLarge {
         position: -webkit-sticky;
         position: sticky;
-        top: -70vh;
+        top: -800px;
         display: block;
         max-height: 100vh;
         white-space: nowrap;

@@ -7,7 +7,7 @@ class Nav extends Component {
                 <>
                     <div className="mr-lg-4 m-0 p-0 col-lg-2 mb-5 mb-lg-0 displaySmall">
                         <div className="block-shadow text-center">
-                            <select className="my-4 selectFilms shadow-theme text-center" onChange={this.props.genre}>
+                            <select className="my-4 selectFilms text-center" onChange={this.props.genre}>
                                 <option value='all'>All</option>
                                 <option value='action'>Action</option>
                                 <option value='adventure'>Adventure</option>

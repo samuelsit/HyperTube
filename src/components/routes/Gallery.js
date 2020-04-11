@@ -7,6 +7,7 @@ import axios from 'axios'
 import Nav from '../utils/Nav'
 import InfiniteScroll from 'react-infinite-scroll-component'
 import '../../css/loader.css'
+import Scroll from '../utils/Scroll'
 
 class Gallery extends Component {
 
@@ -44,7 +45,7 @@ class Gallery extends Component {
     }
 
     handlePage = () => {
-        let newOption = this.state.option.replace(/&page=\d/i, '&page=' + this.state.page)
+        let newOption = this.state.option.replace(/&page=\d+/i, '&page=' + this.state.page)
         this.setState({option: newOption}, this.handleConcat)
     }
 
@@ -72,7 +73,7 @@ class Gallery extends Component {
                     <div className="container-fluid">
                         <div className="row">
                             <Nav genre={this.handleGenre}/>
-                            <div className="col">
+                            <div className="col-lg-9 col">
                                 <div className="row">
                                     <div className="col login-sec block-shadow">
                                         <h2 className="text-center shadow-theme">{this.state.title}</h2>
@@ -96,6 +97,7 @@ class Gallery extends Component {
                     </div>
                 </div>
                 </CSSTransition>
+                <Scroll />
             </Fragment>
         )
     }
