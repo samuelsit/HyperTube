@@ -58,7 +58,7 @@ input[type="color"]:focus,
 
 @media screen and (max-width: 550px) {
   .grad-block {
-    margin: 140px 20px;
+    margin: 80px 20px;
   }
   body {
     background: #DC3445;
@@ -119,7 +119,8 @@ input[type="color"]:focus,
 }
 
 .shadow-theme {
-  text-shadow: 2px 2px 3px #FEB48A;
+  text-shadow: 1.5px 3px 0px rgba(0,0,0,0.1);
+
 }
 
 h1::selection {

@@ -1,3 +1,20 @@
 h2 {
     color: #DC3445;
 }
+
+@media screen and (max-width: 550px) {
+    .grad-block-gal {
+      margin: 140px 20px;
+    }
+}
+
+@media screen and (min-width: 550px) {
+    .grad-block-gal {
+      margin: 120px 50px;
+    }
+    body {
+      background: #DC3445;
+      background: -webkit-linear-gradient(to bottom right, #FFB88C, #DC3445);
+      background: linear-gradient(to bottom right, #FFB88C, #DC3445) no-repeat center center fixed;
+    }
+  }

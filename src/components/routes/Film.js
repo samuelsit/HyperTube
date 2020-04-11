@@ -69,6 +69,7 @@ class Film extends Component {
                                 </div>
                                 <div className="row mt-3">
                                     <div className="col text-center">
+                                        <p><span className="data font-weight-bold float-left d-lg-none">Film:</span></p>
                                         <video controls width="100%" className="border"></video>
                                     </div>
                                 </div>
@@ -76,7 +77,7 @@ class Film extends Component {
                         </div>
                     </div>
                     <div className="container container-log mt-5">
-                        <div className="row">
+                        <div className="row ml-lg-3">
                             <div className="col login-sec">
                                 <h2 className="text-center">Vous aimerez aussi</h2>
                                 <div className="row">

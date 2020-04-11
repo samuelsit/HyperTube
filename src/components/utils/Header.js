@@ -16,7 +16,7 @@ class Header extends Component {
         if (this.props.isAuth === false) {
             return (
                 <header>
-                    <nav className="navbar navbar-expand navbar-light bg-light shadow fixed-top" id="navbar">
+                    <nav className="navbar navbar-expand navbar-white bg-light shadow fixed-top" id="navbar">
                         <Link to="/">
                         <div className="navbar-brand logotext">
                             <img src={logoText} height="40" className="d-inline-block align-top logo" alt="logo"/>
@@ -34,7 +34,7 @@ class Header extends Component {
         else {
             return (
                 <header>
-                    <nav className="navbar navbar-expand navbar-light bg-light shadow fixed-top" id="navbar">
+                    <nav className="navbar navbar-expand navbar-white bg-light shadow fixed-top" id="navbar">
                         <Link to="/galerie">
                         <div className="navbar-brand logoAuth">
                             <img src={logo} height="40" className="d-inline-block align-top logo" alt="logo"/>
@@ -48,10 +48,15 @@ class Header extends Component {
                                 <li className="nav-item"></li>
                             </ul>
                         </div>
+                        {this.props.selectVal
+                        ?
                         <div className="searchbar mr-1">
-                            <input className="search_input" type="text" placeholder="Rechercher un film..."/>
-                            <div className="search_icon"><i className="fas fa-search"></i></div>
+                            <input id="search" className="search_input" type="text" placeholder="Rechercher un film..." onChange={this.props.selectVal}/>
+                            <div className="search_icon"><label htmlFor="search"><i className="fas fa-search"></i></label></div>
                         </div>
+                        :
+                        ''
+                        }
                         <div className="text-light btn btn-light mr-2"><i className="fas fa-heart text-danger"></i></div>
                         <div className="text-light btn btn-secondary mr-2"><i className="fas fa-user"></i></div>
                         <Link to="/">

@@ -1,3 +1,7 @@
+.navbar-white {
+    background-color: white!important;
+}
+
 @media screen and (max-width: 550px) {
     .searchbar {
         position: fixed;
@@ -57,7 +61,6 @@
     }
     
     .searchbar:hover > .search_icon {
-        cursor: pointer;
         background: white;
         color: #DE6262;
     }
@@ -73,7 +76,6 @@
     border-radius: 50%;
     color:white;
     text-decoration:none;
-    cursor: pointer;
 }
 
 @media screen and (max-width: 500px) {

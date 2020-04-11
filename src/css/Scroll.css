@@ -3,16 +3,17 @@
     width: 55px;
     height: 55px;
     position: fixed;
-    bottom: 2vw;
-    right: 2vw;
-    border-radius: 5px;
+    bottom: 30px;
+    right: 4%;
     border: none;
+    border-radius: 10px;
+    box-shadow:10px 15px 0px rgba(0,0,0,0.1);
 }
 
 .scroll:focus {
     outline-color: #F38C73;
 }
-  
+ 
 .arrow-up {
     color: white;
     position: absolute;
