@@ -53,7 +53,7 @@
         transition: width 0.3s linear;
     }
     .searchbar:hover > .search_input {
-        padding: 0 10px;
+        padding: 0px 10px;
         width: 30vw;
         caret-color:#DE6262;
         transition: width 0.3s linear;

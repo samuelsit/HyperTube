@@ -48,7 +48,7 @@ class Gallery extends Component {
                 this.setState({movies: this.state.movies.concat(res.data.data.movies)})
             }
         }).then(() => {
-            this.setState({length: this.state.length * 2})
+            this.setState({length: this.state.length + 24})
         })
     }
 

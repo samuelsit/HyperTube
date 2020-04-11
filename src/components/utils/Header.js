@@ -52,7 +52,7 @@ class Header extends Component {
                         ?
                         <div className="searchbar mr-1">
                             <input id="search" className="search_input" type="text" placeholder="Rechercher un film..." onChange={this.props.selectVal}/>
-                            <div className="search_icon"><label htmlFor="search"><i className="fas fa-search"></i></label></div>
+                            <div className="search_icon"><label htmlFor="search"><i className="mt-3 fas fa-search"></i></label></div>
                         </div>
                         :
                         ''
