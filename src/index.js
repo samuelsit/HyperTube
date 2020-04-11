@@ -6,9 +6,10 @@ import './css/index.css'
 import { createStore } from 'redux'
 import { Provider } from 'react-redux'
 
-import Connection from './components/Connection.js'
-import NotFound from './components/NotFound'
-import Gallery from './components/Gallery'
+import Connection from './components/routes/Connection'
+import NotFound from './components/routes/NotFound'
+import Gallery from './components/routes/Gallery'
+import Film from './components/routes/Film'
 
 import rootReducer from './reducers/rootReducer'
 import { loadState, saveState } from './localStorage'
@@ -25,6 +26,7 @@ const Root = () => (
         <Switch>
             <Route exact path='/' component={Connection} />
             <Route exact path='/galerie' component={Gallery} />
+            <Route path='/film/:id' component={Film} />
             <Route component={NotFound} />
         </Switch>
    </BrowserRouter>

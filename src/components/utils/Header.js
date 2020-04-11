@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
-import logo from '../img/logo.png'
-import logoText from '../img/logoText.png'
-import '../css/Header.css'
+import logo from '../../img/logo.png'
+import logoText from '../../img/logoText.png'
+import '../../css/Header.css'
 import { Link } from 'react-router-dom'
 import { connect } from 'react-redux'
 

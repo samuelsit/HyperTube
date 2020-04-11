@@ -7,6 +7,10 @@ body {
   -moz-osx-font-smoothing: grayscale;
 }
 
+html {
+  scroll-behavior: smooth;
+}
+
 code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
@@ -82,12 +86,16 @@ input[type="color"]:focus,
 
 .fade-appear {
   opacity: 0;
+  position: relative;
+  top: 1vh;
   z-index: 1;
 }
 
 .fade-appear.fade-appear-active {
   opacity: 1;
-  transition: opacity 600ms linear;
+  position: relative;
+  top: 0;
+  transition: all 600ms linear;
 }
 
 .btn-warning {
@@ -108,4 +116,67 @@ input[type="color"]:focus,
 .btn-danger:hover {
   background-color: #DC3445!important;
   color: white;
+}
+
+.shadow-theme {
+  text-shadow: 2px 2px 3px #FEB48A;
+}
+
+h1::selection {
+  background: rgba(254, 180, 138, 0.541);
+  color: white;
+}
+
+h2::selection {
+  background: rgba(254, 180, 138, 0.541);
+  color: white;
+}
+
+h3::selection {
+  background: rgba(254, 180, 138, 0.541);
+  color: white;
+}
+
+h4::selection {
+  background: rgba(254, 180, 138, 0.541);
+  color: white;
+}
+
+h5::selection {
+  background: rgba(254, 180, 138, 0.541);
+  color: white;
+}
+
+h6::selection {
+  background: rgba(254, 180, 138, 0.541);
+  color: white;
+}
+
+p::selection {
+  background: rgba(254, 180, 138, 0.541);
+  color: white;
+}
+
+div::selection {
+  background: rgba(254, 180, 138, 0.541);
+  color: white;
+}
+
+.pulse:hover {
+  animation-duration: 500ms;
+  animation-name: pulse;
+  animation-iteration-count: infinite;
+  animation-direction: alternate;
+}
+
+@keyframes pulse {
+  from {
+    transform: scale3d(1, 1, 1);
+  }
+  50% {
+    transform: scale3d(1.01, 1.01, 1.01);
+  }
+  to {
+    transform: scale3d(1, 1, 1);
+  }
 }

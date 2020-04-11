@@ -1,7 +1,7 @@
 import React, { Component, Fragment } from 'react'
-import Header from './Header'
-import '../css/Connection.css'
-import galerie from '../img/galerie.png'
+import Header from '../utils/Header'
+import '../../css/Connection.css'
+import galerie from '../../img/galerie.png'
 import { Redirect } from 'react-router-dom';
 import { connect } from 'react-redux'
 import { CSSTransition } from 'react-transition-group'
@@ -65,7 +65,7 @@ class Connection extends Component {
                     <div className="container container-log">
                         <div className="row">
                             <div className="col-md-4 login-sec">
-                                <h2 className="text-center">Connectez vous !</h2>
+                                <h2 className="text-center shadow-theme">Connectez vous !</h2>
                                 <form className="login-form" onSubmit={this.handleOnSubmit}>
                                     <div className="form-group">
                                         <label htmlFor="exampleInputEmail1" className="text-uppercase">Pseudo</label>

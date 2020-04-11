@@ -1,11 +1,10 @@
 import React, { Component, Fragment } from 'react'
-import Header from './Header'
+import Header from '../utils/Header'
 
 class NotFound extends Component {
     render () {
         return (
             <Fragment>
-                <Header/>
                 <Header/>
                 <div className="grad-block">
                     <div className="container container-log">
