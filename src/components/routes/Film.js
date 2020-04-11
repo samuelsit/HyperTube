@@ -8,10 +8,11 @@ class Film extends Component {
     state = {
         movie: [],
         genre: [],
-        suggestion: []
+        suggestion: [],
+        intervalId: 0
     }
 
-    componentDidMount() {
+    componentDidMount() {        
         axios.get('https://yts.mx/api/v2/movie_details.json?movie_id=' + this.props.match.params.id, { useCredentails: true }).then(res => {
             this.setState({movie: res.data.data.movie, genre: res.data.data.movie.genres})
         })
@@ -20,8 +21,24 @@ class Film extends Component {
         })
     }
 
+    scrollStep() {
+        if (window.pageYOffset === 0) {
+            clearInterval(this.state.intervalId);
+        }
+        window.scroll(0, 0);
+    }
+    
+    scrollToTop() {
+        let intervalId = setInterval(this.scrollStep.bind(this), 1000);
+        this.setState({ intervalId: intervalId });
+    }
+
     componentDidUpdate(previousProps, previousState) {
         if (previousProps !== this.props) {
+            if (document.referrer.match(/localhost:3000\/film\/.+/) !== null) {
+                this.scrollToTop();
+            }
+            
             axios.get('https://yts.mx/api/v2/movie_details.json?movie_id=' + this.props.match.params.id, { useCredentails: true }).then(res => {
                 this.setState({movie: res.data.data.movie, genre: res.data.data.movie.genres})
             })
@@ -52,6 +69,7 @@ class Film extends Component {
                         <div className="row">
                             <div className="col login-sec">
                                 <h2 className="text-center">{movie.title}</h2>
+                                <br/><br/>
                                 <div className="row">
                                     <div className="col-12 text-center col-lg-6">
                                         <img className="img-fluid film text-center" src={movie.large_cover_image} alt="" />
