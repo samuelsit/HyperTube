@@ -33,6 +33,7 @@ class Gallery extends Component {
         axios.get('https://yts.mx/api/v2/list_movies.json' + this.state.option, { useCredentails: true }).then(res => {
             if (res.data.data.movies) {
                 this.setState({movies: res.data.data.movies})
+                window.scrollTo(0, 0)
             }
         })
     }
@@ -86,6 +87,7 @@ class Gallery extends Component {
                     <div className="container-fluid">
                         <div className="row">
                             <Nav genre={this.handleGenre}/>
+                            <div className="mr-lg-4 col-lg-2 mb-5 mb-lg-0 d-none d-lg-block" style={{zIndex: '-10'}}></div>
                             <div className="col-lg-9 col">
                                 <div className="row">
                                     <div className="col login-sec block-shadow">

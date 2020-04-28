@@ -21,11 +21,8 @@
         display: none;
     }
     .displayLarge {
-        position: -webkit-sticky;
-        position: sticky;
-        top: -800px;
-        display: block;
-        max-height: 100vh;
-        white-space: nowrap;
+        position: fixed;
+        overflow: scroll;
+        max-height: 82vh;
     }
 }

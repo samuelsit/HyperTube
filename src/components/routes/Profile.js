@@ -48,7 +48,7 @@ class Profile extends Component {
                             <Carousel movies={this.state.movies} />
                         </div>
                         <div className="card p-3 row m-lg-1">
-                            <h4 className="font-weight-bold">Films aimés <i className="far fa-heart" style={{color: '#DD3444'}}></i></h4>
+                            <h4 className="font-weight-bold">Films récemment aimés <i className="far fa-heart" style={{color: '#DD3444'}}></i></h4>
                             <Carousel movies={this.state.movies} />
                         </div>
                     </div>
