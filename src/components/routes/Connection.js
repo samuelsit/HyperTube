@@ -12,12 +12,14 @@ class Connection extends Component {
     _isMounted = false;
 
     state = {
+        pseudo: '',
+        password: '',
+        isCorrectPseudo: '',
+        isCorrectPassword: '',
         redirect: false
     }
 
     componentDidMount() {
-        // console.log(require('dotenv').config())
-        // console.log(process.env.CLIENT_ID_GOOGLE);
 
         this._isMounted = true
         this.slideGalerie()                
@@ -27,9 +29,54 @@ class Connection extends Component {
         this._isMounted = false;
     }
 
-    handleOnSubmit = () => {
-        this.props.setUserIsAuth(true)
-        this.setState({redirect: true})
+    handleVerify = (name, value) => {
+        if (this._isMounted) {
+            if (name === 'pseudo') {
+                let reg = value.match(/^(?!.*\.\.)(?!.*\.$)[^\W][\w.]{2,29}$/igm)
+                if (reg === null) {
+                    this.setState({isCorrectPseudo: 'is-invalid'})
+                }
+                else {
+                    this.setState({isCorrectPseudo: 'is-valid'})
+                }
+            }
+            if (name === 'password') {
+                let reg = value.match(/^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[a-zA-Z]).{8,}$/gm)
+                if (reg === null) {
+                    this.setState({isCorrectPassword: 'is-invalid'})
+                }
+                else {
+                    this.setState({isCorrectPassword: 'is-valid'})
+                }
+            }
+        }
+    }
+
+    handleChange = e => {
+        const input = e.target
+        if (input.id === 'pseudo') {
+            if (this._isMounted) {
+                this.setState({pseudo: input.value}, this.handleVerify(input.id, input.value))
+            }
+        }
+        if (input.id === 'password') {
+            if (this._isMounted) {
+                this.setState({password: input.value}, this.handleVerify(input.id, input.value))
+            }
+        }
+    }
+
+    handleOnSubmit = e => {
+        e.preventDefault()
+        if (this.state.isCorrectPseudo === 'is-valid' && this.state.isCorrectPassword === 'is-valid') {
+            //if (api result === true) {
+            this.props.setUserIsAuth(true)
+            this.props.setUserPseudo(this.state.pseudo)
+            if (this._isMounted) {
+                this.setState({redirect: true})
+            }
+            //}
+        }
     }
 
     handleRedirect = () => {
@@ -77,17 +124,18 @@ class Connection extends Component {
                                 <form className="login-form" onSubmit={this.handleOnSubmit}>
                                     <div className="form-group">
                                         <label htmlFor="exampleInputEmail1" className="text-uppercase">Pseudo</label>
-                                        <input type="text" className="form-control" placeholder="" id="exampleInputEmail1"/>
+                                        <input type="text" className={`form-control ${this.state.isCorrectPseudo}`} placeholder="" id="pseudo" onChange={this.handleChange}/>
                                     </div>
                                     <div className="form-group">
                                         <label htmlFor="exampleInputPassword1" className="text-uppercase">Mot de passe</label>
-                                        <input type="password" className="form-control" placeholder="" id="exampleInputPassword1"/>
+                                        <input type="password" className={`form-control ${this.state.isCorrectPassword}`} placeholder="" id="password" onChange={this.handleChange}/>
                                     </div>
+                                    <br/>
                                     <div className="form-check">
-                                        <button type="submit" className="btn btn-login float-right float-mb-left float-lg-right mb-3 mb-lg-0" onClick={this.handleOnSubmit}>Connexion</button>
+                                        <button type="submit" className="btn btn-login text-light float-right float-mb-left float-lg-right mb-3 mb-lg-0" onClick={this.handleOnSubmit}>Connexion</button>
                                     </div>
                                     <GoogleLogin
-                                        clientId="151746003875-nbn0fr7hjcoctkp8486ujh9q7fqd5ih8.apps.googleusercontent.com" //{process.env.CLIENT_ID_GOOGLE}
+                                        clientId={process.env.CLIENT_ID_GOOGLE}
                                         buttonText="Connexion"
                                         onSuccess={this.responseGoogle}
                                         onFailure={this.responseGoogle}
@@ -122,6 +170,9 @@ const mapDispatchToProps = dispatch => {
     return {
         setUserIsAuth: (isAuth) => {
             dispatch({ type: 'SET_USER_AUTH', isAuth: isAuth })
+        },
+        setUserPseudo: (pseudo) => {
+            dispatch({ type: 'SET_USER_PSEUDO', pseudo: pseudo })
         }
     }
 }

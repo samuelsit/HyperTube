@@ -6,6 +6,7 @@ import Cover from '../../pictures/cover1.JPG'
 import { CSSTransition } from 'react-transition-group'
 import Carousel from '../utils/Carousel'
 import axios from 'axios'
+import { connect } from 'react-redux'
 
 class Profile extends Component {
 
@@ -39,7 +40,7 @@ class Profile extends Component {
                         </div>
                         <div className="row page">
                             <div className="login-sec mx-auto">
-                                <h2 className="">user</h2>
+                                <h2 className="text-center">{this.props.pseudo}</h2>
                             </div>
                         </div>
                         <div className="card p-3 row m-lg-1 mt-lg-5 mt-5">
@@ -58,4 +59,10 @@ class Profile extends Component {
     }
 }
 
-export default Profile
+const mapStateToProps = state => { 
+    return {
+        pseudo: state.pseudo
+    }
+}
+
+export default connect(mapStateToProps, null)(Profile)
