@@ -2,9 +2,10 @@ import React, { Component, Fragment } from 'react'
 import Header from '../utils/Header'
 import '../../css/Connection.css'
 import galerie from '../../img/galerie.png'
-import { Redirect } from 'react-router-dom';
+import { Redirect } from 'react-router-dom'
 import { connect } from 'react-redux'
 import { CSSTransition } from 'react-transition-group'
+import GoogleLogin from 'react-google-login'
 
 class Connection extends Component {
 
@@ -15,8 +16,11 @@ class Connection extends Component {
     }
 
     componentDidMount() {
+        // console.log(require('dotenv').config())
+        // console.log(process.env.CLIENT_ID_GOOGLE);
+
         this._isMounted = true
-        this.slideGalerie()
+        this.slideGalerie()                
     }
 
     componentWillUnmount() {
@@ -50,6 +54,10 @@ class Connection extends Component {
         }, 20)
     }
 
+    responseGoogle = (response) => {
+        console.log(response)
+    }
+
     render () {
         return (
             <Fragment>
@@ -76,8 +84,15 @@ class Connection extends Component {
                                         <input type="password" className="form-control" placeholder="" id="exampleInputPassword1"/>
                                     </div>
                                     <div className="form-check">
-                                        <button type="submit" className="btn btn-login float-right" onClick={this.handleOnSubmit}>Connexion</button>
+                                        <button type="submit" className="btn btn-login float-right float-mb-left float-lg-right mb-3 mb-lg-0" onClick={this.handleOnSubmit}>Connexion</button>
                                     </div>
+                                    <GoogleLogin
+                                        clientId="151746003875-nbn0fr7hjcoctkp8486ujh9q7fqd5ih8.apps.googleusercontent.com" //{process.env.CLIENT_ID_GOOGLE}
+                                        buttonText="Connexion"
+                                        onSuccess={this.responseGoogle}
+                                        onFailure={this.responseGoogle}
+                                        cookiePolicy={'single_host_origin'}
+                                    />
                                 </form>
                             </div>
                             <div className="slider col-md-8 banner-sec">

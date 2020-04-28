@@ -12,7 +12,8 @@ class Film extends Component {
         intervalId: 0
     }
 
-    componentDidMount() {        
+    componentDidMount() {   
+        window.scrollTo(0, 0);     
         axios.get('https://yts.mx/api/v2/movie_details.json?movie_id=' + this.props.match.params.id, { useCredentails: true }).then(res => {
             this.setState({movie: res.data.data.movie, genre: res.data.data.movie.genres})
         })
@@ -21,22 +22,10 @@ class Film extends Component {
         })
     }
 
-    scrollStep() {
-        if (window.pageYOffset === 0) {
-            clearInterval(this.state.intervalId);
-        }
-        window.scroll(0, 0);
-    }
-    
-    scrollToTop() {
-        let intervalId = setInterval(this.scrollStep.bind(this), 1000);
-        this.setState({ intervalId: intervalId });
-    }
-
     componentDidUpdate(previousProps, previousState) {
         if (previousProps !== this.props) {
-            if (document.referrer.match(/localhost:3000\/film\/.+/) !== null) {
-                this.scrollToTop();
+            if (document.referrer.match(/localhost:3000\/film\/\d+/) !== null) {
+                window.scrollTo(0, 0)
             }
             
             axios.get('https://yts.mx/api/v2/movie_details.json?movie_id=' + this.props.match.params.id, { useCredentails: true }).then(res => {

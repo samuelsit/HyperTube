@@ -1,0 +1,41 @@
+.row-car {
+  overflow:scroll;
+  width:100%;
+}
+
+.row-inner {
+  white-space: nowrap;
+  transition: 0.45s all;
+  margin: 20px 5px;
+}
+
+.tile {
+  position: relative;
+  display:inline-block;
+  margin: 0 5px;
+  transition: 0.45s all;
+  transform-origin: left center;
+}
+
+.img-carou {
+  width: 115px!important;
+  object-fit:cover;
+}
+
+@media screen and (min-width: 1000px) {
+  .row-inner:hover .tile:hover {
+    transform: scale(1.2);
+    opacity: 1;
+  }
+  .row-inner:hover .tile {
+  
+    opacity: .3;
+    
+  }
+  .row-inner:hover {
+    transform: translateX(calc(50px*(-0.5)/2));
+  }
+  .tile:hover ~ .tile {
+    transform: translateX(calc(50px * 0.5));
+  }
+}

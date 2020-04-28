@@ -10,6 +10,7 @@ import Connection from './components/routes/Connection'
 import NotFound from './components/routes/NotFound'
 import Gallery from './components/routes/Gallery'
 import Film from './components/routes/Film'
+import Profile from './components/routes/Profile'
 
 import rootReducer from './reducers/rootReducer'
 import { loadState, saveState } from './localStorage'
@@ -26,6 +27,7 @@ const Root = () => (
         <Switch>
             <Route exact path='/' component={Connection} />
             <Route exact path='/galerie' component={Gallery} />
+            <Route path='/profil:pseudo' component={Profile} />
             <Route path='/film/:id' component={Film} />
             <Route component={NotFound} />
         </Switch>
