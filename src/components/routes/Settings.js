@@ -53,11 +53,11 @@ class Settings extends Component {
                                     </div>
                                     <div className="row mt-5">
                                         <div className="col-12 col-md-6 col-lg-6 text-center">
-                                            <label for="picture"><img className="img-fluid border shadow-lg upload" alt="banner" src={Cover} /></label>
+                                            <label htmlFor="picture"><img className="img-fluid border shadow-lg upload" alt="banner" src={Cover} /></label>
                                             <input type="file" className={`form-control d-none`} id="cover"/>
                                         </div>
                                         <div className="col-12 col-md-6 col-lg-6 text-center">
-                                            <label for="picture"><img className="img-fluid border shadow-lg upload" alt="profile" src={profilePic} /></label>
+                                            <label htmlFor="picture"><img className="img-fluid border shadow-lg upload" alt="profile" src={profilePic} /></label>
                                             <input type="file" className={`form-control d-none`} id="picture"/>
                                         </div>
                                     </div>
