@@ -64,7 +64,7 @@ class Header extends Component {
                         <div className="text-light btn btn-secondary mr-1"><i className="fas fa-user"></i></div>
                         </Link>
                         <Link to="/settings">
-                        <button className="btn btn-secondary mr-1"><i class="fas fa-cogs"></i></button>
+                        <button className="btn btn-secondary mr-1"><i className="fas fa-cogs"></i></button>
                         </Link>
                         <Link to="/">
                         <div className="text-light btn btn-danger" onClick={this.handleDisconnect}>Déconnexion</div>
