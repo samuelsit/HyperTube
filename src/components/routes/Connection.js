@@ -2,7 +2,7 @@ import React, { Component, Fragment } from 'react'
 import Header from '../utils/Header'
 import '../../css/Connection.css'
 import galerie from '../../img/galerie.png'
-import { Redirect } from 'react-router-dom'
+import { Redirect, Link } from 'react-router-dom'
 import { connect } from 'react-redux'
 import { CSSTransition } from 'react-transition-group'
 import GoogleLogin from 'react-google-login'
@@ -119,7 +119,7 @@ class Connection extends Component {
                 <div className="grad-block">
                     <div className="container container-log">
                         <div className="row">
-                            <div className="col-md-4 login-sec">
+                            <div className="col login-sec">
                                 <h2 className="text-center shadow-theme">Connectez vous !</h2>
                                 <form className="login-form" onSubmit={this.handleOnSubmit}>
                                     <div className="form-group">
@@ -131,16 +131,35 @@ class Connection extends Component {
                                         <input type="password" className={`form-control ${this.state.isCorrectPassword}`} placeholder="" id="password" onChange={this.handleChange}/>
                                     </div>
                                     <br/>
-                                    <div className="form-check">
-                                        <button type="submit" className="btn btn-login text-light float-right float-mb-left float-lg-right mb-3 mb-lg-0" onClick={this.handleOnSubmit}>Connexion</button>
+                                    <div className="row text-center">
+                                        <div className="col-12">
+                                            <button type="submit" className="btn btn-login text-light mb-3" onClick={this.handleOnSubmit}>Connexion</button>
+                                        </div>
                                     </div>
-                                    <GoogleLogin
-                                        clientId={process.env.CLIENT_ID_GOOGLE}
-                                        buttonText="Connexion"
-                                        onSuccess={this.responseGoogle}
-                                        onFailure={this.responseGoogle}
-                                        cookiePolicy={'single_host_origin'}
-                                    />
+                                    <div className="row text-center">
+                                        <div className="col-6">
+                                            <GoogleLogin
+                                                clientId={process.env.CLIENT_ID_GOOGLE}
+                                                buttonText="Google"
+                                                onSuccess={this.responseGoogle}
+                                                onFailure={this.responseGoogle}
+                                                cookiePolicy={'single_host_origin'}
+                                            />
+                                        </div>
+                                        <div className="col-6">
+                                            <GoogleLogin
+                                                clientId={process.env.CLIENT_ID_GOOGLE}
+                                                buttonText="42"
+                                                onSuccess={this.responseGoogle}
+                                                onFailure={this.responseGoogle}
+                                                cookiePolicy={'single_host_origin'}
+                                            />
+                                        </div>
+                                    </div>
+                                    <hr/>
+                                    <Link to="forgot" style={{color: 'black'}}>
+                                    <p className="text-center">Mot de passe oublié ?</p>
+                                    </Link>
                                 </form>
                             </div>
                             <div className="slider col-md-8 banner-sec">

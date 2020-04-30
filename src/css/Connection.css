@@ -13,7 +13,7 @@
 
 .carousel-inner {
     border-radius:0 10px 10px 0;
-    max-height: 500px;
+    max-height: 600px;
 }
 
 .carousel-caption {
@@ -106,7 +106,7 @@
     font-size: 500%;
 }
 
-@media screen and (max-width: 550px) {
+@media screen and (max-width: 1030px) {
     .slider {
         display: none;
     }
