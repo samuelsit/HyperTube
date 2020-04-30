@@ -63,7 +63,7 @@ class Header extends Component {
                         <Link to={`/profil/${this.props.pseudo}`}>
                         <div className="text-light btn btn-secondary mr-1"><i className="fas fa-user"></i></div>
                         </Link>
-                        <Link to="/settings">
+                        <Link to="/parametres">
                         <button className="btn btn-secondary mr-1"><i className="fas fa-cogs"></i></button>
                         </Link>
                         <Link to="/">

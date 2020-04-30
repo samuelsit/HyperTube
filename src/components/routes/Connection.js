@@ -157,7 +157,10 @@ class Connection extends Component {
                                         </div>
                                     </div>
                                     <hr/>
-                                    <Link to="forgot" style={{color: 'black'}}>
+                                    <Link to="/inscription" style={{color: 'black'}}>
+                                    <p className="text-center">S'inscrire</p>
+                                    </Link>
+                                    <Link to="/oubli" style={{color: 'black'}}>
                                     <p className="text-center">Mot de passe oublié ?</p>
                                     </Link>
                                 </form>

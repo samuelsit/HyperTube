@@ -17,6 +17,7 @@ import { loadState, saveState } from './localStorage'
 import Users from './components/routes/Users'
 import Settings from './components/routes/Settings'
 import Forgot from './components/routes/Forgot'
+import Authentication from './components/routes/Authentication'
 
 const persistedState = loadState()
 const store = createStore(rootReducer, persistedState)
@@ -31,8 +32,9 @@ const Root = () => (
             <Route exact path='/' component={Connection} />
             <Route exact path='/galerie' component={Gallery} />
             <Route exact path='/utilisateurs' component={Users} />
-            <Route exact path='/settings' component={Settings} />
-            <Route exact path='/forgot' component={Forgot} />
+            <Route exact path='/parametres' component={Settings} />
+            <Route exact path='/inscription' component={Authentication} />
+            <Route exact path='/oubli' component={Forgot} />
             <Route path='/profil/:pseudo' component={Profile} />
             <Route path='/film/:id' component={Film} />
             <Route component={NotFound} />
