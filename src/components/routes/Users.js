@@ -29,7 +29,10 @@ class Users extends Component {
     }
 
     handleChange = e => {
-        this.setState({search: e.target.value})
+        if (e.target.value === '')
+            this.setState({search: e.target.value })
+        else if (/^(?!.*\.\.)(?!.*\.$)[^\W][\w.]{0,29}$/igm.test(e.target.value) === true)
+            this.setState({search: e.target.value })
     }
 
     render () {
@@ -45,7 +48,7 @@ class Users extends Component {
                 <div className="grad-block">
                     <div className="container container-log pb-lg-5">
                         <div className="row">
-                            <div className="login-sec mx-auto w-75">
+                            <div className="login-sec mx-auto w-50">
                                 <h2 className="text-center">{this.state.h}<br/><br/><input type="text" placeholder="PSEUDO" className="form-control text-center" onChange={this.handleChange} value={this.state.search} /></h2>
                             </div>
                         </div>

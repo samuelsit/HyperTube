@@ -3,3 +3,7 @@
     transition: all .3s;
     cursor: pointer;
 }
+
+.upload {
+    border-radius: 10px;
+}

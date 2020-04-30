@@ -24,7 +24,7 @@ class Film extends Component {
 
     componentDidUpdate(previousProps, previousState) {
         if (previousProps !== this.props) {
-            if (document.referrer.match(/localhost:3000\/film\/\d+/) !== null) {
+            if (document.referrer.match(/localhost:3000\/film\/\d+/) !== null) {                
                 window.scrollTo(0, 0)
             }
             

@@ -10,14 +10,23 @@ import { connect } from 'react-redux'
 
 class Profile extends Component {
 
+    _isMounted = false
+
     state = {
         movies: []
     }
 
     componentDidMount() {
+        this._isMounted = true
         axios.get('https://yts.mx/api/v2/list_movies.json?limit=24&sort_by=year&order_by=desc&genre=all&page=1&query_term=0', { useCredentails: true }).then(res => {
-            this.setState({movies: res.data.data.movies})
+            if (this._isMounted) {
+                this.setState({movies: res.data.data.movies})
+            }
         })
+    }
+
+    componentWillUnmount() {
+        this._isMounted = false;
     }
 
     render () {

@@ -11,6 +11,8 @@ import Scroll from '../utils/Scroll'
 
 class Gallery extends Component {
 
+    _isMounted = false
+
     state = {
         movies: [],
         option: '?limit=24&sort_by=year&order_by=desc&genre=all&page=1&query_term=0',
@@ -21,8 +23,11 @@ class Gallery extends Component {
     }
 
     componentDidMount() {
+        this._isMounted = true
         axios.get('https://yts.mx/api/v2/list_movies.json' + this.state.option, { useCredentails: true }).then(res => {
-            this.setState({movies: res.data.data.movies})
+            if (this._isMounted) {
+                this.setState({movies: res.data.data.movies})
+            }
         })
     }
 
@@ -66,6 +71,10 @@ class Gallery extends Component {
         let value = event.target.value === '' ? '0' : event.target.value
         let newOption = this.state.option.replace(/&query_term=.*/gi, '&query_term=' + value).replace(/&page=\d+/i, '&page=1').replace(/&genre=[\w-]+/i, '&genre=all')
         this.setState({search: event.target.value, page: 1, length: 24, option: newOption}, this.handleChangeMovie) 
+    }
+
+    componentWillUnmount() {
+        this._isMounted = false;
     }
 
     render () {
