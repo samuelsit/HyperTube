@@ -122,3 +122,10 @@
 .logotext {
     cursor: pointer;
 }
+
+.searchhead {
+    border-color: #6C757B!important;
+    box-shadow: 0 0px 0px #6C757B inset, 0 0 0px #6C757B!important;
+    outline: 0 none!important;
+    border: 0 !important;
+}

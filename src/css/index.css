@@ -37,8 +37,8 @@ input[type="search"]:focus,
 input[type="tel"]:focus,
 input[type="color"]:focus,
 .uneditable-input:focus {
-  border-color: rgba(71, 71, 71, 0.6);
-  box-shadow: 0 1px 1px rgba(0, 0, 0, 0.075) inset, 0 0 8px #6C757D;
+  border-color: #FEB58A;
+  box-shadow: 0 1px 1px #FEB58A inset, 0 0 8px #FEB58A;
   outline: 0 none;
   border: 0;
 }

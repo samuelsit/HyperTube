@@ -7,13 +7,13 @@ import { connect } from 'react-redux'
 
 class Header extends Component {
 
-    handleClick = () => {
+    handleDisconnect = () => {
         this.props.setUserIsAuth(false)
-        this.setState({isAuth: false})        
+        this.props.setUserPseudo('')
     }
 
     render () {
-        if (this.props.isAuth === false) {
+        if (!this.props.isAuth && !this.props.pseudo) {
             return (
                 <header>
                     <nav className="navbar navbar-expand navbar-white bg-light shadow fixed-top" id="navbar">
@@ -51,18 +51,20 @@ class Header extends Component {
                         {this.props.selectVal
                         ?
                         <div className="searchbar mr-1">
-                            <input id="search" className="search_input" type="text" placeholder="Rechercher un film..." onChange={this.props.selectVal}/>
+                            <input id="search" className="searchhead search_input" type="text" placeholder="Rechercher un film..." onChange={this.props.selectVal}/>
                             <div className="search_icon"><label htmlFor="search"><i className="mt-3 fas fa-search"></i></label></div>
                         </div>
                         :
                         ''
                         }
+                        <Link to="/utilisateurs">
                         <div className="text-light btn btn-light mr-2"><i className="fas fa-heart text-danger"></i></div>
-                        <Link to="/profile">
+                        </Link>
+                        <Link to={`/profil/${this.props.pseudo}`}>
                         <div className="text-light btn btn-secondary mr-2"><i className="fas fa-user"></i></div>
                         </Link>
                         <Link to="/">
-                        <div className="text-light btn btn-danger mr-2" onClick={this.handleClick}>Déconnexion</div>
+                        <div className="text-light btn btn-danger mr-2" onClick={this.handleDisconnect}>Déconnexion</div>
                         </Link>
                     </nav>
                 </header>
@@ -75,13 +77,17 @@ const mapDispatchToProps = dispatch => {
     return {
         setUserIsAuth: (isAuth) => {
             dispatch({ type: 'SET_USER_AUTH', isAuth: isAuth })
+        },
+        setUserPseudo: (pseudo) => {
+            dispatch({ type: 'SET_USER_PSEUDO', pseudo: pseudo })
         }
     }
 }
 
 const mapStateToProps = state => { 
     return {
-        isAuth: state.isAuth
+        isAuth: state.isAuth,
+        pseudo: state.pseudo
     }
 }
 

@@ -1,5 +1,6 @@
 import React, { Component, Fragment } from 'react'
 import '../../css/Carousel.css'
+import { Link } from 'react-router-dom'
 
 class Carousel extends Component {
     render () {
@@ -8,7 +9,7 @@ class Carousel extends Component {
                 <Fragment key={i}>
                     <div className="tile">
                         <div className="tile-media">
-                            <img src={el.medium_cover_image} className="img-carou" alt="background"/>
+                            <Link to={`/film/${el.id}`}><img src={el.medium_cover_image} className="img-carou" alt="background"/></Link>
                         </div>
                     </div>
                 </Fragment>
