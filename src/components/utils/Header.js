@@ -58,13 +58,16 @@ class Header extends Component {
                         ''
                         }
                         <Link to="/utilisateurs">
-                        <div className="text-light btn btn-light mr-2"><i className="fas fa-heart text-danger"></i></div>
+                        <div className="text-light btn btn-light mr-1"><i className="fas fa-heart text-danger"></i></div>
                         </Link>
                         <Link to={`/profil/${this.props.pseudo}`}>
-                        <div className="text-light btn btn-secondary mr-2"><i className="fas fa-user"></i></div>
+                        <div className="text-light btn btn-secondary mr-1"><i className="fas fa-user"></i></div>
+                        </Link>
+                        <Link to="/settings">
+                        <button className="btn btn-secondary mr-1"><i class="fas fa-cogs"></i></button>
                         </Link>
                         <Link to="/">
-                        <div className="text-light btn btn-danger mr-2" onClick={this.handleDisconnect}>Déconnexion</div>
+                        <div className="text-light btn btn-danger" onClick={this.handleDisconnect}>Déconnexion</div>
                         </Link>
                     </nav>
                 </header>

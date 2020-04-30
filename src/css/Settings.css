@@ -1,0 +1,5 @@
+.upload:hover {
+    opacity: 0.5;
+    transition: all .3s;
+    cursor: pointer;
+}
