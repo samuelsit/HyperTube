@@ -133,7 +133,7 @@ class Connection extends Component {
                                     <br/>
                                     <div className="row text-center">
                                         <div className="col-12">
-                                            <button type="submit" className="btn btn-login text-light mb-3" onClick={this.handleOnSubmit}>Connexion</button>
+                                            <button type="submit" className="btn btn-danger text-light mb-3" onClick={this.handleOnSubmit}>Connexion</button>
                                         </div>
                                     </div>
                                     <div className="row text-center">

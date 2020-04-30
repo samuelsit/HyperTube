@@ -34,7 +34,7 @@ class Forgot extends Component {
                                     <h2 className="text-center shadow-theme">Votre adresse email</h2>
                                     <input type="email" id="email" placeholder="name@exemple.com" className={`form-control w-75 text-center mx-auto mb-3 ${this.state.verify}`} onChange={this.handleChange}/>
                                     <div className="mx-auto text-center">
-                                        <button type="submit" className="btn btn-login text-light mt-4">Recevoir un email</button>
+                                        <button type="submit" className="btn btn-danger text-light mt-4">Recevoir un email</button>
                                     </div>
                                 </form>
                             </div>
