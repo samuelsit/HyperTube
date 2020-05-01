@@ -1,13 +1,7 @@
-.cover {
-    width: 100% !important;
-    border-radius: 10px 10px 0px 0px;
-    height: 200px;
-}
-
 .image {
     position: relative;
     left: calc(50% - 100px);
-    bottom: 100px;
+    top: 50px;
     overflow:hidden;
     -webkit-border-radius:50%;
     -moz-border-radius:50%;

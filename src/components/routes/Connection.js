@@ -6,6 +6,7 @@ import { Redirect, Link } from 'react-router-dom'
 import { connect } from 'react-redux'
 import { CSSTransition } from 'react-transition-group'
 import GoogleLogin from 'react-google-login'
+import textLogo from '../../img/text.png'
 
 class Connection extends Component {
 
@@ -32,7 +33,7 @@ class Connection extends Component {
     handleVerify = (name, value) => {
         if (this._isMounted) {
             if (name === 'pseudo') {
-                let reg = value.match(/^(?!.*\.\.)(?!.*\.$)[^\W][\w.]{2,29}$/igm)
+                let reg = value.match(/^(?!.*\.\.)(?!.*\.$)[^\W][\w.]{2,15}$/igm)
                 if (reg === null) {
                     this.setState({isCorrectPseudo: 'is-invalid'})
                 }
@@ -68,14 +69,18 @@ class Connection extends Component {
 
     handleOnSubmit = e => {
         e.preventDefault()
-        if (this.state.isCorrectPseudo === 'is-valid' && this.state.isCorrectPassword === 'is-valid') {
+        if (this.state.isCorrectPseudo === 'is-valid' && this.state.isCorrectPassword === 'is-valid' && this._isMounted) {
             //if (api result === true) {
             this.props.setUserIsAuth(true)
             this.props.setUserPseudo(this.state.pseudo)
-            if (this._isMounted) {
-                this.setState({redirect: true})
-            }
+            this.setState({redirect: true})
             //}
+        }
+        if (this.state.isCorrectPseudo !== 'is-valid' && this._isMounted) {
+            this.setState({ isCorrectPseudo: 'is-invalid' })
+        }
+        if (this.state.isCorrectPassword !== 'is-valid' && this._isMounted) {
+            this.setState({ isCorrectPassword: 'is-invalid' })
         }
     }
 
@@ -169,10 +174,10 @@ class Connection extends Component {
                                 <div id="" className="carousel slide">
                                     <div className="carousel-inner">
                                         <div className="active">
-                                            <img id="galerie" className="d-block img-fluid" src={galerie} alt="First slide"/>
+                                            <img id="galerie" className="d-block img-fluid" width="110%" src={galerie} alt="movie galery"/>
                                             <div className="carousel-caption d-none d-md-block">
                                                 <div className="banner-text">
-                                                    <h2 className="contour-titre">HyperTube</h2>
+                                                    <img src={textLogo} className="img-fluid" alt="hypertube" />
                                                 </div>	
                                             </div>
                                         </div>

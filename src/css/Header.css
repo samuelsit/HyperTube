@@ -78,47 +78,6 @@
     text-decoration:none;
 }
 
-@media screen and (max-width: 500px) {
-    .logoAuth {
-        opacity: 1;
-        transition: opacity .3s;
-        cursor: pointer;
-    }
-    .logoAuthText {
-        position: absolute;
-        opacity: 0;
-        transition: opacity .3s;
-        cursor: pointer;
-    }
-}
-
-@media screen and (max-width: 750px) {
-    .logoAuth {
-        opacity: 1;
-        transition: opacity .3s;
-        cursor: pointer;
-    }
-    .logoAuthText {
-        position: absolute;
-        opacity: 0;
-        transition: opacity .3s;
-        cursor: pointer;
-    }
-}
-
-@media screen and (min-width: 750px) {
-    .logoAuth {
-        position: absolute;
-        opacity: 0;
-        transition: opacity .3s;
-        cursor: pointer;
-    }
-    .logoAuthText {
-        opacity: 1;
-        cursor: pointer;
-    }
-}
-
 .logotext {
     cursor: pointer;
 }

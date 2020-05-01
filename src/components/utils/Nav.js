@@ -6,31 +6,33 @@ class Nav extends Component {
             return (
                 <>
                     <div className="mr-lg-4 m-0 p-0 col-lg-2 mb-5 mb-lg-0 displaySmall">
-                        <div className="block-shadow text-center">
-                            <select className="my-4 selectFilms text-center" onChange={this.props.genre}>
-                                <option value='all'>All</option>
-                                <option value='action'>Action</option>
-                                <option value='adventure'>Adventure</option>
-                                <option value='animation'>Animation</option>
-                                <option value='biography'>Biography</option>
-                                <option value='comedy'>Comedy</option>
-                                <option value='crime'>Crime</option>
-                                <option value='documentary'>Documentary</option>
-                                <option value='drama'>Drama</option>
-                                <option value='family'>Family</option>
-                                <option value='fantasy'>Fantasy</option>
-                                <option value='history'>History</option>
-                                <option value='horror'>Horror</option>
-                                <option value='music'>Music</option>
-                                <option value='mystery'>Mystery</option>
-                                <option value='romance'>Romance</option>
-                                <option value='sci-fi'>Sci-Fi</option>
-                                <option value='sport'>Sport</option>
-                                <option value='thriller'>Thriller</option>
-                                <option value='war'>War</option>
-                                <option value='western'>Western</option>
-                            </select>
-                        </div>
+                        <label htmlFor="select" className="w-100">
+                            <div className="block-shadow text-center">
+                                <select id="select" className="my-4 selectFilms text-center" onChange={this.props.genre}>
+                                    <option value='all'>All</option>
+                                    <option value='action'>Action</option>
+                                    <option value='adventure'>Adventure</option>
+                                    <option value='animation'>Animation</option>
+                                    <option value='biography'>Biography</option>
+                                    <option value='comedy'>Comedy</option>
+                                    <option value='crime'>Crime</option>
+                                    <option value='documentary'>Documentary</option>
+                                    <option value='drama'>Drama</option>
+                                    <option value='family'>Family</option>
+                                    <option value='fantasy'>Fantasy</option>
+                                    <option value='history'>History</option>
+                                    <option value='horror'>Horror</option>
+                                    <option value='music'>Music</option>
+                                    <option value='mystery'>Mystery</option>
+                                    <option value='romance'>Romance</option>
+                                    <option value='sci-fi'>Sci-Fi</option>
+                                    <option value='sport'>Sport</option>
+                                    <option value='thriller'>Thriller</option>
+                                    <option value='war'>War</option>
+                                    <option value='western'>Western</option>
+                                </select>
+                            </div>
+                        </label>
                     </div>
                     <div className="mr-lg-4 col-lg-2 mb-5 mb-lg-0 displayLarge">
                         <div className="block-shadow text-center">

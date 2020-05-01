@@ -36,10 +36,10 @@ class Header extends Component {
                 <header>
                     <nav className="navbar navbar-expand navbar-white bg-light shadow fixed-top" id="navbar">
                         <Link to="/galerie">
-                        <div className="navbar-brand logoAuth">
+                        <div className="navbar-brand logoAuth d-lg-none">
                             <img src={logo} height="40" className="d-inline-block align-top logo" alt="logo"/>
                         </div>
-                        <div className="navbar-brand logoAuthText">
+                        <div className="navbar-brand logoAuthText d-none d-lg-block">
                             <img src={logoText} height="40" className="d-inline-block align-top logo" alt="logo"/>
                         </div>
                         </Link>

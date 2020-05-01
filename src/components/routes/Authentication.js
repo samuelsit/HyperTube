@@ -24,7 +24,7 @@ class Authentication extends Component {
         if (input.name === 'email')
             this.setState({ email: input.value, verifyEmail: /^[a-zA-Z0-9]+@[a-zA-Z0-9]+\.[A-Za-z]+$/.test(input.value) === false ? 'is-invalid' : 'is-valid' })
         else if (input.name === 'username')
-            this.setState({ pseudo: input.value, verifyPseudo: /^(?!.*\.\.)(?!.*\.$)[^\W][\w.]{2,29}$/igm.test(input.value) === false ? 'is-invalid' : 'is-valid' })
+            this.setState({ pseudo: input.value, verifyPseudo: /^(?!.*\.\.)(?!.*\.$)[^\W][\w.]{2,15}$/igm.test(input.value) === false ? 'is-invalid' : 'is-valid' })
         else if (input.name === 'lastname')
             this.setState({ lastname: input.value, verifyLast: /^([a-zàáâäçèéêëìíîïñòóôöùúûü]+(( |')[a-zàáâäçèéêëìíîïñòóôöùúûü]+)*)+([-]([a-zàáâäçèéêëìíîïñòóôöùúûü]+(( |')[a-zàáâäçèéêëìíîïñòóôöùúûü]+)*)+)*$/iu.test(input.value) === false ? 'is-invalid' : 'is-valid' })
         else if (input.name === 'firstname')

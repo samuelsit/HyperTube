@@ -1,12 +1,12 @@
 import React, { Component } from 'react'
-import profilePic from '../../pictures/profile1.JPG'
+import profilePic from '../../img/noPic.png'
 import { Link } from 'react-router-dom'
 
 class UserCard extends Component {
 
     state = {
         pseudo: 'samuelsit',
-        age: '22'
+        age: '99'
     }
     
     render () {
@@ -16,7 +16,7 @@ class UserCard extends Component {
                     <div className="card mb-4">
                         <div>
                             <img className="card-img-top" src={profilePic} alt="Card cap"/>
-                            <div className="text-dark text-center card-header"><h5 className="card-title">{this.state.pseudo}<br/>{this.state.age} ans</h5></div>
+                            <div className="text-dark text-center card-header text-truncate"><h5 className="card-title">{this.state.pseudo}<br/>{this.state.age} ans</h5></div>
                         </div>
                     </div>
                 </Link>

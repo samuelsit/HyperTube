@@ -1,8 +1,7 @@
 import React, { Component, Fragment } from 'react'
 import Header from '../utils/Header'
 import '../../css/Profile.css'
-import profilePic from '../../pictures/profile1.JPG'
-import Cover from '../../pictures/cover1.JPG'
+import profilePic from '../../img/noPic.png'
 import { CSSTransition } from 'react-transition-group'
 import Carousel from '../utils/Carousel'
 import axios from 'axios'
@@ -42,7 +41,6 @@ class Profile extends Component {
                 <div className="grad-block">
                     <div className="container container-log pb-lg-5">
                         <div className="row row-header">
-                            <img className="cover img-fluid" alt="Cover" src={Cover} />
                             <div className="image text-center">
                                 <img className="" width="200" alt="Profile" src={profilePic}/>
                             </div>
@@ -53,11 +51,11 @@ class Profile extends Component {
                             </div>
                         </div>
                         <div className="card p-3 row m-lg-1 mt-lg-5 mt-5">
-                            <h4 className="font-weight-bold">Films récemment vus <i className="far fa-clock" style={{color: '#DD3444'}}></i></h4>
+                            <h4 className="font-weight-bold"><i className="far fa-clock h2" style={{color: '#DD3444'}}></i> Récemment vus</h4>
                             <Carousel movies={this.state.movies} />
                         </div>
                         <div className="card p-3 row m-lg-1">
-                            <h4 className="font-weight-bold">Films récemment aimés <i className="far fa-heart" style={{color: '#DD3444'}}></i></h4>
+                            <h4 className="font-weight-bold"><i className="far fa-heart h2" style={{color: '#DD3444'}}></i> Récemment aimés</h4>
                             <Carousel movies={this.state.movies} />
                         </div>
                     </div>
