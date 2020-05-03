@@ -7,6 +7,7 @@ import { connect } from 'react-redux'
 import { CSSTransition } from 'react-transition-group'
 import GoogleLogin from 'react-google-login'
 import textLogo from '../../img/text.png'
+// import axios from 'axios'
 
 class Connection extends Component {
 
@@ -17,6 +18,7 @@ class Connection extends Component {
         password: '',
         isCorrectPseudo: '',
         isCorrectPassword: '',
+        erreur: '',
         redirect: false
     }
 
@@ -51,6 +53,9 @@ class Connection extends Component {
                 }
             }
         }
+        if (this.state.pseudo !== '' && this.state.password !== '' && this.state.erreur === 'Veuillez entrer tous les champs') {
+            this.setState({ erreur: '' })
+        }
     }
 
     handleChange = e => {
@@ -70,17 +75,31 @@ class Connection extends Component {
     handleOnSubmit = e => {
         e.preventDefault()
         if (this.state.isCorrectPseudo === 'is-valid' && this.state.isCorrectPassword === 'is-valid' && this._isMounted) {
-            //if (api result === true) {
-            this.props.setUserIsAuth(true)
-            this.props.setUserPseudo(this.state.pseudo)
-            this.setState({redirect: true})
-            //}
+            // axios
+            // .post('http://localhost:5000/api', {
+            //     username: this.props.pseudo,
+            //     password: this.props.password
+            // }, {headers: { "x-access-token": this.props.token }})
+            // .then(res => {
+            //     if (res === true) {
+                    this.props.setUserIsAuth(true)
+                    this.props.setUserPseudo(this.state.pseudo)
+                    this.setState({redirect: true})
+            //     }
+            //     else {
+            //         this.setState({ isCorrectPseudo: 'is-invalid', isCorrectPassword: 'is-invalid', erreur: 'Mauvais pseudo/mot de passe.' })
+            //     }
+            // })
         }
         if (this.state.isCorrectPseudo !== 'is-valid' && this._isMounted) {
-            this.setState({ isCorrectPseudo: 'is-invalid' })
+            if (this.state.pseudo === '') {
+                this.setState({ isCorrectPseudo: 'is-invalid', erreur: 'Veuillez entrer tous les champs' })
+            }
         }
         if (this.state.isCorrectPassword !== 'is-valid' && this._isMounted) {
-            this.setState({ isCorrectPassword: 'is-invalid' })
+            if (this.state.password === '') {
+                this.setState({ isCorrectPassword: 'is-invalid', erreur: 'Veuillez entrer tous les champs' })
+            }
         }
     }
 
@@ -106,8 +125,26 @@ class Connection extends Component {
         }, 20)
     }
 
-    responseGoogle = (response) => {
-        console.log(response)
+    responseGoogleSuccess = (response) => {        
+        // axios
+        // .post('http://localhost:5000/api', {
+        //     data: response
+        // })
+        // .then(res => {
+        //     if (res === true) {
+                this.props.setUserIsAuth(true)
+                this.props.setUserPseudo(response.Pt.Ad)
+                this.setState({redirect: true})
+        //     }
+        //     else {
+        //         this.setState({ erreur: 'Erreur Google Auth.' })
+        //     }
+        // })
+    }
+
+    responseGoogleError = (response) => {
+        console.error(response)
+        this.setState({ erreur: 'Erreur Google Auth.' })
     }
 
     render () {
@@ -135,6 +172,7 @@ class Connection extends Component {
                                         <label htmlFor="exampleInputPassword1" className="text-uppercase">Mot de passe</label>
                                         <input type="password" className={`form-control ${this.state.isCorrectPassword}`} placeholder="" id="password" onChange={this.handleChange}/>
                                     </div>
+                                    <div className="font-weight-bold text-danger text-center">{this.state.erreur}</div>
                                     <br/>
                                     <div className="row text-center">
                                         <div className="col-12">
@@ -144,19 +182,19 @@ class Connection extends Component {
                                     <div className="row text-center">
                                         <div className="col-6">
                                             <GoogleLogin
-                                                clientId={process.env.CLIENT_ID_GOOGLE}
+                                                clientId="151746003875-nbn0fr7hjcoctkp8486ujh9q7fqd5ih8.apps.googleusercontent.com"
                                                 buttonText="Google"
-                                                onSuccess={this.responseGoogle}
-                                                onFailure={this.responseGoogle}
+                                                onSuccess={this.responseGoogleSuccess}
+                                                onFailure={this.responseGoogleError}
                                                 cookiePolicy={'single_host_origin'}
                                             />
                                         </div>
                                         <div className="col-6">
                                             <GoogleLogin
-                                                clientId={process.env.CLIENT_ID_GOOGLE}
+                                                clientId="151746003875-nbn0fr7hjcoctkp8486ujh9q7fqd5ih8.apps.googleusercontent.com"
                                                 buttonText="42"
-                                                onSuccess={this.responseGoogle}
-                                                onFailure={this.responseGoogle}
+                                                onSuccess={this.responseGoogleSuccess}
+                                                onFailure={this.responseGoogleError}
                                                 cookiePolicy={'single_host_origin'}
                                             />
                                         </div>

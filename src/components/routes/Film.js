@@ -16,6 +16,13 @@ class Film extends Component {
         window.scrollTo(0, 0);     
         axios.get('https://yts.mx/api/v2/movie_details.json?movie_id=' + this.props.match.params.id, { useCredentails: true }).then(res => {
             this.setState({movie: res.data.data.movie, genre: res.data.data.movie.genres})
+            // axios
+            // .post('http://localhost:5000/api', {
+            //     movie: res.data.data.movie
+            // }, {headers: { "x-access-token": this.props.token }})
+            // .then(res => {
+            //     console.log(res)
+            // })
         })
         axios.get('https://yts.mx/api/v2/movie_suggestions.json?movie_id=' + this.props.match.params.id, { useCredentails: true }).then(res => {
             this.setState({suggestion: res.data.data.movies})

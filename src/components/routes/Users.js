@@ -12,18 +12,38 @@ class Users extends Component {
     }
 
     componentDidMount() {
-        //default req all users to state
+        // axios
+        // .get('http://localhost:5000/api')
+        // .then(res => {
+        //     if (res.data) {
+        //         this.setState({users: res.data})
+        //     }
+        // })
     }
 
     componentDidUpdate(previousProps, previousState) {
         if (this.state.search !== previousState.search) {
             if (this.state.search === '') {
                 this.setState({ h: 'Rechercher un utilisateur: '})
-                console.log('req users with search: default');
+                // axios
+                // .get('http://localhost:5000/api')
+                // .then(res => {
+                //     if (res.data) {
+                //         this.setState({users: res.data})
+                //     }
+                // })
             }
             else {
                 this.setState({h: this.state.search})
-                console.log('req users with search: ' + this.state.search);
+                // axios
+                // .post('http://localhost:5000/api', {
+                //     search: this.state.search
+                // })
+                // .then(res => {
+                //     if (res.data) {
+                //         this.setState({users: res.data})
+                //     }
+                // })
             }
         }
     }

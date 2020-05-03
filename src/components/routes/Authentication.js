@@ -1,6 +1,7 @@
 import React, { Component, Fragment } from 'react'
 import Header from '../utils/Header'
 import { CSSTransition } from 'react-transition-group'
+// import axios from 'axios'
 
 class Authentication extends Component {
 
@@ -41,6 +42,17 @@ class Authentication extends Component {
 
         if (verifyEmail === 'is-valid' && verifyPseudo === 'is-valid' && verifyPassword === 'is-valid' && verifyRepeat === 'is-valid' && verifyLast === 'is-valid' && verifyFirst === 'is-valid') {
             console.log('req inscription: ' + email, pseudo, lastname, firstname, password);
+            // axios
+            // .post('http://localhost:5000/api', {
+            //     email: this.props.email,
+            //     username: this.props.pseudo,
+            //     lastname: this.props.lastname,
+            //     firstname: this.props.firstname,
+            //     password: this.props.password
+            // }, {headers: { "x-access-token": this.props.token }})
+            // .then(res => {
+            //     console.log(res)
+            // })
         }
     }
 

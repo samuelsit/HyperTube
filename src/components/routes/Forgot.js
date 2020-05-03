@@ -18,7 +18,14 @@ class Forgot extends Component {
         const {email, verify} = this.state
 
         if (verify === 'is-valid') {
-            console.log('req email: ' + email);
+            console.log(email);
+            // axios
+            // .post('http://localhost:5000/api', {
+            //     email: email
+            // }, {headers: { "x-access-token": this.props.token }})
+            // .then(res => {
+            //     console.log(res)
+            // })
         }
     }
 

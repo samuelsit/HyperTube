@@ -20,7 +20,6 @@ class Settings extends Component {
     }
 
     handleOnBlurSubmit = () => {
-        //
         if (this.state.verifyLast === 'is-valid') {
             console.log('requete modifier: ', this.state.lastname)
         }
@@ -35,11 +34,17 @@ class Settings extends Component {
         //      axios.post('http://localhost:5000/api', {
         //          lastname: lastname
         //      }, {headers: { "x-access-token": this.props.token }})
+        //      .then(res => {
+        //           console.log(res)
+        //      })
         //  }
         //  if (verifyFirst === 'is-valid') {
         //      axios.post('http://localhost:5000/api', {
         //          firstname: firstname
         //      }, {headers: { "x-access-token": this.props.token }})
+        //      .then(res => {
+        //           console.log(res)
+        //      })
         //  }
     }
 
@@ -49,7 +54,9 @@ class Settings extends Component {
         //     username: this.props.username,
         //     password: password
         // }, {headers: { "x-access-token": this.props.token }})
-        // .then(res => res)
+        // .then(res => {
+        //     console.log(res)
+        // })
         return true //à enlever
     }
 
@@ -80,7 +87,14 @@ class Settings extends Component {
             this.setState({ verifyRepeat: 'is-invalid' })
         }
         if (verifyOld === 'is-valid' && verifyPassword === 'is-valid' && verifyRepeat === 'is-valid' && window.confirm("Voulez-vous vraiment changer de mot de passe ?")) {
-            console.log('Nouveau mot de passe: ', password)
+            // axios
+            // .post('http://localhost:5000/api', {
+            //     old: old,
+            //     password: password,
+            // }, {headers: { "x-access-token": this.props.token }})
+            // .then(res => {
+            //     console.log(res)
+            // })
         }
     }
 

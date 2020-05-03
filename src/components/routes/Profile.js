@@ -12,14 +12,22 @@ class Profile extends Component {
     _isMounted = false
 
     state = {
-        movies: []
+        watched_movies: [],
+        liked_movies: []
     }
 
     componentDidMount() {
         this._isMounted = true
-        axios.get('https://yts.mx/api/v2/list_movies.json?limit=24&sort_by=year&order_by=desc&genre=all&page=1&query_term=0', { useCredentails: true }).then(res => {
+        axios.get('https://yts.mx/api/v2/list_movies.json?limit=24&sort_by=year&order_by=desc&genre=all&page=1&query_term=0', { useCredentails: true })
+        .then(res => {
             if (this._isMounted) {
-                this.setState({movies: res.data.data.movies})
+                this.setState({watched_movies: res.data.data.movies})
+            }
+        })
+        axios.get('https://yts.mx/api/v2/list_movies.json?limit=24&sort_by=year&order_by=desc&genre=all&page=1&query_term=0', { useCredentails: true })
+        .then(res => {
+            if (this._isMounted) {
+                this.setState({liked_movies: res.data.data.movies})
             }
         })
     }
@@ -52,11 +60,11 @@ class Profile extends Component {
                         </div>
                         <div className="card p-3 row m-lg-1 mt-lg-5 mt-5">
                             <h4 className="font-weight-bold"><i className="far fa-clock h2" style={{color: '#DD3444'}}></i> Récemment vus</h4>
-                            <Carousel movies={this.state.movies} />
+                            <Carousel movies={this.state.watched_movies} />
                         </div>
                         <div className="card p-3 row m-lg-1">
                             <h4 className="font-weight-bold"><i className="far fa-heart h2" style={{color: '#DD3444'}}></i> Récemment aimés</h4>
-                            <Carousel movies={this.state.movies} />
+                            <Carousel movies={this.state.liked_movies} />
                         </div>
                     </div>
                 </div>
