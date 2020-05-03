@@ -18,6 +18,7 @@ import Users from './components/routes/Users'
 import Settings from './components/routes/Settings'
 import Forgot from './components/routes/Forgot'
 import Authentication from './components/routes/Authentication'
+import ChangePass from './components/routes/ChangePass'
 
 const persistedState = loadState()
 const store = createStore(rootReducer, persistedState)
@@ -35,6 +36,7 @@ const Root = () => (
             <Route exact path='/parametres' component={Settings} />
             <Route exact path='/inscription' component={Authentication} />
             <Route exact path='/oubli' component={Forgot} />
+            <Route exact path='/changement-de-mot-de-passe' component={ChangePass} />
             <Route path='/profil/:pseudo' component={Profile} />
             <Route path='/film/:id' component={Film} />
             <Route component={NotFound} />
