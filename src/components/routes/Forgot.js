@@ -8,9 +8,21 @@ class Forgot extends Component {
         verify: ''
     }
 
+    _isMounted = false
+
+    componentWillUnmount() {
+        this._isMounted = false
+    }
+
+    componentDidMount() {   
+        this._isMounted = true
+    }
+
     handleChange = event => {
         const email = event.target.value
-        this.setState({ email: email, verify: /^[a-zA-Z0-9]+@[a-zA-Z0-9]+\.[A-Za-z]+$/.test(email) === false ? 'is-invalid' : 'is-valid' })
+        if (this._isMounted) {
+            this.setState({ email: email, verify: /^[a-zA-Z0-9]+@[a-zA-Z0-9]+\.[A-Za-z]+$/.test(email) === false ? 'is-invalid' : 'is-valid' })
+        }
     }
 
     handleSubmit = event => {

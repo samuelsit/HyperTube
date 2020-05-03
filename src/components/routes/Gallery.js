@@ -36,7 +36,7 @@ class Gallery extends Component {
 
     handleChangeMovie = () => {
         axios.get('https://yts.mx/api/v2/list_movies.json' + this.state.option, { useCredentails: true }).then(res => {
-            if (res.data.data.movies) {
+            if (res.data.data.movies && this._isMounted) {
                 this.setState({movies: res.data.data.movies})
                 window.scrollTo(0, 0)
             }
@@ -45,32 +45,42 @@ class Gallery extends Component {
 
     handleGenre = genre => {
         let newOption = this.state.option.replace(/&genre=[\w-]+/i, '&genre=' + genre.target.value).replace(/&query_term=.*/gi, '&query_term=0').replace(/&page=\d+/i, '&page=1')
-        this.setState({page: 1, length: 24, option: newOption, title: genre.target.value === 'all' ? 'Dernières Sorties' : genre.target.value[0].toUpperCase() + genre.target.value.slice(1)}, this.handleChangeMovie)
+        if (this._isMounted) {
+            this.setState({page: 1, length: 24, option: newOption, title: genre.target.value === 'all' ? 'Dernières Sorties' : genre.target.value[0].toUpperCase() + genre.target.value.slice(1)}, this.handleChangeMovie)
+        }
     }
 
     handleConcat = () => {
         axios.get('https://yts.mx/api/v2/list_movies.json' + this.state.option, { useCredentails: true }).then(res => {
-            if (res.data.data.movies) {
+            if (res.data.data.movies && this._isMounted) {
                 this.setState({movies: this.state.movies.concat(res.data.data.movies)})
             }
         }).then(() => {
-            this.setState({length: this.state.length + 24})
+            if (this._isMounted) {
+                this.setState({length: this.state.length + 24})
+            }
         })
     }
 
     handlePage = () => {
         let newOption = this.state.option.replace(/&page=\d+/i, '&page=' + this.state.page)
-        this.setState({option: newOption}, this.handleConcat)
+        if (this._isMounted) {
+            this.setState({option: newOption}, this.handleConcat)
+        }
     }
 
     fetchMoreData = () => {
-        this.setState({page: this.state.page + 1}, this.handlePage)
+        if (this._isMounted) {
+            this.setState({page: this.state.page + 1}, this.handlePage)
+        }
     }
 
     handleSearch = event => {
         let value = event.target.value === '' ? '0' : event.target.value
         let newOption = this.state.option.replace(/&query_term=.*/gi, '&query_term=' + value).replace(/&page=\d+/i, '&page=1').replace(/&genre=[\w-]+/i, '&genre=all')
-        this.setState({search: event.target.value, page: 1, length: 24, option: newOption}, this.handleChangeMovie) 
+        if (this._isMounted) {
+            this.setState({search: event.target.value, page: 1, length: 24, option: newOption}, this.handleChangeMovie)
+        }
     }
 
     componentWillUnmount() {

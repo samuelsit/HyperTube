@@ -10,6 +10,7 @@ class Header extends Component {
     handleDisconnect = () => {
         this.props.setUserIsAuth(false)
         this.props.setUserPseudo('')
+        this.props.setUserToken('')
     }
 
     render () {
@@ -83,6 +84,9 @@ const mapDispatchToProps = dispatch => {
         },
         setUserPseudo: (pseudo) => {
             dispatch({ type: 'SET_USER_PSEUDO', pseudo: pseudo })
+        },
+        setUserToken: (token) => {
+            dispatch({ type: 'SET_USER_TOKEN', token: token })
         }
     }
 }

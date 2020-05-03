@@ -11,7 +11,14 @@ class Users extends Component {
         h: 'Rechercher un utilisateur: '
     }
 
+    _isMounted = false
+
+    componentWillUnmount() {
+        this._isMounted = false
+    }
+
     componentDidMount() {
+        this._isMounted = true
         // axios
         // .get('http://localhost:5000/api')
         // .then(res => {
@@ -22,7 +29,7 @@ class Users extends Component {
     }
 
     componentDidUpdate(previousProps, previousState) {
-        if (this.state.search !== previousState.search) {
+        if (this.state.search !== previousState.search && this._isMounted) {
             if (this.state.search === '') {
                 this.setState({ h: 'Rechercher un utilisateur: '})
                 // axios
@@ -49,9 +56,9 @@ class Users extends Component {
     }
 
     handleChange = e => {
-        if (e.target.value === '')
+        if (e.target.value === '' && this._isMounted)
             this.setState({search: e.target.value })
-        else if (/^(?!.*\.\.)(?!.*\.$)[^\W][\w.]{0,15}$/igm.test(e.target.value) === true)
+        else if (/^(?!.*\.\.)(?!.*\.$)[^\W][\w.]{0,15}$/igm.test(e.target.value) === true && this._isMounted)
             this.setState({search: e.target.value })
     }
 

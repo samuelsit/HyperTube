@@ -12,20 +12,31 @@ class Film extends Component {
         intervalId: 0
     }
 
+    _isMounted = false
+
+    componentWillUnmount() {
+        this._isMounted = false
+    }
+
     componentDidMount() {   
+        this._isMounted = true
         window.scrollTo(0, 0);     
         axios.get('https://yts.mx/api/v2/movie_details.json?movie_id=' + this.props.match.params.id, { useCredentails: true }).then(res => {
-            this.setState({movie: res.data.data.movie, genre: res.data.data.movie.genres})
-            // axios
-            // .post('http://localhost:5000/api', {
-            //     movie: res.data.data.movie
-            // }, {headers: { "x-access-token": this.props.token }})
-            // .then(res => {
-            //     console.log(res)
-            // })
+            if (this._isMounted) {
+                this.setState({movie: res.data.data.movie, genre: res.data.data.movie.genres})
+                // axios
+                // .post('http://localhost:5000/api', {
+                //     movie: res.data.data.movie
+                // }, {headers: { "x-access-token": this.props.token }})
+                // .then(res => {
+                //     console.log(res)
+                // })
+            }
         })
         axios.get('https://yts.mx/api/v2/movie_suggestions.json?movie_id=' + this.props.match.params.id, { useCredentails: true }).then(res => {
-            this.setState({suggestion: res.data.data.movies})
+            if (this._isMounted) {
+                this.setState({suggestion: res.data.data.movies})
+            }
         })
     }
 
@@ -36,10 +47,14 @@ class Film extends Component {
             }
             
             axios.get('https://yts.mx/api/v2/movie_details.json?movie_id=' + this.props.match.params.id, { useCredentails: true }).then(res => {
-                this.setState({movie: res.data.data.movie, genre: res.data.data.movie.genres})
+                if (this._isMounted) {
+                    this.setState({movie: res.data.data.movie, genre: res.data.data.movie.genres})
+                }
             })
             axios.get('https://yts.mx/api/v2/movie_suggestions.json?movie_id=' + this.props.match.params.id, { useCredentails: true }).then(res => {
-                this.setState({suggestion: res.data.data.movies})
+                if (this._isMounted) {
+                    this.setState({suggestion: res.data.data.movies})
+                }
             })
         }
     }

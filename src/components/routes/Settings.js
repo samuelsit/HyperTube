@@ -19,6 +19,16 @@ class Settings extends Component {
         verifyRepeat: ''
     }
 
+    _isMounted = false
+
+    componentWillUnmount() {
+        this._isMounted = false
+    }
+
+    componentDidMount() {   
+        this._isMounted = true
+    }
+
     handleOnBlurSubmit = () => {
         if (this.state.verifyLast === 'is-valid') {
             console.log('requete modifier: ', this.state.lastname)
@@ -62,28 +72,30 @@ class Settings extends Component {
 
     handleChange = event => {
         const input = event.target
-        if (input.name === 'lastname')
-            this.setState({ lastname: input.value, verifyLast: /^([a-zàáâäçèéêëìíîïñòóôöùúûü]+(( |')[a-zàáâäçèéêëìíîïñòóôöùúûü]+)*)+([-]([a-zàáâäçèéêëìíîïñòóôöùúûü]+(( |')[a-zàáâäçèéêëìíîïñòóôöùúûü]+)*)+)*$/iu.test(input.value) === false ? 'is-invalid' : 'is-valid' })
-        else if (input.name === 'firstname')
-            this.setState({ firstname: input.value, verifyFirst: /^([a-zàáâäçèéêëìíîïñòóôöùúûü]+(( |')[a-zàáâäçèéêëìíîïñòóôöùúûü]+)*)+([-]([a-zàáâäçèéêëìíîïñòóôöùúûü]+(( |')[a-zàáâäçèéêëìíîïñòóôöùúûü]+)*)+)*$/iu.test(input.value) === false ? 'is-invalid' : 'is-valid' })
-        else if (input.name === 'old')
-            this.setState({ old: input.value, verifyOld: /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[a-zA-Z]).{8,}$/gm.test(input.value) === false || !this.handleIsPass(input.value) ? 'is-invalid' : 'is-valid' })
-        else if (input.name === 'password')
-            this.setState({ password: input.value, verifyPassword: /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[a-zA-Z]).{8,}$/gm.test(input.value) === false ? 'is-invalid' : 'is-valid' })
-        else if (input.name === 'repeat')
-            this.setState({ repeat: input.value, verifyRepeat: /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[a-zA-Z]).{8,}$/gm.test(input.value) === false || input.value !== this.state.password ? 'is-invalid' : 'is-valid' })
+        if (this._isMounted) {
+            if (input.name === 'lastname')
+                this.setState({ lastname: input.value, verifyLast: /^([a-zàáâäçèéêëìíîïñòóôöùúûü]+(( |')[a-zàáâäçèéêëìíîïñòóôöùúûü]+)*)+([-]([a-zàáâäçèéêëìíîïñòóôöùúûü]+(( |')[a-zàáâäçèéêëìíîïñòóôöùúûü]+)*)+)*$/iu.test(input.value) === false ? 'is-invalid' : 'is-valid' })
+            else if (input.name === 'firstname')
+                this.setState({ firstname: input.value, verifyFirst: /^([a-zàáâäçèéêëìíîïñòóôöùúûü]+(( |')[a-zàáâäçèéêëìíîïñòóôöùúûü]+)*)+([-]([a-zàáâäçèéêëìíîïñòóôöùúûü]+(( |')[a-zàáâäçèéêëìíîïñòóôöùúûü]+)*)+)*$/iu.test(input.value) === false ? 'is-invalid' : 'is-valid' })
+            else if (input.name === 'old')
+                this.setState({ old: input.value, verifyOld: /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[a-zA-Z]).{8,}$/gm.test(input.value) === false || !this.handleIsPass(input.value) ? 'is-invalid' : 'is-valid' })
+            else if (input.name === 'password')
+                this.setState({ password: input.value, verifyPassword: /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[a-zA-Z]).{8,}$/gm.test(input.value) === false ? 'is-invalid' : 'is-valid' })
+            else if (input.name === 'repeat')
+                this.setState({ repeat: input.value, verifyRepeat: /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[a-zA-Z]).{8,}$/gm.test(input.value) === false || input.value !== this.state.password ? 'is-invalid' : 'is-valid' })
+        }
     }
 
     handleChangePass = e => {
         e.preventDefault()
         let { verifyOld, verifyPassword, verifyRepeat, old, password, repeat } = this.state
-        if (old === '') {
+        if (old === '' && this._isMounted) {
             this.setState({ verifyOld: 'is-invalid' })
         }
-        if (password === '') {
+        if (password === '' && this._isMounted) {
             this.setState({ verifyPassword: 'is-invalid' })
         }
-        if (repeat === '') {
+        if (repeat === '' && this._isMounted) {
             this.setState({ verifyRepeat: 'is-invalid' })
         }
         if (verifyOld === 'is-valid' && verifyPassword === 'is-valid' && verifyRepeat === 'is-valid' && window.confirm("Voulez-vous vraiment changer de mot de passe ?")) {

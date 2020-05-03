@@ -7,11 +7,11 @@ import { connect } from 'react-redux'
 import { CSSTransition } from 'react-transition-group'
 import GoogleLogin from 'react-google-login'
 import textLogo from '../../img/text.png'
-// import axios from 'axios'
+import axios from 'axios'
 
 class Connection extends Component {
 
-    _isMounted = false;
+    _isMounted = false
 
     state = {
         pseudo: '',
@@ -23,13 +23,12 @@ class Connection extends Component {
     }
 
     componentDidMount() {
-
         this._isMounted = true
         this.slideGalerie()                
     }
 
     componentWillUnmount() {
-        this._isMounted = false;
+        this._isMounted = false
     }
 
     handleVerify = (name, value) => {
@@ -52,21 +51,19 @@ class Connection extends Component {
                     this.setState({isCorrectPassword: 'is-valid'})
                 }
             }
-        }
-        if (this.state.pseudo !== '' && this.state.password !== '' && this.state.erreur === 'Veuillez entrer tous les champs') {
-            this.setState({ erreur: '' })
+            if (this.state.pseudo !== '' && this.state.password !== '' && this.state.erreur === 'Veuillez entrer tous les champs') {
+                this.setState({ erreur: '' })
+            }
         }
     }
 
     handleChange = e => {
-        const input = e.target
-        if (input.id === 'pseudo') {
-            if (this._isMounted) {
+        if (this._isMounted) {
+            const input = e.target
+            if (input.id === 'pseudo') {
                 this.setState({pseudo: input.value}, this.handleVerify(input.id, input.value))
             }
-        }
-        if (input.id === 'password') {
-            if (this._isMounted) {
+            if (input.id === 'password') {
                 this.setState({password: input.value}, this.handleVerify(input.id, input.value))
             }
         }
@@ -74,31 +71,33 @@ class Connection extends Component {
 
     handleOnSubmit = e => {
         e.preventDefault()
-        if (this.state.isCorrectPseudo === 'is-valid' && this.state.isCorrectPassword === 'is-valid' && this._isMounted) {
-            // axios
-            // .post('http://localhost:5000/api', {
-            //     username: this.props.pseudo,
-            //     password: this.props.password
-            // }, {headers: { "x-access-token": this.props.token }})
-            // .then(res => {
-            //     if (res === true) {
+        if (this._isMounted) {
+            if (this.state.isCorrectPseudo === 'is-valid' && this.state.isCorrectPassword === 'is-valid') {
+                axios
+                .post('http://localhost:5000/api/v1/auth/login', {
+                    pseudo: this.state.pseudo,
+                    password: this.state.password
+                }, {headers: { "x-access-token": this.props.token }})
+                .then(res => {
                     this.props.setUserIsAuth(true)
                     this.props.setUserPseudo(this.state.pseudo)
+                    this.props.setUserToken(res.data.token)
                     this.setState({redirect: true})
-            //     }
-            //     else {
-            //         this.setState({ isCorrectPseudo: 'is-invalid', isCorrectPassword: 'is-invalid', erreur: 'Mauvais pseudo/mot de passe.' })
-            //     }
-            // })
-        }
-        if (this.state.isCorrectPseudo !== 'is-valid' && this._isMounted) {
-            if (this.state.pseudo === '') {
-                this.setState({ isCorrectPseudo: 'is-invalid', erreur: 'Veuillez entrer tous les champs' })
+                })
+                .catch(error => {
+                    console.error(error)
+                    this.setState({ isCorrectPseudo: 'is-invalid', isCorrectPassword: 'is-invalid', erreur: 'Erreur à la connexion' })
+                })
             }
-        }
-        if (this.state.isCorrectPassword !== 'is-valid' && this._isMounted) {
-            if (this.state.password === '') {
-                this.setState({ isCorrectPassword: 'is-invalid', erreur: 'Veuillez entrer tous les champs' })
+            if (this.state.isCorrectPseudo !== 'is-valid') {
+                if (this.state.pseudo === '') {
+                    this.setState({ isCorrectPseudo: 'is-invalid', erreur: 'Veuillez entrer tous les champs' })
+                }
+            }
+            if (this.state.isCorrectPassword !== 'is-valid') {
+                if (this.state.password === '') {
+                    this.setState({ isCorrectPassword: 'is-invalid', erreur: 'Veuillez entrer tous les champs' })
+                }
             }
         }
     }
@@ -112,39 +111,44 @@ class Connection extends Component {
     }
 
     slideGalerie = () => {
-        const galerie = document.getElementById("galerie")
-        let top = 0
-        setInterval(() => {
-            if (top === -550) {
-                top = 0
-            }
-            else {
-                top -= 0.5
-            }
-            galerie.style.top = top + 'px'
-        }, 20)
+        if (this._isMounted) {
+            const galerie = document.getElementById("galerie")
+            let top = 0
+            setInterval(() => {
+                if (top === -550) {
+                    top = 0
+                }
+                else {
+                    top -= 0.5
+                }
+                galerie.style.top = top + 'px'
+            }, 20)
+        }
     }
 
-    responseGoogleSuccess = (response) => {        
-        // axios
-        // .post('http://localhost:5000/api', {
-        //     data: response
-        // })
-        // .then(res => {
-        //     if (res === true) {
+    responseGoogleSuccess = (response) => {    
+        if (this._isMounted) {    
+            // axios
+            // .post('http://localhost:5000/api', {
+            //     data: response
+            // })
+            // .then(res => {
                 this.props.setUserIsAuth(true)
                 this.props.setUserPseudo(response.Pt.Ad)
                 this.setState({redirect: true})
-        //     }
-        //     else {
-        //         this.setState({ erreur: 'Erreur Google Auth.' })
-        //     }
-        // })
+            // })
+            // .catch(error => {
+            //     console.error(error)
+            //     this.setState({ erreur: 'Erreur Google Auth.' })
+            // })
+        }
     }
 
     responseGoogleError = (response) => {
         console.error(response)
-        this.setState({ erreur: 'Erreur Google Auth.' })
+        if (this._isMounted) {
+            this.setState({ erreur: 'Erreur Google Auth.' })
+        }
     }
 
     render () {
@@ -238,6 +242,9 @@ const mapDispatchToProps = dispatch => {
         },
         setUserPseudo: (pseudo) => {
             dispatch({ type: 'SET_USER_PSEUDO', pseudo: pseudo })
+        },
+        setUserToken: (token) => {
+            dispatch({ type: 'SET_USER_TOKEN', token: token })
         }
     }
 }

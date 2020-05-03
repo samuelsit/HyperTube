@@ -10,25 +10,32 @@ class ChangePass extends Component {
         verifyRepeat: ''
     }
 
+    _isMounted = false
+
     componentDidMount() {
+        this._isMounted = true
         //verifier token
+    }
+
+    componentWillUnmount() {
+        this._isMounted = false
     }
 
     handleChange = event => {
         const input = event.target
-        if (input.name === 'password')
+        if (input.name === 'password' && this._isMounted)
             this.setState({ password: input.value, verifyPassword: /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[a-zA-Z]).{8,}$/gm.test(input.value) === false ? 'is-invalid' : 'is-valid' })
-        else if (input.name === 'repeat')
+        else if (input.name === 'repeat' && this._isMounted)
             this.setState({ repeat: input.value, verifyRepeat: /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[a-zA-Z]).{8,}$/gm.test(input.value) === false || input.value !== this.state.password ? 'is-invalid' : 'is-valid' })
     }
 
     handleChangePass = e => {
         e.preventDefault()
         let { verifyPassword, verifyRepeat, password, repeat } = this.state
-        if (password === '') {
+        if (password === '' && this._isMounted) {
             this.setState({ verifyPassword: 'is-invalid' })
         }
-        if (repeat === '') {
+        if (repeat === '' && this._isMounted) {
             this.setState({ verifyRepeat: 'is-invalid' })
         }
         if (verifyPassword === 'is-valid' && verifyRepeat === 'is-valid' && window.confirm("Voulez-vous vraiment changer de mot de passe ?")) {

@@ -1,6 +1,6 @@
 import React from 'react'
 import ReactDOM from 'react-dom'
-import { BrowserRouter, Route, Switch } from 'react-router-dom'
+import { BrowserRouter, Switch } from 'react-router-dom'
 import 'bootstrap/dist/css/bootstrap.min.css'
 import './css/index.css'
 import { createStore } from 'redux'
@@ -19,6 +19,9 @@ import Settings from './components/routes/Settings'
 import Forgot from './components/routes/Forgot'
 import Authentication from './components/routes/Authentication'
 import ChangePass from './components/routes/ChangePass'
+import Confirm from './components/routes/Confirm'
+import PrivateRoute from './components/PrivateRoute'
+import PublicRoute from './components/PublicRoute'
 
 const persistedState = loadState()
 const store = createStore(rootReducer, persistedState)
@@ -30,16 +33,17 @@ store.subscribe(() => {
 const Root = () => (
     <BrowserRouter>
         <Switch>
-            <Route exact path='/' component={Connection} />
-            <Route exact path='/galerie' component={Gallery} />
-            <Route exact path='/utilisateurs' component={Users} />
-            <Route exact path='/parametres' component={Settings} />
-            <Route exact path='/inscription' component={Authentication} />
-            <Route exact path='/oubli' component={Forgot} />
-            <Route exact path='/changement-de-mot-de-passe' component={ChangePass} />
-            <Route path='/profil/:pseudo' component={Profile} />
-            <Route path='/film/:id' component={Film} />
-            <Route component={NotFound} />
+            <PublicRoute exact path='/' component={Connection} />
+            <PrivateRoute exact path='/galerie' component={Gallery} />
+            <PrivateRoute exact path='/utilisateurs' component={Users} />
+            <PrivateRoute exact path='/parametres' component={Settings} />
+            <PublicRoute exact path='/inscription' component={Authentication} />
+            <PublicRoute exact path='/oubli' component={Forgot} />
+            <PublicRoute path='/changement-de-mot-de-passe/:token' component={ChangePass} />
+            <PublicRoute path='/confirmation/:token' component={Confirm} />
+            <PrivateRoute path='/profil/:pseudo' component={Profile} />
+            <PrivateRoute path='/film/:id' component={Film} />
+            <PublicRoute component={NotFound} />
         </Switch>
    </BrowserRouter>
 )
