@@ -127,17 +127,15 @@ class Connection extends Component {
     }
 
     responseGoogleSuccess = (response) => {
-      console.log(response);
         if (this._isMounted) {
             axios
             .post('http://localhost:5000/api/v1/auth/googleoauth', {
                 id_token: response.tokenObj.id_token
             })
             .then(res => {
-              console.log(res);
                 this.props.setUserIsAuth(true)
-                this.props.setUserPseudo(response.message.userData.pseudo)
-                this.props.setUserToken(response.message.token)
+                this.props.setUserPseudo(res.data.message.userData.pseudo)
+                this.props.setUserToken(res.data.message.token)
                 this.setState({redirect: true})
             })
             .catch(error => {
