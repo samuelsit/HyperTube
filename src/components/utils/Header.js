@@ -9,12 +9,11 @@ class Header extends Component {
 
     handleDisconnect = () => {
         this.props.setUserIsAuth(false)
-        this.props.setUserPseudo('')
-        this.props.setUserToken('')
+        this.props.setUser('')
     }
 
     render () {
-        if (!this.props.isAuth && !this.props.pseudo) {
+        if (!this.props.isAuth) {
             return (
                 <header>
                     <nav className="navbar navbar-expand navbar-white bg-light shadow fixed-top" id="navbar">
@@ -82,11 +81,8 @@ const mapDispatchToProps = dispatch => {
         setUserIsAuth: (isAuth) => {
             dispatch({ type: 'SET_USER_AUTH', isAuth: isAuth })
         },
-        setUserPseudo: (pseudo) => {
-            dispatch({ type: 'SET_USER_PSEUDO', pseudo: pseudo })
-        },
-        setUserToken: (token) => {
-            dispatch({ type: 'SET_USER_TOKEN', token: token })
+        setUser: (user) => {
+            dispatch({ type: 'SET_USER', user: user })
         }
     }
 }
@@ -94,7 +90,7 @@ const mapDispatchToProps = dispatch => {
 const mapStateToProps = state => { 
     return {
         isAuth: state.isAuth,
-        pseudo: state.pseudo
+        pseudo: state.user
     }
 }
 

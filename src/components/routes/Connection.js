@@ -77,11 +77,10 @@ class Connection extends Component {
                 .post('http://localhost:5000/api/v1/auth/login', {
                     pseudo: this.state.pseudo,
                     password: this.state.password
-                }, {headers: { "x-access-token": this.props.token }})
+                })
                 .then(res => {
                     this.props.setUserIsAuth(true)
-                    this.props.setUserPseudo(this.state.pseudo)
-                    this.props.setUserToken(res.data.token)
+                    this.props.setUser(res.data.message.token)
                     this.setState({redirect: true})
                 })
                 .catch(error => {
@@ -134,8 +133,7 @@ class Connection extends Component {
             })
             .then(res => {
                 this.props.setUserIsAuth(true)
-                this.props.setUserPseudo(res.data.message.userData.pseudo)
-                this.props.setUserToken(res.data.message.token)
+                this.props.setUser(res.data.message.token)
                 this.setState({redirect: true})
             })
             .catch(error => {
@@ -241,11 +239,8 @@ const mapDispatchToProps = dispatch => {
         setUserIsAuth: (isAuth) => {
             dispatch({ type: 'SET_USER_AUTH', isAuth: isAuth })
         },
-        setUserPseudo: (pseudo) => {
-            dispatch({ type: 'SET_USER_PSEUDO', pseudo: pseudo })
-        },
-        setUserToken: (token) => {
-            dispatch({ type: 'SET_USER_TOKEN', token: token })
+        setUser: (user) => {
+            dispatch({ type: 'SET_USER', user: user })
         }
     }
 }

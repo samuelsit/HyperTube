@@ -3,6 +3,8 @@ import Header from '../utils/Header'
 import profilePic from '../../img/noPicChoose.png'
 import { CSSTransition } from 'react-transition-group'
 import '../../css/Settings.css'
+import axios from 'axios'
+import { connect } from 'react-redux'
 
 class Settings extends Component {
 
@@ -27,6 +29,8 @@ class Settings extends Component {
 
     componentDidMount() {   
         this._isMounted = true
+        console.log(this.props.token);
+        
     }
 
     handleOnBlurSubmit = () => {
@@ -110,6 +114,21 @@ class Settings extends Component {
         }
     }
 
+    handlePicture = event => {
+        let {token} = this.props
+        console.log(`Bearer ${token}`);
+
+        const fd = new FormData()
+        fd.append('image', event.target.files[0], event.target.files[0].name)
+        axios
+        .put('http://localhost:5000/api/v1/profile/picture', fd, { headers: { "Authorization": `Bearer ${token}` }})
+        .then(res => {
+            if (res.data === '') {
+                alert('erreur lors du chargement de l\'image')
+            }
+        })
+    }
+
     render () {
         return (
             <Fragment>
@@ -150,7 +169,7 @@ class Settings extends Component {
                                         <div className="col-12 col-md-6 col-lg-6 text-lg-center text-md-center mb-3 mt-lg-3 mt-md-3 mx-auto">
                                             <div className="text-danger h4">Profil</div>
                                             <label htmlFor="picture"><img className="img-fluid upload" alt="profile" src={profilePic} /></label>
-                                            <input type="file" className={`form-control d-none`} id="picture"/>
+                                            <input type="file" onChange={this.handlePicture} className={`form-control d-none`} id="picture"/>
                                         </div>
                                     </div>
                                     <hr/>
@@ -182,4 +201,11 @@ class Settings extends Component {
     }
 }
 
-export default Settings
+const mapStateToProps = state => { 
+    return {
+        pseudo: state.pseudo,
+        token: state.token
+    }
+}
+
+export default connect(mapStateToProps, null)(Settings)

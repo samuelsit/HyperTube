@@ -6,6 +6,7 @@ import { CSSTransition } from 'react-transition-group'
 import Carousel from '../utils/Carousel'
 import axios from 'axios'
 import { connect } from 'react-redux'
+import jwt from 'jwt-decode'
 
 class Profile extends Component {
 
@@ -17,6 +18,8 @@ class Profile extends Component {
     }
 
     componentDidMount() {
+        console.log(jwt(this.props.user))
+        
         this._isMounted = true
         axios.get('https://yts.mx/api/v2/list_movies.json?limit=24&sort_by=year&order_by=desc&genre=all&page=1&query_term=0', { useCredentails: true })
         .then(res => {
@@ -76,7 +79,7 @@ class Profile extends Component {
 
 const mapStateToProps = state => { 
     return {
-        pseudo: state.pseudo
+        user: state.user
     }
 }
 

@@ -1,5 +1,6 @@
 import React, { Component, Fragment } from 'react'
 import Header from '../utils/Header'
+import axios from 'axios'
 
 class Forgot extends Component {
 
@@ -31,13 +32,13 @@ class Forgot extends Component {
 
         if (verify === 'is-valid') {
             console.log(email);
-            // axios
-            // .post('http://localhost:5000/api', {
-            //     email: email
-            // }, {headers: { "x-access-token": this.props.token }})
-            // .then(res => {
-            //     console.log(res)
-            // })
+            axios
+            .post('http://localhost:5000/api/v1/auth/forgotPassword', {
+                email: email
+            })
+            .then(res => {
+                console.log(res)
+            })
         }
     }
 

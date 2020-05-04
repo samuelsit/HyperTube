@@ -27,7 +27,7 @@ class Confirm extends Component {
         const token = this.props.match.params.token        
 
         axios
-        .post('http://localhost:5000/api/v1/auth/verifyEmail/' + token, {headers: { "x-access-token": this.props.token }})
+        .post('http://localhost:5000/api/v1/auth/verifyEmail/' + token)
         .then(res => {
             console.log(res)
             if (this._isMounted) {

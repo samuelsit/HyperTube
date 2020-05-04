@@ -1,5 +1,6 @@
 import React, { Component, Fragment } from 'react'
 import Header from '../utils/Header'
+import axios from 'axios'
 
 class ChangePass extends Component {
 
@@ -7,14 +8,14 @@ class ChangePass extends Component {
         password: '',
         repeat: '',
         verifyPassword: '',
-        verifyRepeat: ''
+        verifyRepeat: '',
+        message: ''
     }
 
     _isMounted = false
 
     componentDidMount() {
         this._isMounted = true
-        //verifier token
     }
 
     componentWillUnmount() {
@@ -32,6 +33,8 @@ class ChangePass extends Component {
     handleChangePass = e => {
         e.preventDefault()
         let { verifyPassword, verifyRepeat, password, repeat } = this.state
+        const token = this.props.match.params.token
+
         if (password === '' && this._isMounted) {
             this.setState({ verifyPassword: 'is-invalid' })
         }
@@ -39,14 +42,17 @@ class ChangePass extends Component {
             this.setState({ verifyRepeat: 'is-invalid' })
         }
         if (verifyPassword === 'is-valid' && verifyRepeat === 'is-valid' && window.confirm("Voulez-vous vraiment changer de mot de passe ?")) {
-            // axios
-            // .post('http://localhost:5000/api', {
-            //     password: password,
-            //     repeat: repeat,
-            // }, {headers: { "x-access-token": this.props.token }})
-            // .then(res => {
-            //     console.log(res)
-            // })
+            axios
+            .put('http://localhost:5000/api/v1/auth/newPassword/' + token, {
+                password: password,
+                repeat: repeat
+            })
+            .then(res => {
+                console.log(res)
+                if (this._isMounted) {
+                    this.setState({message: 'Mot de passe changé avec succes'})
+                }
+            })
         }
     }
 
@@ -71,6 +77,7 @@ class ChangePass extends Component {
                                         </div>
                                         <div className="col-12 text-center mt-4 mb-3">
                                             <button className="btn btn-danger" onClick={this.handleChangePass}>Changer</button>
+                                            <div className="font-weight-bold text-danger text-center mt-3">{this.state.message}</div>
                                         </div>
                                     </div>
                                 </form>
