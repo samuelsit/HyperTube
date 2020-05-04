@@ -126,21 +126,24 @@ class Connection extends Component {
         }
     }
 
-    responseGoogleSuccess = (response) => {    
-        if (this._isMounted) {    
-            // axios
-            // .post('http://localhost:5000/api', {
-            //     data: response
-            // })
-            // .then(res => {
+    responseGoogleSuccess = (response) => {
+      console.log(response);
+        if (this._isMounted) {
+            axios
+            .post('http://localhost:5000/api/v1/auth/googleoauth', {
+                id_token: response.tokenObj.id_token
+            })
+            .then(res => {
+              console.log(res);
                 this.props.setUserIsAuth(true)
-                this.props.setUserPseudo(response.Pt.Ad)
+                this.props.setUserPseudo(response.message.userData.pseudo)
+                this.props.setUserToken(response.message.token)
                 this.setState({redirect: true})
-            // })
-            // .catch(error => {
-            //     console.error(error)
-            //     this.setState({ erreur: 'Erreur Google Auth.' })
-            // })
+            })
+            .catch(error => {
+                console.error(error)
+                this.setState({ erreur: 'Erreur Google Auth.' })
+            })
         }
     }
 
