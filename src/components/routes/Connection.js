@@ -123,10 +123,10 @@ class Connection extends Component {
               code: query.get('code')
           })
           .then(res => {
-              console.log(res);
+              console.log(res.data.message.userDoc.pseudo)
               this.props.setUserIsAuth(true)
               this.props.setUserToken(res.data.message.token)
-              this.props.setUserPseudo(res.data.message.userData.pseudo)
+              this.props.setUserPseudo(res.data.message.userDoc.pseudo)
               this.setState({redirect: true})
           })
           .catch(error => {
