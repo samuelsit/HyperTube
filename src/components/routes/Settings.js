@@ -116,12 +116,10 @@ class Settings extends Component {
 
     handlePicture = event => {
         let {token} = this.props
-        console.log(`Bearer ${token}`);
-
         const fd = new FormData()
-        fd.append('image', event.target.files[0], event.target.files[0].name)
+        fd.append('picture', event.target.files[0], event.target.files[0].name)
         axios
-        .put('http://localhost:5000/api/v1/profile/picture', fd, { headers: { "Authorization": `Bearer ${token}` }})
+        .put('http://localhost:5000/api/v1/profile/picture', {picture: fd}, { headers: { token: token }})
         .then(res => {
             if (res.data === '') {
                 alert('erreur lors du chargement de l\'image')

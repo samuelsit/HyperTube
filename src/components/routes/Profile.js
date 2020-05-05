@@ -79,7 +79,7 @@ class Profile extends Component {
 
 const mapStateToProps = state => { 
     return {
-        user: state.user
+        pseudo: state.pseudo
     }
 }
 

@@ -1,6 +1,7 @@
 const initState = {
     isAuth: false,
-    user: ''
+    pseudo: '',
+    token: ''
 }
 
 const rootReducer = (state  = initState, action) => {
@@ -10,10 +11,16 @@ const rootReducer = (state  = initState, action) => {
             isAuth: action.isAuth
         }
     }
-    else if (action.type === 'SET_USER') {
+    else if (action.type === 'SET_USER_TOKEN') {
         return {
             ...state,
-            user: action.user
+            token: action.token
+        }
+    }
+    else if (action.type === 'SET_USER_PSEUDO') {
+        return {
+            ...state,
+            pseudo: action.pseudo
         }
     }
     return state
