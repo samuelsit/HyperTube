@@ -8,6 +8,7 @@ import { CSSTransition } from 'react-transition-group'
 import GoogleLogin from 'react-google-login'
 import textLogo from '../../img/text.png'
 import axios from 'axios'
+import Logo42 from '../../img/42_Logo.png'
 
 class Connection extends Component {
 
@@ -218,15 +219,15 @@ class Connection extends Component {
                                         <div className="col-6">
                                             <GoogleLogin
                                                 clientId="151746003875-nbn0fr7hjcoctkp8486ujh9q7fqd5ih8.apps.googleusercontent.com"
-                                                buttonText="Google"
+                                                buttonText=""
                                                 onSuccess={this.responseGoogleSuccess}
                                                 onFailure={this.responseGoogleError}
                                                 cookiePolicy={'single_host_origin'}
                                             />
                                         </div>
                                         <div className="col-6">
-                                          <a href="https://api.intra.42.fr/oauth/authorize?client_id=d3f78a661206accafdeedd5e56d51f978f145000e5ac136ad21220f0b387ae4d&redirect_uri=http%3A%2F%2Flocalhost%3A3000&response_type=code">
-                                            <img id="42" src="../../../../public/42_Logo.png" alt="42-authentificaton" className="d-block img-fluid" width="20%"/>
+                                          <a className="btn btn-light border shadow-sm" href="https://api.intra.42.fr/oauth/authorize?client_id=d3f78a661206accafdeedd5e56d51f978f145000e5ac136ad21220f0b387ae4d&redirect_uri=http%3A%2F%2Flocalhost%3A3000&response_type=code">
+                                            <img id="42" src={Logo42} alt="42-authentificaton" className="img-fluid" width="30px"/>
                                           </a>
                                         </div>
                                     </div>
