@@ -24,7 +24,8 @@ class Connection extends Component {
 
     componentDidMount() {
         this._isMounted = true
-        this.slideGalerie()                
+        this.slideGalerie()
+        this.handleFtOauth()
     }
 
     componentWillUnmount() {
@@ -109,6 +110,32 @@ class Connection extends Component {
                 <Redirect to={"/galerie"} />
             )
         }
+    }
+
+    handleFtOauth = () => {
+      const query = new URLSearchParams(this.props.location.search);
+      if (query.get('code')) {
+        console.log(query.get('code'));
+        if (this._isMounted) {
+          axios
+          .post('http://localhost:5000/api/v1/auth/ftoauth', {
+              code: query.get('code')
+          })
+          .then(res => {
+              console.log(res);
+              this.props.setUserIsAuth(true)
+              this.props.setUser(res.data.message.token)
+              this.setState({redirect: true})
+          })
+          .catch(error => {
+              console.error(error)
+              this.setState({ erreur: 'Erreur 42 Auth.' })
+              // return (
+              //   <Redirect to={"/"} />
+              // )
+          })
+        }
+      }
     }
 
     slideGalerie = () => {
@@ -198,13 +225,9 @@ class Connection extends Component {
                                             />
                                         </div>
                                         <div className="col-6">
-                                            <GoogleLogin
-                                                clientId="151746003875-nbn0fr7hjcoctkp8486ujh9q7fqd5ih8.apps.googleusercontent.com"
-                                                buttonText="42"
-                                                onSuccess={this.responseGoogleSuccess}
-                                                onFailure={this.responseGoogleError}
-                                                cookiePolicy={'single_host_origin'}
-                                            />
+                                          <a href="https://api.intra.42.fr/oauth/authorize?client_id=d3f78a661206accafdeedd5e56d51f978f145000e5ac136ad21220f0b387ae4d&redirect_uri=http%3A%2F%2Flocalhost%3A3000&response_type=code">
+                                            <img id="42" src="../../../../public/42_Logo.png" alt="42-authentificaton" className="d-block img-fluid" width="20%"/>
+                                          </a>
                                         </div>
                                     </div>
                                     <hr/>
