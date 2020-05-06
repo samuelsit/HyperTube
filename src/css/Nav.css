@@ -22,7 +22,8 @@
     }
     .displayLarge {
         position: fixed;
-        overflow: scroll;
         height: 82vh;
+        overflow: scroll;
+        width: 14%;
     }
 }

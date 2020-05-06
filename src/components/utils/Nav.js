@@ -35,7 +35,7 @@ class Nav extends Component {
                         </label>
                     </div>
                     <div className="mr-lg-4 col-lg-2 mb-5 mb-lg-0 displayLarge">
-                        <div className="block-shadow text-center">
+                        <div className="block-shadow text-center displayLarge">
                             <button className="btn btn-danger mt-3" value='all' onClick={this.props.genre}>All</button><br/><hr/>
                             <button className="btn btn-danger" value='action' onClick={this.props.genre}>Action</button><br/><hr/>
                             <button className="btn btn-danger" value='adventure' onClick={this.props.genre}>Adventure</button><br/><hr/>
