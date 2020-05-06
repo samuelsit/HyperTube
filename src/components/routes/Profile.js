@@ -1,7 +1,6 @@
 import React, { Component, Fragment } from 'react'
 import Header from '../utils/Header'
 import '../../css/Profile.css'
-import profilePic from '../../img/noPic.png'
 import { CSSTransition } from 'react-transition-group'
 import Carousel from '../utils/Carousel'
 import axios from 'axios'
@@ -13,11 +12,17 @@ class Profile extends Component {
 
     state = {
         watched_movies: [],
-        liked_movies: []
+        liked_movies: [],
+        picture: ''
     }
 
     componentDidMount() {        
         this._isMounted = true
+        axios.get('http://localhost:5000/api/v1/profile', { headers: { token: this.props.token }})
+        .then(res => {
+            let {picture} = res.data.response
+            this.setState({picture: /^(http:\/\/www\.|https:\/\/www\.|http:\/\/|https:\/\/)?[a-z0-9]+([-.]{1}[a-z0-9]+)*\.[a-z]{2,5}(:[0-9]{1,5})?(\/.*)?$/.test(picture) === true ? picture : require(`../../img/${picture}`)})
+        })
         axios.get('https://yts.mx/api/v2/list_movies.json?limit=24&sort_by=year&order_by=desc&genre=all&page=1&query_term=0', { useCredentails: true })
         .then(res => {
             if (this._isMounted) {
@@ -50,7 +55,7 @@ class Profile extends Component {
                     <div className="container container-log pb-lg-5">
                         <div className="row row-header">
                             <div className="image text-center">
-                                <img className="" width="200" alt="Profile" src={profilePic}/>
+                                <img className="" width="200" alt="Profile" src={this.state.picture}/>
                             </div>
                         </div>
                         <div className="row page">
@@ -76,7 +81,8 @@ class Profile extends Component {
 
 const mapStateToProps = state => { 
     return {
-        pseudo: state.pseudo
+        pseudo: state.pseudo,
+        token: state.token
     }
 }
 
