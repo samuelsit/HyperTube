@@ -14,7 +14,7 @@ class Header extends Component {
     }
 
     render () {
-        if (!this.props.isAuth) {
+        if (!this.props.isAuth || !this.props.pseudo) {
             return (
                 <header>
                     <nav className="navbar navbar-expand navbar-white bg-light shadow fixed-top" id="navbar">
