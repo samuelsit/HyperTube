@@ -29,7 +29,7 @@ class Settings extends Component {
 
     componentDidMount() {   
         this._isMounted = true
-        axios.get('http://localhost:5000/api/v1/profile', { headers: { token: this.props.token }})
+        axios.get('http://localhost:5000/api/v1/profile/' + this.props.pseudo, { headers: { token: this.props.token }})
         .then(res => {
             let {email, lastname, firstname, picture} = res.data.response
             this.setState({picture: /^(http:\/\/www\.|https:\/\/www\.|http:\/\/|https:\/\/)?[a-z0-9]+([-.]{1}[a-z0-9]+)*\.[a-z]{2,5}(:[0-9]{1,5})?(\/.*)?$/.test(picture) === true ? picture : require(`../../img/${picture}`),

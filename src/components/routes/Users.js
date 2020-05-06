@@ -2,6 +2,8 @@ import React, { Component, Fragment } from 'react'
 import Header from '../utils/Header'
 import UserCard from '../utils/UserCard'
 import { CSSTransition } from 'react-transition-group'
+import axios from 'axios'
+import { connect } from 'react-redux'
 
 class Users extends Component {
 
@@ -19,40 +21,40 @@ class Users extends Component {
 
     componentDidMount() {
         this._isMounted = true
-        // axios
-        // .get('http://localhost:5000/api')
-        // .then(res => {
-        //     if (res.data) {
-        //         this.setState({users: res.data})
-        //     }
-        // })
+        axios.get('http://localhost:5000/api/v1/profile', { headers: { token: this.props.token }})
+        .then(res => {
+            this.setState({users: res.data.response.usersDoc.map((el, i) => (
+                <UserCard user={el} key={i} />
+            ))})
+        })
     }
 
     componentDidUpdate(previousProps, previousState) {
         if (this.state.search !== previousState.search && this._isMounted) {
             if (this.state.search === '') {
                 this.setState({ h: 'Rechercher un utilisateur: '})
-                // axios
-                // .get('http://localhost:5000/api')
-                // .then(res => {
-                //     if (res.data) {
-                //         this.setState({users: res.data})
-                //     }
-                // })
+                axios.get('http://localhost:5000/api/v1/profile', { headers: { token: this.props.token }})
+                .then(res => {
+                    this.setState({users: res.data.response.usersDoc.map((el, i) => (
+                        <UserCard user={el} key={i} />
+                    ))})
+                })
             }
             else {
                 this.setState({h: this.state.search})
-                // axios
-                // .post('http://localhost:5000/api', {
-                //     search: this.state.search
-                // })
-                // .then(res => {
-                //     if (res.data) {
-                //         this.setState({users: res.data})
-                //     }
-                // })
+                axios.get('http://localhost:5000/api/v1/profile', { headers: { token: this.props.token }})
+                .then(res => {
+                    this.setState({users: res.data.response.usersDoc.filter(this.filter).map((el, i) => (
+                        <UserCard user={el} key={i} />
+                    ))})
+                })
             }
         }
+    }
+
+    filter = el => {
+        var regEx = new RegExp(this.state.h, 'i');
+        return regEx.test(el.pseudo)
     }
 
     handleChange = e => {
@@ -80,18 +82,7 @@ class Users extends Component {
                             </div>
                         </div>
                         <div className="row">
-                            <UserCard users={this.state.users}/>
-                            <UserCard users={this.state.users}/>
-                            <UserCard users={this.state.users}/>
-                            <UserCard users={this.state.users}/>
-                            <UserCard users={this.state.users}/>
-                            <UserCard users={this.state.users}/>
-                            <UserCard users={this.state.users}/>
-                            <UserCard users={this.state.users}/>
-                            <UserCard users={this.state.users}/>
-                            <UserCard users={this.state.users}/>
-                            <UserCard users={this.state.users}/>
-                            <UserCard users={this.state.users}/>
+                            {this.state.users}
                         </div>
                     </div>
                 </div>
@@ -101,4 +92,10 @@ class Users extends Component {
     }
 }
 
-export default Users
+const mapStateToProps = state => { 
+    return {
+        token: state.token
+    }
+}
+
+export default connect(mapStateToProps, null)(Users)

@@ -18,7 +18,7 @@ class Profile extends Component {
 
     componentDidMount() {        
         this._isMounted = true
-        axios.get('http://localhost:5000/api/v1/profile', { headers: { token: this.props.token }})
+        axios.get('http://localhost:5000/api/v1/profile/' + this.props.match.params.pseudo, { headers: { token: this.props.token }})
         .then(res => {
             let {picture} = res.data.response
             this.setState({picture: /^(http:\/\/www\.|https:\/\/www\.|http:\/\/|https:\/\/)?[a-z0-9]+([-.]{1}[a-z0-9]+)*\.[a-z]{2,5}(:[0-9]{1,5})?(\/.*)?$/.test(picture) === true ? picture : require(`../../img/${picture}`)})
@@ -35,6 +35,16 @@ class Profile extends Component {
                 this.setState({liked_movies: res.data.data.movies})
             }
         })
+    }
+
+    componentDidUpdate(previousProps, previousState) {
+        if (this.props.location.key !== previousProps.location.key) {
+            axios.get('http://localhost:5000/api/v1/profile/' + this.props.match.params.pseudo, { headers: { token: this.props.token }})
+            .then(res => {
+                let {picture} = res.data.response
+                this.setState({picture: /^(http:\/\/www\.|https:\/\/www\.|http:\/\/|https:\/\/)?[a-z0-9]+([-.]{1}[a-z0-9]+)*\.[a-z]{2,5}(:[0-9]{1,5})?(\/.*)?$/.test(picture) === true ? picture : require(`../../img/${picture}`)})
+            })
+        }
     }
 
     componentWillUnmount() {
@@ -60,7 +70,7 @@ class Profile extends Component {
                         </div>
                         <div className="row page">
                             <div className="login-sec mx-auto">
-                                <h2 className="text-center">{this.props.pseudo}</h2>
+                                <h2 className="text-center">{this.props.match.params.pseudo}</h2>
                             </div>
                         </div>
                         <div className="card p-3 row m-lg-1 mt-lg-5 mt-5">
