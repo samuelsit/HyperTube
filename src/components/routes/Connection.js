@@ -123,7 +123,7 @@ class Connection extends Component {
               code: query.get('code')
           })
           .then(res => {
-              console.log(res.data.message.userDoc.pseudo)
+              console.log(res)
               this.props.setUserIsAuth(true)
               this.props.setUserToken(res.data.message.token)
               this.props.setUserPseudo(res.data.message.userDoc.pseudo)
