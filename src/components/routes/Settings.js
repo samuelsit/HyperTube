@@ -94,14 +94,14 @@ class Settings extends Component {
             this.setState({ verifyRepeat: 'is-invalid' })
         }
         if (verifyPassword === 'is-valid' && verifyRepeat === 'is-valid' && window.confirm("Voulez-vous vraiment changer de mot de passe ?")) {
-            // axios
-            // .post('http://localhost:5000/api', {
-            //     password: password,
-            //     repeat: repeat
-            // }, {headers: { "x-access-token": this.props.token }})
-            // .then(res => {
-            //     console.log(res)
-            // })
+            axios
+            .put('http://localhost:5000/api/v1/profile/password', {
+                password: password,
+                repeat: repeat
+            }, {headers: { "token": this.props.token }})
+            .then(res => {
+                console.log(res)
+            })
         }
     }
 
