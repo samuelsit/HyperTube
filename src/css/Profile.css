@@ -1,12 +1,11 @@
-.image {
+.image-profile {
     position: relative;
-    left: calc(50% - 100px);
-    top: 50px;
-    overflow:hidden;
-    -webkit-border-radius:50%;
-    -moz-border-radius:50%;
-    border-radius:50%;
-    border: solid white 5px;
+    top: 30px;
+    opacity: 1;
+    border-radius: 10px;
+    width: 250px; 
+    height: 250px; 
+    object-fit: cover; 
 }
 
 .row-header {

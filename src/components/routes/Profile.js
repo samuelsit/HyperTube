@@ -21,7 +21,7 @@ class Profile extends Component {
         axios.get('http://localhost:5000/api/v1/profile/' + this.props.match.params.pseudo, { headers: { token: this.props.token }})
         .then(res => {
             let {picture} = res.data.response
-            this.setState({picture: /^(http:\/\/www\.|https:\/\/www\.|http:\/\/|https:\/\/)?[a-z0-9]+([-.]{1}[a-z0-9]+)*\.[a-z]{2,5}(:[0-9]{1,5})?(\/.*)?$/.test(picture) === true ? picture : require(`../../img/${picture}`)})
+            this.setState({picture: /^(http:\/\/www\.|https:\/\/www\.|http:\/\/|https:\/\/)?[a-z0-9]+([-.]{1}[a-z0-9]+)*\.[a-z]{2,5}(:[0-9]{1,5})?(\/.*)?$/.test(picture) === true ? picture : `/pictures/${picture}`})
         })
         axios.get('https://yts.mx/api/v2/list_movies.json?limit=24&sort_by=year&order_by=desc&genre=all&page=1&query_term=0', { useCredentails: true })
         .then(res => {
@@ -42,7 +42,7 @@ class Profile extends Component {
             axios.get('http://localhost:5000/api/v1/profile/' + this.props.match.params.pseudo, { headers: { token: this.props.token }})
             .then(res => {
                 let {picture} = res.data.response
-                this.setState({picture: /^(http:\/\/www\.|https:\/\/www\.|http:\/\/|https:\/\/)?[a-z0-9]+([-.]{1}[a-z0-9]+)*\.[a-z]{2,5}(:[0-9]{1,5})?(\/.*)?$/.test(picture) === true ? picture : require(`../../img/${picture}`)})
+                this.setState({picture: /^(http:\/\/www\.|https:\/\/www\.|http:\/\/|https:\/\/)?[a-z0-9]+([-.]{1}[a-z0-9]+)*\.[a-z]{2,5}(:[0-9]{1,5})?(\/.*)?$/.test(picture) === true ? picture : `/pictures/${picture}`})
             })
         }
     }
@@ -64,8 +64,8 @@ class Profile extends Component {
                 <div className="grad-block">
                     <div className="container container-log pb-lg-5">
                         <div className="row row-header">
-                            <div className="image text-center">
-                                <img className="" width="200" alt="Profile" src={this.state.picture}/>
+                            <div className="mx-auto">
+                                <img className="image-profile" alt="Profile" src={this.state.picture}/>
                             </div>
                         </div>
                         <div className="row page">

@@ -34,8 +34,7 @@ class Settings extends Component {
             let {email, lastname, firstname, picture} = res.data.response
             console.log('picture: ', picture)
             this.setState({
-              // picture: /^(http:\/\/www\.|https:\/\/www\.|http:\/\/|https:\/\/)?[a-z0-9]+([-.]{1}[a-z0-9]+)*\.[a-z]{2,5}(:[0-9]{1,5})?(\/.*)?$/.test(picture) === true ? picture : `/pictures/${picture}`,
-              picture: `/pictures/${picture}`,
+              picture: /^(http:\/\/www\.|https:\/\/www\.|http:\/\/|https:\/\/)?[a-z0-9]+([-.]{1}[a-z0-9]+)*\.[a-z]{2,5}(:[0-9]{1,5})?(\/.*)?$/.test(picture) === true ? picture : `/pictures/${picture}`,
               email: email,
               lastname: lastname,
               firstname: firstname
@@ -118,15 +117,13 @@ class Settings extends Component {
           axios
           .put('http://localhost:5000/api/v1/profile/picture', fd, { headers: { token: token }})
           .then(res => {
-              if (res.data === '') {
-                  alert('erreur lors du chargement de l\'image')
-              }
-              else {
-                  this.setState({picture: `/pictures/${res.data.pictureName}`})
-                  console.log(this.state);
-                  console.log(res.data.pictureName);
-              }
-          })
+                if (res.data === '') {
+                    alert('erreur lors du chargement de l\'image')
+                }
+                else {
+                    this.setState({picture: /^(http:\/\/www\.|https:\/\/www\.|http:\/\/|https:\/\/)?[a-z0-9]+([-.]{1}[a-z0-9]+)*\.[a-z]{2,5}(:[0-9]{1,5})?(\/.*)?$/.test(res.data.pictureName) === true ? res.data.pictureName : `/pictures/${res.data.pictureName}`})
+                }
+            })
         }
     }
 

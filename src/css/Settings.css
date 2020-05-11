@@ -5,8 +5,10 @@
 }
 
 .upload {
+    opacity: 1;
     border-radius: 10px;
     width: 250px; 
     height: 250px; 
     object-fit: cover; 
+    transition: all .3s;
 }
