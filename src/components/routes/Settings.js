@@ -32,10 +32,14 @@ class Settings extends Component {
         axios.get('http://localhost:5000/api/v1/profile/' + this.props.pseudo, { headers: { token: this.props.token }})
         .then(res => {
             let {email, lastname, firstname, picture} = res.data.response
-            this.setState({picture: /^(http:\/\/www\.|https:\/\/www\.|http:\/\/|https:\/\/)?[a-z0-9]+([-.]{1}[a-z0-9]+)*\.[a-z]{2,5}(:[0-9]{1,5})?(\/.*)?$/.test(picture) === true ? picture : require(`../../img/${picture}`),
-                            email: email,
-                            lastname: lastname,
-                            firstname: firstname})
+            console.log('picture: ', picture)
+            this.setState({
+              // picture: /^(http:\/\/www\.|https:\/\/www\.|http:\/\/|https:\/\/)?[a-z0-9]+([-.]{1}[a-z0-9]+)*\.[a-z]{2,5}(:[0-9]{1,5})?(\/.*)?$/.test(picture) === true ? picture : `/pictures/${picture}`,
+              picture: `/pictures/${picture}`,
+              email: email,
+              lastname: lastname,
+              firstname: firstname
+            })
         })
     }
 
@@ -107,18 +111,23 @@ class Settings extends Component {
 
     handlePicture = event => {
         let {token} = this.props
-        const fd = new FormData()
-        fd.append('picture', event.target.files[0], event.target.files[0].name)
-        axios
-        .put('http://localhost:5000/api/v1/profile/picture', {picture: fd}, { headers: { token: token }})
-        .then(res => {
-            if (res.data === '') {
-                alert('erreur lors du chargement de l\'image')
-            }
-            else {
-                this.setState({picture: require(`../../img/${res.data}`)})
-            }
-        })
+        console.log(this.state)
+        if (event.target.files) {
+          const fd = new FormData()
+          fd.append('picture', event.target.files[0], event.target.files[0].name)
+          axios
+          .put('http://localhost:5000/api/v1/profile/picture', fd, { headers: { token: token }})
+          .then(res => {
+              if (res.data === '') {
+                  alert('erreur lors du chargement de l\'image')
+              }
+              else {
+                  this.setState({picture: `/pictures/${res.data.pictureName}`})
+                  console.log(this.state);
+                  console.log(res.data.pictureName);
+              }
+          })
+        }
     }
 
     render () {
