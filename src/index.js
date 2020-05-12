@@ -23,6 +23,8 @@ import Confirm from './components/routes/Confirm'
 import PrivateRoute from './components/PrivateRoute'
 import PublicRoute from './components/PublicRoute'
 
+require('dotenv').config()
+
 const persistedState = loadState()
 const store = createStore(rootReducer, persistedState)
 

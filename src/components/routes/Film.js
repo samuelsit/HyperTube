@@ -3,13 +3,15 @@ import Header from '../utils/Header'
 import axios from 'axios'
 import '../../css/Film.css'
 import Cover from '../utils/Cover'
+import { connect } from 'react-redux'
 
 class Film extends Component {
     state = {
         movie: [],
         genre: [],
         suggestion: [],
-        intervalId: 0
+        intervalId: 0,
+        isLike: false
     }
 
     _isMounted = false
@@ -42,8 +44,15 @@ class Film extends Component {
 
     componentDidUpdate(previousProps, previousState) {
         if (previousProps !== this.props) {
-            if (document.referrer.match(/localhost:3000\/film\/\d+/) !== null) {                
+            if (document.referrer.match(/localhost:3000\/film\/\d+/)) {                
                 window.scrollTo(0, 0)
+                // axios
+                // .post('http://localhost:5000/api', {
+                //     movie: res.data.data.movie
+                // }, {headers: { "x-access-token": this.props.token }})
+                // .then(res => {
+                //     console.log(res)
+                // })
             }
             
             axios.get('https://yts.mx/api/v2/movie_details.json?movie_id=' + this.props.match.params.id, { useCredentails: true }).then(res => {
@@ -57,11 +66,48 @@ class Film extends Component {
                 }
             })
         }
+        // else {
+        //     let { isLike } = this.state
+        //     let ( token ) = this.props
+        //     if (isLike) {
+        //         axios
+        //         .post('http://localhost:5000/api/v1/film/like', {
+        //             movie_id: this.props.match.params.id
+        //         }, { headers: { token: token }})
+        //         .catch(error => {
+        //             console.error(error)
+        //         })
+        //     }
+        //     else {
+        //         axios
+        //         .delete('http://localhost:5000/api/v1/film/dislike', {
+        //             movie_id: this.props.match.params.id
+        //         }, { headers: { token: token }})
+        //         .catch(error => {
+        //             console.error(error)
+        //         })
+        //     }
+        // }
     }
 
+    handleLike = () => {
+        this.setState({isLike: !this.state.isLike})
+    }
+
+    // handleView = () => {
+    //     if (firstview) {
+    //         axios
+    //         .post('http://localhost:5000/api/v1/film/view', {
+    //             movie_id: this.props.match.params.id
+    //         }, { headers: { token: token }})
+    //         .catch(error => {
+    //             console.error(error)
+    //         })
+    //     }
+    // }
+
     render () {
-        let movie = this.state.movie
-        let genre = this.state.genre
+        let {movie, genre, isLike} = this.state
         var date = new Date(movie.date_uploaded_unix * 1000)
         var months_arr = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
         var day = date.getDate();
@@ -79,6 +125,21 @@ class Film extends Component {
                     <div className="container container-log">
                         <div className="row">
                             <div className="col login-sec">
+                                <div><label onClick={this.handleLike} className={`float-right btn`} style={isLike ? {
+                                    position: 'relative',
+                                    bottom: '19px',
+                                    outline: 'none',
+                                    border: '0px',
+                                    transition: 'all .3s',
+                                    transform: 'scale(3.5)'
+                                } : {
+                                    position: 'relative',
+                                    bottom: '20px',
+                                    outline: 'none',
+                                    border: '0px',
+                                    transition: 'all .3s',
+                                    transform: 'scale(3)'
+                                }}>{!isLike ? <i className="far fa-heart text-danger"></i> : <i className="fas fa-heart text-danger"></i>}</label></div>
                                 <h2 className="text-center">{movie.title}</h2>
                                 <br/><br/>
                                 <div className="row">
@@ -121,4 +182,10 @@ class Film extends Component {
     }
 }
 
-export default Film
+const mapStateToProps = state => { 
+    return {
+        token: state.token
+    }
+}
+
+export default connect(mapStateToProps, null)(Film)

@@ -20,27 +20,26 @@ html {
   color: #DE6262!important;
 }
 
-textarea:focus,
-select:focus,
-input[type="text"]:focus,
-input[type="password"]:focus,
-input[type="datetime"]:focus,
-input[type="datetime-local"]:focus,
-input[type="date"]:focus,
-input[type="month"]:focus,
-input[type="time"]:focus,
-input[type="week"]:focus,
-input[type="number"]:focus,
-input[type="email"]:focus,
-input[type="url"]:focus,
-input[type="search"]:focus,
-input[type="tel"]:focus,
-input[type="color"]:focus,
-.uneditable-input:focus {
-  border-color: #FEB58A;
-  box-shadow: 0 1px 1px #FEB58A inset, 0 0 8px #FEB58A;
-  outline: 0 none;
-  border: 0;
+textarea:focus:active,
+select:focus:active,
+input[type="text"]:focus:active,
+input[type="password"]:focus:active,
+input[type="datetime"]:focus:active,
+input[type="datetime-local"]:focus:active,
+input[type="date"]:focus:active,
+input[type="month"]:focus:active,
+input[type="time"]:focus:active,
+input[type="week"]:focus:active,
+input[type="number"]:focus:active,
+input[type="email"]:focus:active,
+input[type="url"]:focus:active,
+input[type="search"]:focus:active,
+input[type="tel"]:focus:active,
+input[type="color"]:focus:active,
+.uneditable-input:focus:active
+.btn-invisible-border {
+  outline: 0 none!important;
+  border: solid rgba(0, 0, 0, 0.05) 2px!important;
 }
 
 @media screen and (max-width: 550px) {

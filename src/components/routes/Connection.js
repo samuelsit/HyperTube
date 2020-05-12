@@ -219,7 +219,7 @@ class Connection extends Component {
                                     <div className="row text-center">
                                         <div className="col-6">
                                             <GoogleLogin
-                                                clientId="151746003875-nbn0fr7hjcoctkp8486ujh9q7fqd5ih8.apps.googleusercontent.com"
+                                                clientId={process.env.REACT_APP_CLIENT_ID_GOOGLE}
                                                 buttonText=""
                                                 onSuccess={this.responseGoogleSuccess}
                                                 onFailure={this.responseGoogleError}
