@@ -27,6 +27,8 @@ class Users extends Component {
                 <UserCard user={el} key={i} />
             ))})
         })
+        console.log(this.state.users);
+        
     }
 
     componentDidUpdate(previousProps, previousState) {

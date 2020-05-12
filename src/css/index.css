@@ -150,20 +150,11 @@ div::selection {
 }
 
 .pulse:hover {
-  animation-duration: 500ms;
-  animation-name: pulse;
-  animation-iteration-count: infinite;
-  animation-direction: alternate;
+  transition: all .25s;
+  transform: scale3d(1.08, 1.08, 1.08)
 }
 
-@keyframes pulse {
-  from {
-    transform: scale3d(1, 1, 1);
-  }
-  50% {
-    transform: scale3d(1.01, 1.01, 1.01);
-  }
-  to {
-    transform: scale3d(1, 1, 1);
-  }
+.pulse {
+  transition: all .25s;
+  transform: scale3d(1, 1, 1)
 }
