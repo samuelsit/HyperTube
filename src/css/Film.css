@@ -2,3 +2,16 @@
   color: #DC3445;
   text-decoration: underline;
 }
+
+#chat {
+  height: 300px;
+  overflow: scroll;
+}
+
+.comment {
+  word-wrap: break-word;
+}
+
+i {
+  cursor: pointer;
+}

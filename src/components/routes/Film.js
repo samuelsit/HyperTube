@@ -6,12 +6,18 @@ import Cover from '../utils/Cover'
 import { connect } from 'react-redux'
 
 class Film extends Component {
-    state = {
-        movie: [],
-        genre: [],
-        suggestion: [],
-        intervalId: 0,
-        isLike: false
+    constructor(props) {
+        super(props)
+        this.state = {
+            movie: [],
+            genre: [],
+            suggestion: [],
+            intervalId: 0,
+            isLike: false,
+            comment: '',
+            comments: []
+        }
+        this.Chat = React.createRef()
     }
 
     _isMounted = false
@@ -22,17 +28,18 @@ class Film extends Component {
 
     componentDidMount() {   
         this._isMounted = true
-        window.scrollTo(0, 0);     
+        window.scrollTo(0, 0)
         axios.get('https://yts.mx/api/v2/movie_details.json?movie_id=' + this.props.match.params.id, { useCredentails: true }).then(res => {
             if (this._isMounted) {
                 this.setState({movie: res.data.data.movie, genre: res.data.data.movie.genres})
-                // axios
-                // .post('http://localhost:5000/api', {
-                //     movie: res.data.data.movie
-                // }, {headers: { "x-access-token": this.props.token }})
-                // .then(res => {
-                //     console.log(res)
-                // })
+                axios
+                .get('http://localhost:5000/api/v1/film/comment/' + this.props.match.params.id, { headers: { token: this.props.token }})
+                .then(res => {
+                    this.setState({comments: res.data})
+                })
+                .catch(error => {
+                    console.error(error)
+                })
             }
         })
         axios.get('https://yts.mx/api/v2/movie_suggestions.json?movie_id=' + this.props.match.params.id, { useCredentails: true }).then(res => {
@@ -43,51 +50,92 @@ class Film extends Component {
     }
 
     componentDidUpdate(previousProps, previousState) {
+        this.Chat.current.scrollTo({
+            top: 999999,
+            left: 0,
+            behavior: 'smooth'
+        })
         if (previousProps !== this.props) {
             if (document.referrer.match(/localhost:3000\/film\/\d+/)) {                
                 window.scrollTo(0, 0)
-                // axios
-                // .post('http://localhost:5000/api', {
-                //     movie: res.data.data.movie
-                // }, {headers: { "x-access-token": this.props.token }})
-                // .then(res => {
-                //     console.log(res)
-                // })
+                axios.get('https://yts.mx/api/v2/movie_details.json?movie_id=' + this.props.match.params.id, { useCredentails: true }).then(res => {
+                    if (this._isMounted) {
+                        this.setState({movie: res.data.data.movie, genre: res.data.data.movie.genres})
+                    }
+                })
+                axios.get('https://yts.mx/api/v2/movie_suggestions.json?movie_id=' + this.props.match.params.id, { useCredentails: true }).then(res => {
+                    if (this._isMounted) {
+                        this.setState({suggestion: res.data.data.movies})
+                    }
+                })
+                axios
+                .get('http://localhost:5000/api/v1/film/comment/' + this.props.match.params.id, { headers: { token: this.props.token }})
+                .then(res => {
+                    this.setState({comments: res.data})
+                })
+                .catch(error => {
+                    console.error(error)
+                })
             }
-            
-            axios.get('https://yts.mx/api/v2/movie_details.json?movie_id=' + this.props.match.params.id, { useCredentails: true }).then(res => {
-                if (this._isMounted) {
-                    this.setState({movie: res.data.data.movie, genre: res.data.data.movie.genres})
-                }
-            })
-            axios.get('https://yts.mx/api/v2/movie_suggestions.json?movie_id=' + this.props.match.params.id, { useCredentails: true }).then(res => {
-                if (this._isMounted) {
-                    this.setState({suggestion: res.data.data.movies})
-                }
-            })
         }
-        // else {
-        //     let { isLike } = this.state
-        //     let ( token ) = this.props
-        //     if (isLike) {
-        //         axios
-        //         .post('http://localhost:5000/api/v1/film/like', {
-        //             movie_id: this.props.match.params.id
-        //         }, { headers: { token: token }})
-        //         .catch(error => {
-        //             console.error(error)
-        //         })
-        //     }
-        //     else {
-        //         axios
-        //         .delete('http://localhost:5000/api/v1/film/dislike', {
-        //             movie_id: this.props.match.params.id
-        //         }, { headers: { token: token }})
-        //         .catch(error => {
-        //             console.error(error)
-        //         })
-        //     }
-        // }
+        if (previousState.isLike !== this.state.isLike) {
+            let { isLike } = this.state
+            let { token } = this.props
+            if (isLike) {
+                axios
+                .post('http://localhost:5000/api/v1/film/like', {
+                    movie_id: this.props.match.params.id
+                }, { headers: { token: token }})
+                .then(res => {
+                    console.log(res);
+                    
+                })
+                .catch(error => {
+                    console.error(error)
+                })
+            }
+            else {
+                axios
+                .delete('http://localhost:5000/api/v1/film/dislike', {
+                    movie_id: this.props.match.params.id
+                }, { headers: { token: token }})
+                .catch(error => {
+                    console.error(error)
+                })
+            }
+        }
+    }
+
+    handleChange = e => {
+        this.setState({comment: e.target.value})
+    }
+
+    handleSubmit = e => {
+        e.preventDefault()
+        this.setState({comment: ''})
+        axios
+        .post('http://localhost:5000/api/v1/film/comment', {
+            movie_id: this.props.match.params.id,
+            value: this.state.comment
+        }, { headers: { token: this.props.token }})
+        .then(res => {
+            axios
+            .get('http://localhost:5000/api/v1/film/comment/' + this.props.match.params.id, { headers: { token: this.props.token }})
+            .then(res => {
+                this.setState({comments: res.data})
+                this.Chat.current.scrollTo({
+                    top: 999999,
+                    left: 0,
+                    behavior: 'smooth'
+                })
+            })
+            .catch(error => {
+                console.error(error)
+            })
+        })
+        .catch(error => {
+            console.error(error)
+        })
     }
 
     handleLike = () => {
@@ -106,6 +154,18 @@ class Film extends Component {
     //     }
     // }
 
+    handleDelCom = e => {
+        if (window.confirm("Souhaitez-vous vraiment supprimer votre commentaire?")) {
+            axios
+            .delete('http://localhost:5000/api/v1/film/comment', {
+                comment_id: e.target.id
+            }, { headers: { token: this.props.token }})
+            .catch(error => {
+                console.error(error)
+            })
+        }
+    }
+
     render () {
         let {movie, genre, isLike} = this.state
         var date = new Date(movie.date_uploaded_unix * 1000)
@@ -116,6 +176,13 @@ class Film extends Component {
         const suggestion = this.state.suggestion.map((el, i) => {
             return (
                 <Cover key={i} film={el} suggestion={true} />
+            )
+        })
+        let comments = this.state.comments.map((el, i) => {
+            return (
+                <Fragment key={i}>
+                    <hr/><p className="comment">{el.patron_id === this.props.pseudo ? <i onClick={this.handleDelCom} id={el.comment_id} className="far fa-times-circle text-danger mt-2"></i> : null} {el.date.replace(/-/g, ' ')} - <span className={`font-weight-bold ${el.patron_id === this.props.pseudo ? 'text-danger' : 'text-dark' }`}>{el.patron_id}: </span>{el.value}</p>
+                </Fragment>
             )
         })
         return (
@@ -148,7 +215,7 @@ class Film extends Component {
                                     </div>
                                     <div className="col mt-3 mt-lg-0">
                                         <p><span className="data font-weight-bold">Évaluation:</span> {movie.rating}/10</p>
-                                        <p><span className="data font-weight-bold">Upload:</span> {day + ' ' + month + ' ' + year}</p>
+                                        <p><span className="data font-weight-bold">Upload:</span> {day && month && year ? day + ' ' + month + ' ' + year : ''}</p>
                                         <p><span className="data font-weight-bold">Genres:</span> {genre.join(', ')}</p>
                                         <p><span className="data font-weight-bold">Langue:</span> {movie.language}</p>
                                         <p><span className="data font-weight-bold">Durée:</span> {movie.runtime} minutes</p>
@@ -161,6 +228,12 @@ class Film extends Component {
                                     <div className="col text-center">
                                         <p><span className="data font-weight-bold float-left d-lg-none">Film:</span></p>
                                         <video controls width="100%" className="border"></video>
+                                    </div>
+                                    <div className="col-12 mt-4">
+                                    <div id="chat" ref={this.Chat} className="border shadow p-2">
+                                        {comments}
+                                    </div>
+                                    <form className="form-inline mt-5" onSubmit={this.handleSubmit}><input className="form-control mr-3 w-75 mx-auto" onChange={this.handleChange} value={this.state.comment} /><button className="btn btn-danger mx-auto">Envoyer</button></form>
                                     </div>
                                 </div>
                             </div>
@@ -184,7 +257,8 @@ class Film extends Component {
 
 const mapStateToProps = state => { 
     return {
-        token: state.token
+        token: state.token,
+        pseudo: state.pseudo
     }
 }
 
