@@ -96,8 +96,11 @@ class Film extends Component {
             }
             else {
                 axios
-                .delete('http://localhost:5000/api/v1/film/dislike', { headers: { token: token }}, {
+                .delete('http://localhost:5000/api/v1/film/dislike', {
+                  data: {
                     movie_id: this.props.match.params.id
+                  },
+                  headers: { token: token }
                 })
                 .then(res => {
                     console.log(res);
