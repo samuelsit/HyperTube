@@ -79,16 +79,16 @@ class Film extends Component {
             }
         }
         if (previousState.isLike !== this.state.isLike) {
-            let { isLike } = this.state
+            let { isLike, movie } = this.state
             let { token } = this.props
             if (isLike) {
                 axios
                 .post('http://localhost:5000/api/v1/film/like', {
-                    movie_id: this.props.match.params.id
+                    movie_id: this.props.match.params.id,
+                    movie_title: movie.title
                 }, { headers: { token: token }})
                 .then(res => {
                     console.log(res);
-                    
                 })
                 .catch(error => {
                     console.error(error)
@@ -99,6 +99,9 @@ class Film extends Component {
                 .delete('http://localhost:5000/api/v1/film/dislike', {
                     movie_id: this.props.match.params.id
                 }, { headers: { token: token }})
+                .then(res => {
+                    console.log(res);
+                })
                 .catch(error => {
                     console.error(error)
                 })
