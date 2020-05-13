@@ -40,6 +40,16 @@ class Film extends Component {
                 .catch(error => {
                     console.error(error)
                 })
+                axios
+                .get('http://localhost:5000/api/v1/film/like/' + this.props.match.params.id, { headers: { token: this.props.token }})
+                .then(res => {
+                    console.log(res);
+                    
+                    this.setState({isLike: res.data})
+                })
+                .catch(error => {
+                    console.error(error)
+                })
             }
         })
         axios.get('https://yts.mx/api/v2/movie_suggestions.json?movie_id=' + this.props.match.params.id, { useCredentails: true }).then(res => {
@@ -72,38 +82,6 @@ class Film extends Component {
                 .get('http://localhost:5000/api/v1/film/comment/' + this.props.match.params.id, { headers: { token: this.props.token }})
                 .then(res => {
                     this.setState({comments: res.data})
-                })
-                .catch(error => {
-                    console.error(error)
-                })
-            }
-        }
-        if (previousState.isLike !== this.state.isLike) {
-            let { isLike, movie } = this.state
-            let { token } = this.props
-            if (isLike) {
-                axios
-                .post('http://localhost:5000/api/v1/film/like', {
-                    movie_id: this.props.match.params.id,
-                    movie_title: movie.title
-                }, { headers: { token: token }})
-                .then(res => {
-                    console.log(res);
-                })
-                .catch(error => {
-                    console.error(error)
-                })
-            }
-            else {
-                axios
-                .delete('http://localhost:5000/api/v1/film/dislike', {
-                  data: {
-                    movie_id: this.props.match.params.id
-                  },
-                  headers: { token: token }
-                })
-                .then(res => {
-                    console.log(res);
                 })
                 .catch(error => {
                     console.error(error)
@@ -145,7 +123,37 @@ class Film extends Component {
     }
 
     handleLike = () => {
-        this.setState({isLike: !this.state.isLike})
+        let { isLike, movie } = this.state
+        let { token } = this.props
+        this.setState({isLike: !isLike})
+        if (!isLike) {
+            axios
+            .post('http://localhost:5000/api/v1/film/like', {
+                movie_id: this.props.match.params.id,
+                movie_title: movie.title
+            }, { headers: { token: token }})
+            .then(res => {
+                console.log(res);
+            })
+            .catch(error => {
+                console.error(error)
+            })
+        }
+        else {
+            axios
+            .delete('http://localhost:5000/api/v1/film/dislike', {
+              data: {
+                movie_id: this.props.match.params.id
+              },
+              headers: { token: token }
+            })
+            .then(res => {
+                console.log(res);
+            })
+            .catch(error => {
+                console.error(error)
+            })
+        }
     }
 
     // handleView = () => {
