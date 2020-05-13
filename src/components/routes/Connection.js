@@ -166,8 +166,8 @@ class Connection extends Component {
                 console.log(res);
                 
                 this.props.setUserIsAuth(true)
-                this.props.setUserToken(res.data.message.token)
-                this.props.setUserPseudo(res.data.message.user.pseudo)
+                this.props.setUserToken(res.data.token)
+                this.props.setUserPseudo(res.data.user.pseudo)
                 this.setState({redirect: true})
             })
             .catch(error => {

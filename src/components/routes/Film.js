@@ -96,9 +96,9 @@ class Film extends Component {
             }
             else {
                 axios
-                .delete('http://localhost:5000/api/v1/film/dislike', {
+                .delete('http://localhost:5000/api/v1/film/dislike', { headers: { token: token }}, {
                     movie_id: this.props.match.params.id
-                }, { headers: { token: token }})
+                })
                 .then(res => {
                     console.log(res);
                 })
@@ -160,9 +160,24 @@ class Film extends Component {
     handleDelCom = e => {
         if (window.confirm("Souhaitez-vous vraiment supprimer votre commentaire?")) {
             axios
-            .delete('http://localhost:5000/api/v1/film/comment', {
-                comment_id: e.target.id
-            }, { headers: { token: this.props.token }})
+            .delete('http://localhost:5000/api/v1/film/comment',  {
+              data: {
+                comment_id: e.target.id,
+              },
+              headers: { token: this.props.token }
+            })
+            .then(res => {
+              axios
+              .get('http://localhost:5000/api/v1/film/comment/' + this.props.match.params.id, { headers: { token: this.props.token }})
+              .then(res => {
+                  this.setState({comments: res.data})
+                  this.Chat.current.scrollTo({
+                      top: 999999,
+                      left: 0,
+                      behavior: 'smooth'
+                  })
+              })
+            })
             .catch(error => {
                 console.error(error)
             })
