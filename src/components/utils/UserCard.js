@@ -4,7 +4,7 @@ import { Link } from 'react-router-dom'
 class UserCard extends Component {
     
     render () {
-        let picture = this.props.user.picture !== '' ? /^https.+/.test(this.props.user.picture) === true ? this.props.user.picture : `/pictures/${this.props.user.picture}` : '/pictures/noPicAccueil.png'
+        let picture = this.props.user.picture !== '' ? /^https.+/.test(this.props.user.picture) === true ? this.props.user.picture : `/pictures/${this.props.user.picture}` : '/pictures/noPic.png'
         return (
             <div className="col-6 col-sm-4 col-md-3 col-lg-2">
                 <Link to={`/profil/${this.props.user.pseudo}`} style={{textDecoration: 'none'}}>
