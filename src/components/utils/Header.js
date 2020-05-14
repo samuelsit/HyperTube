@@ -7,6 +7,15 @@ import { connect } from 'react-redux'
 
 class Header extends Component {
 
+    handleClick = () => {
+        if (this.props.lang === 'fr') {
+            this.props.setUserLang('en')
+        }
+        else {
+            this.props.setUserLang('fr')
+        }
+    }
+
     handleDisconnect = () => {
         this.props.setUserIsAuth(false)
         this.props.setUserToken('')
@@ -70,7 +79,7 @@ class Header extends Component {
                         <Link to="/">
                         <div className="text-light btn btn-danger mr-1" onClick={this.handleDisconnect}><i className="fas fa-sign-out-alt"></i></div>
                         </Link>
-                        <label className="btn btn-light mt-2" style={{fontSize: '25px'}}><span role="img" aria-label="flag-usa ">🇺🇸</span></label>
+                        <label className="btn btn-light mt-2" style={{fontSize: '25px'}} onClick={this.handleClick}><span role="img" aria-label="flag-usa ">{this.props.lang === 'fr' ? '🇺🇸' : '🇫🇷'}</span></label>
                     </nav>
                 </header>
             )
@@ -88,6 +97,9 @@ const mapDispatchToProps = dispatch => {
         },
         setUserPseudo: (pseudo) => {
             dispatch({ type: 'SET_USER_PSEUDO', pseudo: pseudo })
+        },
+        setUserLang: (lang) => {
+            dispatch({ type: 'SET_USER_LANG', lang: lang })
         }
     }
 }
@@ -95,7 +107,8 @@ const mapDispatchToProps = dispatch => {
 const mapStateToProps = state => { 
     return {
         isAuth: state.isAuth,
-        pseudo: state.pseudo
+        pseudo: state.pseudo,
+        lang: state.lang
     }
 }
 

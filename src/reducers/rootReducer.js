@@ -1,7 +1,8 @@
 const initState = {
     isAuth: false,
     pseudo: '',
-    token: ''
+    token: '',
+    lang: 'fr'
 }
 
 const rootReducer = (state  = initState, action) => {
@@ -21,6 +22,12 @@ const rootReducer = (state  = initState, action) => {
         return {
             ...state,
             pseudo: action.pseudo
+        }
+    }
+    else if (action.type === 'SET_USER_LANG') {
+        return {
+            ...state,
+            lang: action.lang
         }
     }
     return state
