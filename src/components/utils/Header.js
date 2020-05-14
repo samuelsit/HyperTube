@@ -37,6 +37,7 @@ class Header extends Component {
                                 <li className="nav-item"></li>
                             </ul>
                         </div>
+                        <label className="btn btn-light mt-2" style={{fontSize: '25px'}} onClick={this.handleClick}><span role="img" aria-label="flag-usa ">{this.props.lang === 'fr' ? '🇺🇸' : '🇫🇷'}</span></label>
                     </nav>
                 </header>
             )

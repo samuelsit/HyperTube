@@ -1,10 +1,12 @@
-import React, { Component, Fragment } from 'react'
+import React, { Component } from 'react'
 import Header from '../utils/Header'
 import '../../css/Profile.css'
 import { CSSTransition } from 'react-transition-group'
 import Carousel from '../utils/Carousel'
 import axios from 'axios'
 import { connect } from 'react-redux'
+import translate from '../../i18n/translate'
+import { I18nProvider, LOCALES } from '../../i18n'
 
 class Profile extends Component {
 
@@ -53,7 +55,7 @@ class Profile extends Component {
 
     render () {
         return (
-            <Fragment>
+            <I18nProvider locale={this.props.lang === 'fr' ? LOCALES.FRENCH : LOCALES.ENGLISH }>
                 <Header/>
                 <CSSTransition
                     in={true}
@@ -74,17 +76,17 @@ class Profile extends Component {
                             </div>
                         </div>
                         <div className="card p-3 row m-lg-1 mt-lg-5 mt-5">
-                            <h4 className="font-weight-bold"><i className="far fa-clock h2" style={{color: '#DD3444'}}></i> Récemment vus</h4>
+                            <h4 className="font-weight-bold"><i className="far fa-clock h2" style={{color: '#DD3444'}}></i> {translate('seen')}</h4>
                             <Carousel movies={this.state.watched_movies} />
                         </div>
                         <div className="card p-3 row m-lg-1">
-                            <h4 className="font-weight-bold"><i className="far fa-heart h2" style={{color: '#DD3444'}}></i> Récemment aimés</h4>
+                            <h4 className="font-weight-bold"><i className="far fa-heart h2" style={{color: '#DD3444'}}></i> {translate('liked')}</h4>
                             <Carousel movies={this.state.liked_movies} />
                         </div>
                     </div>
                 </div>
                 </CSSTransition>
-            </Fragment>
+            </I18nProvider>
         )
     }
 }
@@ -92,7 +94,8 @@ class Profile extends Component {
 const mapStateToProps = state => { 
     return {
         pseudo: state.pseudo,
-        token: state.token
+        token: state.token,
+        lang: state.lang
     }
 }
 

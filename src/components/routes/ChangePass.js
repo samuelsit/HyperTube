@@ -1,6 +1,9 @@
-import React, { Component, Fragment } from 'react'
+import React, { Component } from 'react'
 import Header from '../utils/Header'
 import axios from 'axios'
+import { connect } from 'react-redux'
+import translate from '../../i18n/translate'
+import { I18nProvider, LOCALES } from '../../i18n'
 
 class ChangePass extends Component {
 
@@ -58,25 +61,25 @@ class ChangePass extends Component {
 
     render () {
         return (
-            <Fragment>
+            <I18nProvider locale={this.props.lang === 'fr' ? LOCALES.FRENCH : LOCALES.ENGLISH }>
                 <Header />
                 <div className="grad-block">
                     <div className="container container-log">
                         <div className="row">
                             <div className="col login-sec">
                                 <form className="" onSubmit={this.handleSubmit}>
-                                    <h2 className="text-center shadow-theme">Changement de mot de passe</h2>
+                                    <h2 className="text-center shadow-theme">{translate('change-password')}</h2>
                                     <div className="row">
                                         <div className="col-12 col-md-6 col-lg-6 mb-3  mt-lg-5 mt-md-5">
-                                            <label htmlFor="password" className="text-danger h5">Nouveau mot de passe</label>
+                                            <label htmlFor="password" className="text-danger h5">{translate('new-password')}</label>
                                             <input type="password" className={`form-control ${this.state.verifyPassword}`} id="password" name="password" placeholder="Mot de passe*" value={this.state.password} onChange={this.handleChange}/>
                                         </div>
                                         <div className="col-12 col-md-6 col-lg-6 mb-3 mt-lg-5 mt-md-5">
-                                            <label htmlFor="repeat" className="text-danger h5">Répéter mot de passe</label>
+                                            <label htmlFor="repeat" className="text-danger h5">{translate('repeat-password')}</label>
                                             <input type="password" className={`form-control ${this.state.verifyRepeat}`} id="repeat" name="repeat" placeholder="Répéter mot de passe*" value={this.state.repeat} onChange={this.handleChange}/>
                                         </div>
                                         <div className="col-12 text-center mt-4 mb-3">
-                                            <button className="btn btn-danger" onClick={this.handleChangePass}>Changer</button>
+                                            <button className="btn btn-danger" onClick={this.handleChangePass}>{translate('change')}</button>
                                             <div className="font-weight-bold text-danger text-center mt-3">{this.state.message}</div>
                                         </div>
                                     </div>
@@ -85,9 +88,15 @@ class ChangePass extends Component {
                         </div>
                     </div>
                 </div>
-            </Fragment>
+            </I18nProvider>
         )
     }
 }
 
-export default ChangePass
+const mapStateToProps = state => { 
+    return {
+        lang: state.lang
+    }
+}
+
+export default connect(mapStateToProps, null)(ChangePass)

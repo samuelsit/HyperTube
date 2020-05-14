@@ -10,7 +10,7 @@ class Users extends Component {
     state = {
         users: [],
         search: '',
-        h: 'Rechercher un utilisateur: '
+        h: this.props.lang === 'fr' ? 'Rechercher un utilisateur: ' : 'Search for a user: '
     }
 
     _isMounted = false
@@ -34,7 +34,7 @@ class Users extends Component {
     componentDidUpdate(previousProps, previousState) {
         if (this.state.search !== previousState.search && this._isMounted) {
             if (this.state.search === '') {
-                this.setState({ h: 'Rechercher un utilisateur: '})
+                this.setState({ h: this.props.lang === 'fr' ? 'Rechercher un utilisateur: ' : 'Search for a user: '})
                 axios.get('http://localhost:5000/api/v1/profile', { headers: { token: this.props.token }})
                 .then(res => {
                     this.setState({users: res.data.response.usersDoc.map((el, i) => (
@@ -51,6 +51,9 @@ class Users extends Component {
                     ))})
                 })
             }
+        }
+        if (this.props.lang !== previousProps.lang && (this.state.h === 'Rechercher un utilisateur: ' || this.state.h === 'Search for a user: ')) {
+            this.setState({h: this.props.lang === 'fr' ? 'Rechercher un utilisateur: ' : 'Search for a user: '})
         }
     }
 
@@ -96,7 +99,8 @@ class Users extends Component {
 
 const mapStateToProps = state => { 
     return {
-        token: state.token
+        token: state.token,
+        lang: state.lang
     }
 }
 

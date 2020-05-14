@@ -8,6 +8,7 @@ import Nav from '../utils/Nav'
 import InfiniteScroll from 'react-infinite-scroll-component'
 import '../../css/loader.css'
 import Scroll from '../utils/Scroll'
+import { connect } from 'react-redux'
 
 class Gallery extends Component {
 
@@ -16,7 +17,7 @@ class Gallery extends Component {
     state = {
         movies: [],
         option: '?limit=24&sort_by=year&order_by=desc&genre=all&page=1&query_term=0',
-        title: 'Dernières Sorties',
+        title: this.props.lang === 'fr' ? 'Tous' : 'All',
         page: 1,
         length: 24,
         search: ''
@@ -32,6 +33,9 @@ class Gallery extends Component {
     }
 
     componentDidUpdate(previousProps, previousState) {
+        // if (previousProps.lang !== this.props.lang) {
+            
+        // }
     }
 
     handleChangeMovie = () => {
@@ -43,10 +47,10 @@ class Gallery extends Component {
         })
     }
 
-    handleGenre = genre => {
+    handleGenre = genre => {        
         let newOption = this.state.option.replace(/&genre=[\w-]+/i, '&genre=' + genre.target.value).replace(/&query_term=.*/gi, '&query_term=0').replace(/&page=\d+/i, '&page=1')
         if (this._isMounted) {
-            this.setState({page: 1, length: 24, option: newOption, title: genre.target.value === 'all' ? 'Dernières Sorties' : genre.target.value[0].toUpperCase() + genre.target.value.slice(1)}, this.handleChangeMovie)
+            this.setState({page: 1, length: 24, option: newOption, title: genre.target.innerText}, this.handleChangeMovie)
         }
     }
 
@@ -137,4 +141,10 @@ class Gallery extends Component {
     }
 }
 
-export default Gallery
+const mapStateToProps = state => { 
+    return {
+        lang: state.lang
+    }
+}
+
+export default connect(mapStateToProps, null)(Gallery)

@@ -1,8 +1,11 @@
-import React, { Component, Fragment } from 'react'
+import React, { Component } from 'react'
 import axios from 'axios'
 import { Redirect } from "react-router-dom"
 import Header from '../utils/Header'
 import { CSSTransition } from 'react-transition-group'
+import { connect } from 'react-redux'
+import translate from '../../i18n/translate'
+import { I18nProvider, LOCALES } from '../../i18n'
 
 class Confirm extends Component {
 
@@ -56,7 +59,7 @@ class Confirm extends Component {
     
     render () {
         return (
-            <Fragment>
+            <I18nProvider locale={this.props.lang === 'fr' ? LOCALES.FRENCH : LOCALES.ENGLISH }>
                 {this.handleRedirect()}
                 <Header/>
                 <CSSTransition
@@ -71,7 +74,7 @@ class Confirm extends Component {
                             <div className="col login-sec">
                                 <h2 className="text-center shadow-theme">
                                     {
-                                        this.state.error === true ? "Erreur lors de la verification." : `Vous allez être redirigé dans ${this.state.timeToRedirect} seconde(s).`
+                                        this.state.error === true ? translate('error-verification') : translate('redirection', {time: this.state.timeToRedirect})
                                     }
                                 </h2>
                             </div>
@@ -79,9 +82,15 @@ class Confirm extends Component {
                     </div>
                 </div>
                 </CSSTransition>
-            </Fragment>
+            </I18nProvider>
         )
     }
 }
 
-export default Confirm
+const mapStateToProps = state => { 
+    return {
+        lang: state.lang
+    }
+}
+
+export default connect(mapStateToProps, null)(Confirm)

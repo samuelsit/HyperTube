@@ -1,9 +1,11 @@
-import React, { Component, Fragment } from 'react'
+import React, { Component } from 'react'
 import Header from '../utils/Header'
 import { CSSTransition } from 'react-transition-group'
 import '../../css/Settings.css'
 import axios from 'axios'
 import { connect } from 'react-redux'
+import translate from '../../i18n/translate'
+import { I18nProvider, LOCALES } from '../../i18n'
 
 class Settings extends Component {
 
@@ -125,7 +127,7 @@ class Settings extends Component {
 
     render () {
         return (
-            <Fragment>
+            <I18nProvider locale={this.props.lang === 'fr' ? LOCALES.FRENCH : LOCALES.ENGLISH }>
                 <Header/>
                 <CSSTransition
                     in={true}
@@ -145,23 +147,23 @@ class Settings extends Component {
                                 <div className="form-group">
                                     <div className="row">
                                         <div className="col-12 col-md-6 col-lg-6 mb-3">
-                                            <label htmlFor="username" className="text-danger h4 text-nowrap">Pseudo</label>
+                                            <label htmlFor="username" className="text-danger h4 text-nowrap">{translate('pseudo')}</label>
                                             <input type="text" className={`form-control`} name="username" id="username" placeholder="Pseudo*" value={this.props.pseudo} disabled/>
                                         </div>
                                         <div className="col-12 col-md-6 col-lg-6 mb-3">
                                             <label htmlFor="email" className="text-danger h4 text-nowrap">Email</label>
-                                            <input type="text" className={`form-control ${this.state.verifyEmail}`} name="email" id="email" placeholder="Email*" value={this.state.email} onBlur={this.handleOnBlurSubmit} onChange={this.handleChange}/>
+                                            <input type="text" className={`form-control ${this.state.verifyEmail}`} name="email" id="email" value={this.state.email} onBlur={this.handleOnBlurSubmit} onChange={this.handleChange}/>
                                         </div>
                                         <div className="col-12 col-md-6 col-lg-6 mb-3">
-                                            <label htmlFor="lastname" className="text-danger h4 text-nowrap">Nom</label>
-                                            <input type="text" className={`form-control ${this.state.verifyLast}`} id="lastname" name="lastname" placeholder="Nom*" value={this.state.lastname} onBlur={this.handleOnBlurSubmit} onChange={this.handleChange}/>
+                                            <label htmlFor="lastname" className="text-danger h4 text-nowrap">{translate('lastname')}</label>
+                                            <input type="text" className={`form-control ${this.state.verifyLast}`} id="lastname" name="lastname" value={this.state.lastname} onBlur={this.handleOnBlurSubmit} onChange={this.handleChange}/>
                                         </div>
                                         <div className="col-12 col-md-6 col-lg-6 mb-3">
-                                            <label htmlFor="firstname" className="text-danger h4 text-nowrap">Prénom</label>
-                                            <input type="text" className={`form-control ${this.state.verifyFirst}`} id="firstname" name="firstname" placeholder="Prénom*" value={this.state.firstname} onBlur={this.handleOnBlurSubmit} onChange={this.handleChange}/>
+                                            <label htmlFor="firstname" className="text-danger h4 text-nowrap">{translate('firstname')}</label>
+                                            <input type="text" className={`form-control ${this.state.verifyFirst}`} id="firstname" name="firstname" value={this.state.firstname} onBlur={this.handleOnBlurSubmit} onChange={this.handleChange}/>
                                         </div>
                                         <div className="col-12 col-md-6 col-lg-6 text-lg-center text-md-center mb-3 mt-lg-3 mt-md-3 mx-auto">
-                                            <div className="text-danger h4">Profil</div>
+                                            <div className="text-danger h4">{translate('profile-picture')}</div>
                                             <label htmlFor="picture"><img className="img-fluid upload" alt="profile" src={this.state.picture} /></label>
                                             <input type="file" onChange={this.handlePicture} className={`form-control d-none`} id="picture"/>
                                         </div>
@@ -169,15 +171,15 @@ class Settings extends Component {
                                     <hr/>
                                     <div className="row">
                                         <div className="col-12 col-md-6 col-lg-6 mb-3  mt-lg-5 mt-md-5">
-                                            <label htmlFor="password" className="text-danger h5">Nouveau mot de passe</label>
+                                            <label htmlFor="password" className="text-danger h5">{translate('new-password')}</label>
                                             <input type="password" className={`form-control ${this.state.verifyPassword}`} id="password" name="password" placeholder="Mot de passe*" value={this.state.password} onChange={this.handleChange}/>
                                         </div>
                                         <div className="col-12 col-md-6 col-lg-6 mb-3 mt-lg-5 mt-md-5">
-                                            <label htmlFor="repeat" className="text-danger h5">Répéter mot de passe</label>
+                                            <label htmlFor="repeat" className="text-danger h5">{translate('repeat-password')}</label>
                                             <input type="password" className={`form-control ${this.state.verifyRepeat}`} id="repeat" name="repeat" placeholder="Répéter mot de passe*" value={this.state.repeat} onChange={this.handleChange}/>
                                         </div>
                                         <div className="col-12 text-center mt-4 mb-3">
-                                            <button className="btn btn-danger" onClick={this.handleChangePass}>Changer</button>
+                                            <button className="btn btn-danger" onClick={this.handleChangePass}>{translate('change')}</button>
                                         </div>
                                     </div>
                                 </div>
@@ -186,7 +188,7 @@ class Settings extends Component {
                     </div>
                 </div>
                 </CSSTransition>
-            </Fragment>
+            </I18nProvider>
         )
     }
 }
@@ -194,7 +196,8 @@ class Settings extends Component {
 const mapStateToProps = state => { 
     return {
         pseudo: state.pseudo,
-        token: state.token
+        token: state.token,
+        lang: state.lang
     }
 }
 

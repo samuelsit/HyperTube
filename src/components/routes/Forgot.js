@@ -1,6 +1,9 @@
-import React, { Component, Fragment } from 'react'
+import React, { Component } from 'react'
 import Header from '../utils/Header'
 import axios from 'axios'
+import { I18nProvider, LOCALES } from '../../i18n'
+import translate from '../../i18n/translate'
+import { connect } from 'react-redux'
 
 class Forgot extends Component {
 
@@ -44,26 +47,32 @@ class Forgot extends Component {
 
     render () {
         return (
-            <Fragment>
+            <I18nProvider locale={this.props.lang === 'fr' ? LOCALES.FRENCH : LOCALES.ENGLISH }>
                 <Header />
                 <div className="grad-block">
                     <div className="container container-log">
                         <div className="row">
                             <div className="col login-sec">
                                 <form className="" onSubmit={this.handleSubmit}>
-                                    <h2 className="text-center shadow-theme">Votre adresse email</h2>
+                                    <h2 className="text-center shadow-theme">{translate('your-email')}</h2>
                                     <input type="email" id="email" placeholder="name@exemple.com" className={`form-control w-50 text-center mx-auto mb-3 ${this.state.verify}`} onChange={this.handleChange}/>
                                     <div className="mx-auto text-center">
-                                        <button type="submit" className="btn btn-danger text-light mt-4">Recevoir un email</button>
+                                        <button type="submit" className="btn btn-danger text-light mt-4">{translate('receive-email')}</button>
                                     </div>
                                 </form>
                             </div>
                         </div>
                     </div>
                 </div>
-            </Fragment>
+            </I18nProvider>
         )
     }
 }
 
-export default Forgot
+const mapStateToProps = state => { 
+    return {
+        lang: state.lang
+    }
+}
+
+export default connect(mapStateToProps, null)(Forgot)

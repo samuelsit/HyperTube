@@ -1,4 +1,4 @@
-import React, { Component, Fragment } from 'react'
+import React, { Component } from 'react'
 import Header from '../utils/Header'
 import '../../css/Connection.css'
 import galerie from '../../img/galerie.png'
@@ -9,8 +9,8 @@ import GoogleLogin from 'react-google-login'
 import textLogo from '../../img/text.png'
 import axios from 'axios'
 import Logo42 from '../../img/42_Logo.png'
-import { withTranslation } from 'react-i18next'
-import { compose } from 'redux';
+import { I18nProvider, LOCALES } from '../../i18n'
+import translate from '../../i18n/translate'
 
 class Connection extends Component {
 
@@ -188,7 +188,7 @@ class Connection extends Component {
 
     render () {
         return (
-            <Fragment>
+            <I18nProvider locale={this.props.lang === 'fr' ? LOCALES.FRENCH : LOCALES.ENGLISH }>
                 {this.handleRedirect()}
                 <Header/>
                 <CSSTransition
@@ -201,21 +201,21 @@ class Connection extends Component {
                     <div className="container container-log">
                         <div className="row">
                             <div className="col login-sec">
-                                <h2 className="text-center shadow-theme">Connectez vous !</h2>
+                                <h2 className="text-center shadow-theme">{translate('connect')}</h2>
                                 <form className="login-form" onSubmit={this.handleOnSubmit}>
                                     <div className="form-group">
-                                        <label htmlFor="exampleInputEmail1" className="text-uppercase">Pseudo</label>
+                                        <label htmlFor="exampleInputEmail1" className="text-uppercase">{translate('pseudo')}</label>
                                         <input type="text" className={`form-control ${this.state.isCorrectPseudo}`} placeholder="" id="pseudo" onChange={this.handleChange}/>
                                     </div>
                                     <div className="form-group">
-                                        <label htmlFor="exampleInputPassword1" className="text-uppercase">Mot de passe</label>
+                                        <label htmlFor="exampleInputPassword1" className="text-uppercase">{translate('password')}</label>
                                         <input type="password" className={`form-control ${this.state.isCorrectPassword}`} placeholder="" id="password" onChange={this.handleChange}/>
                                     </div>
                                     <div className="font-weight-bold text-danger text-center">{this.state.erreur}</div>
                                     <br/>
                                     <div className="row text-center">
                                         <div className="col-12">
-                                            <button type="submit" className="btn btn-danger text-light mb-3" onClick={this.handleOnSubmit}>Connexion</button>
+                                            <button type="submit" className="btn btn-danger text-light mb-3" onClick={this.handleOnSubmit}>{translate('connection')}</button>
                                         </div>
                                     </div>
                                     <div className="row text-center">
@@ -236,10 +236,10 @@ class Connection extends Component {
                                     </div>
                                     <hr/>
                                     <Link to="/inscription" style={{color: 'black'}}>
-                                    <p className="text-center">S'inscrire</p>
+                                    <p className="text-center">{translate('register')}</p>
                                     </Link>
                                     <Link to="/oubli" style={{color: 'black'}}>
-                                    <p className="text-center">Mot de passe oublié ?</p>
+                                    <p className="text-center">{translate('forget')}</p>
                                     </Link>
                                 </form>
                             </div>
@@ -261,7 +261,7 @@ class Connection extends Component {
                     </div>
                 </div>
                 </CSSTransition>
-            </Fragment>
+            </I18nProvider>
         )
     }
 }
@@ -280,4 +280,10 @@ const mapDispatchToProps = dispatch => {
     }
 }
 
-export default compose(connect(null, mapDispatchToProps),withTranslation())(Connection)
+const mapStateToProps = state => { 
+    return {
+        lang: state.lang
+    }
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(Connection)

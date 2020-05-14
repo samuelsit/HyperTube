@@ -4,6 +4,8 @@ import axios from 'axios'
 import '../../css/Film.css'
 import Cover from '../utils/Cover'
 import { connect } from 'react-redux'
+import { I18nProvider, LOCALES } from '../../i18n'
+import translate from '../../i18n/translate'
 
 class Film extends Component {
     constructor(props) {
@@ -215,7 +217,7 @@ class Film extends Component {
             )
         })
         return (
-            <Fragment>
+            <I18nProvider locale={this.props.lang === 'fr' ? LOCALES.FRENCH : LOCALES.ENGLISH }>
                 <Header/>
                 <div className="grad-block">
                     <div className="container container-log">
@@ -243,26 +245,26 @@ class Film extends Component {
                                         <img className="img-fluid film text-center" src={movie.large_cover_image} alt="" />
                                     </div>
                                     <div className="col mt-3 mt-lg-0">
-                                        <p><span className="data font-weight-bold">Évaluation:</span> {movie.rating}/10</p>
-                                        <p><span className="data font-weight-bold">Upload:</span> {day && month && year ? day + ' ' + month + ' ' + year : ''}</p>
+                                        <p><span className="data font-weight-bold">Evaluation:</span> {movie.rating}/10</p>
+                                        <p><span className="data font-weight-bold">{translate('upload')}:</span> {day && month && year ? day + ' ' + month + ' ' + year : ''}</p>
                                         <p><span className="data font-weight-bold">Genres:</span> {genre.join(', ')}</p>
-                                        <p><span className="data font-weight-bold">Langue:</span> {movie.language}</p>
-                                        <p><span className="data font-weight-bold">Durée:</span> {movie.runtime} minutes</p>
+                                        <p><span className="data font-weight-bold">{translate('language')}:</span> {movie.language}</p>
+                                        <p><span className="data font-weight-bold">{translate('duration')}:</span> {movie.runtime} minutes</p>
                                         <p><span className="data font-weight-bold">Description:</span> {movie.description_full}</p>
-                                        <p><span className="data font-weight-bold">Trailer:</span></p>
+                                        <p><span className="data font-weight-bold">{translate('trailer')}:</span></p>
                                         <iframe width="100%" src={`https://www.youtube.com/embed/` + movie.yt_trailer_code} frameBorder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" title="yt" allowFullScreen></iframe>
                                     </div>
                                 </div>
                                 <div className="row mt-3">
                                     <div className="col text-center">
-                                        <p><span className="data font-weight-bold float-left d-lg-none">Film:</span></p>
+                                        <p><span className="data font-weight-bold float-left d-lg-none">{translate('movie')}:</span></p>
                                         <video controls width="100%" className="border"></video>
                                     </div>
                                     <div className="col-12 mt-4">
                                     <div id="chat" ref={this.Chat} className="border shadow p-2">
                                         {comments}
                                     </div>
-                                    <form className="form-inline mt-5" onSubmit={this.handleSubmit}><input className="form-control mr-3 w-75 mx-auto" onChange={this.handleChange} value={this.state.comment} /><button className="btn btn-danger mx-auto">Envoyer</button></form>
+                                    <form className="form-inline mt-5" onSubmit={this.handleSubmit}><input className="form-control mr-3 w-75 mx-auto" onChange={this.handleChange} value={this.state.comment} /><button className="btn btn-danger mx-auto">{translate('send')}</button></form>
                                     </div>
                                 </div>
                             </div>
@@ -271,7 +273,7 @@ class Film extends Component {
                     <div className="container container-log mt-5">
                         <div className="row ml-lg-3">
                             <div className="col login-sec">
-                                <h2 className="text-center">Vous aimerez aussi</h2>
+                                <h2 className="text-center">{translate('like-also')}</h2>
                                 <div className="row">
                                     {suggestion}
                                 </div>
@@ -279,7 +281,7 @@ class Film extends Component {
                         </div>
                     </div>
                 </div>
-            </Fragment>
+            </I18nProvider>
         )
     }
 }
@@ -287,7 +289,8 @@ class Film extends Component {
 const mapStateToProps = state => { 
     return {
         token: state.token,
-        pseudo: state.pseudo
+        pseudo: state.pseudo,
+        lang: state.lang
     }
 }
 

@@ -2,7 +2,7 @@ const initState = {
     isAuth: false,
     pseudo: '',
     token: '',
-    lang: 'fr'
+    lang: 'en'
 }
 
 const rootReducer = (state  = initState, action) => {

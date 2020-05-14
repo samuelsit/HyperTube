@@ -1,7 +1,10 @@
-import React, { Component, Fragment } from 'react'
+import React, { Component } from 'react'
 import Header from '../utils/Header'
 import { CSSTransition } from 'react-transition-group'
 import axios from 'axios'
+import { I18nProvider, LOCALES } from '../../i18n'
+import translate from '../../i18n/translate'
+import { connect } from 'react-redux'
 
 class Authentication extends Component {
 
@@ -79,7 +82,7 @@ class Authentication extends Component {
 
     render () {
         return (
-            <Fragment>
+            <I18nProvider locale={this.props.lang === 'fr' ? LOCALES.FRENCH : LOCALES.ENGLISH }>
                 <Header/>
                 <CSSTransition
                     in={true}
@@ -91,7 +94,7 @@ class Authentication extends Component {
                     <div className="container container-log pb-lg-5">
                         <div className="row">
                             <div className="login-sec mx-auto">
-                                <h2 className="text-center">S'inscrire</h2>
+                                <h2 className="text-center">{translate('register')}</h2>
                             </div>
                         </div>
                         <div className="row">
@@ -100,35 +103,35 @@ class Authentication extends Component {
                                     <div className="row">
                                         <div className="col">
                                             <label htmlFor="email" className="text-danger h4">Email</label>
-                                            <input type="text" id="email" className={`form-control ${this.state.verifyEmail}`} name="email" placeholder="Email*" onChange={this.handleChange} value={this.state.email} required/>
+                                            <input type="text" id="email" className={`form-control ${this.state.verifyEmail}`} name="email" onChange={this.handleChange} value={this.state.email} required/>
                                         </div>
                                         <div className="col">
-                                            <label htmlFor="pseudo" className="text-danger h4">Pseudo</label>
-                                            <input type="text" id="pseudo" className={`form-control ${this.state.verifyPseudo}`} name="username" placeholder="Pseudo*" onChange={this.handleChange} value={this.state.pseudo} required/>
-                                        </div>
-                                    </div>
-                                    <div className="row mt-3">
-                                        <div className="col">
-                                            <label htmlFor="lastname" className="text-danger h4">Nom</label>
-                                            <input type="text" id="lastname" className={`form-control ${this.state.verifyLast}`} name="lastname" placeholder="Nom*" onChange={this.handleChange} value={this.state.lastname} required/>
-                                        </div>
-                                        <div className="col">
-                                            <label htmlFor="firstname" className="text-danger h4">Prénom</label>
-                                            <input type="text" id="firstname" className={`form-control ${this.state.verifyFirst}`} name="firstname" placeholder="Prénom*" onChange={this.handleChange} value={this.state.firstname} required/>
+                                            <label htmlFor="pseudo" className="text-danger h4">{translate('pseudo')}</label>
+                                            <input type="text" id="pseudo" className={`form-control ${this.state.verifyPseudo}`} name="username" onChange={this.handleChange} value={this.state.pseudo} required/>
                                         </div>
                                     </div>
                                     <div className="row mt-3">
                                         <div className="col">
-                                            <label htmlFor="password" className="text-danger h4">Mot de passe</label>
-                                            <input type="password" id="password" className={`form-control ${this.state.verifyPassword}`} name="password" placeholder="Mot de passe*" onChange={this.handleChange} value={this.state.password} required/>
+                                            <label htmlFor="lastname" className="text-danger h4">{translate('lastname')}</label>
+                                            <input type="text" id="lastname" className={`form-control ${this.state.verifyLast}`} name="lastname" onChange={this.handleChange} value={this.state.lastname} required/>
                                         </div>
                                         <div className="col">
-                                            <label htmlFor="repeat" className="text-danger h4">Répéter mot de passe</label>
-                                            <input type="password" id="repeat" className={`form-control ${this.state.verifyRepeat}`} name="repeat" placeholder="Répéter mot de passe*" onChange={this.handleChange} value={this.state.repeat} required/>
+                                            <label htmlFor="firstname" className="text-danger h4">{translate('firstname')}</label>
+                                            <input type="text" id="firstname" className={`form-control ${this.state.verifyFirst}`} name="firstname" onChange={this.handleChange} value={this.state.firstname} required/>
+                                        </div>
+                                    </div>
+                                    <div className="row mt-3">
+                                        <div className="col">
+                                            <label htmlFor="password" className="text-danger h4">{translate('password')}</label>
+                                            <input type="password" id="password" className={`form-control ${this.state.verifyPassword}`} name="password" onChange={this.handleChange} value={this.state.password} required/>
+                                        </div>
+                                        <div className="col">
+                                            <label htmlFor="repeat" className="text-danger h4">{translate('repeat-password')}</label>
+                                            <input type="password" id="repeat" className={`form-control ${this.state.verifyRepeat}`} name="repeat" onChange={this.handleChange} value={this.state.repeat} required/>
                                         </div>
                                     </div>
                                     <div className="row mt-5 mx-auto">
-                                        <button type="submit" className="btn btn-danger mx-auto">Envoyer</button>
+                                        <button type="submit" className="btn btn-danger mx-auto">{translate('send')}</button>
                                     </div>
                                     <div className="font-weight-bold text-danger text-center mt-4">{this.state.message}</div>
                                 </div>
@@ -137,9 +140,15 @@ class Authentication extends Component {
                     </div>
                 </div>
                 </CSSTransition>
-            </Fragment>
+            </I18nProvider>
         )
     }
 }
 
-export default Authentication
+const mapStateToProps = state => { 
+    return {
+        lang: state.lang
+    }
+}
+
+export default connect(mapStateToProps, null)(Authentication)
