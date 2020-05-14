@@ -68,8 +68,9 @@ class Header extends Component {
                         <button className="btn btn-secondary mr-1"><i className="fas fa-cogs"></i></button>
                         </Link>
                         <Link to="/">
-                        <div className="text-light btn btn-danger" onClick={this.handleDisconnect}>Déconnexion</div>
+                        <div className="text-light btn btn-danger mr-1" onClick={this.handleDisconnect}><i className="fas fa-sign-out-alt"></i></div>
                         </Link>
+                        <label className="btn btn-light mt-2" style={{fontSize: '25px'}}><span role="img" aria-label="flag-usa ">🇺🇸</span></label>
                     </nav>
                 </header>
             )

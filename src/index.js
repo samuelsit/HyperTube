@@ -5,6 +5,7 @@ import 'bootstrap/dist/css/bootstrap.min.css'
 import './css/index.css'
 import { createStore } from 'redux'
 import { Provider } from 'react-redux'
+import './i18n';
 
 import Connection from './components/routes/Connection'
 import NotFound from './components/routes/NotFound'

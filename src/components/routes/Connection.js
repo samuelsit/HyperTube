@@ -9,6 +9,8 @@ import GoogleLogin from 'react-google-login'
 import textLogo from '../../img/text.png'
 import axios from 'axios'
 import Logo42 from '../../img/42_Logo.png'
+import { withTranslation } from 'react-i18next'
+import { compose } from 'redux';
 
 class Connection extends Component {
 
@@ -278,4 +280,4 @@ const mapDispatchToProps = dispatch => {
     }
 }
 
-export default connect(null, mapDispatchToProps)(Connection)
+export default compose(connect(null, mapDispatchToProps),withTranslation())(Connection)
