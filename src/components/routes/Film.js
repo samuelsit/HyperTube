@@ -212,7 +212,7 @@ class Film extends Component {
         let comments = this.state.comments.map((el, i) => {
             return (
                 <Fragment key={i}>
-                    <hr/><p className="comment">{el.patron_id === this.props.pseudo ? <i onClick={this.handleDelCom} id={el.comment_id} className="far fa-times-circle text-danger mt-2"></i> : null} {el.date.replace(/-/g, ' ')} - <span className={`font-weight-bold ${el.patron_id === this.props.pseudo ? 'text-danger' : 'text-dark' }`}>{el.patron_id}: </span>{el.value}</p>
+                    <hr/><p className="comment">{el.patron_id === this.props.pseudo ? <i onClick={this.handleDelCom} id={el.comment_id} className="far fa-times-circle text-danger mt-2"></i> : null} <span className="text-secondary">{el.date.replace(/-/g, ' ')}</span> - <span className={`font-weight-bold ${el.patron_id === this.props.pseudo ? 'text-danger' : 'text-dark' }`}>{el.patron_id}</span>: {el.value}</p>
                 </Fragment>
             )
         })
