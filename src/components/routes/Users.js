@@ -26,9 +26,7 @@ class Users extends Component {
             this.setState({users: res.data.response.usersDoc.map((el, i) => (
                 <UserCard user={el} key={i} />
             ))})
-        })
-        console.log(this.state.users);
-        
+        })        
     }
 
     componentDidUpdate(previousProps, previousState) {

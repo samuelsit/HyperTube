@@ -29,8 +29,9 @@ class Carousel extends Component {
         }, 5)
     }
 
-    render () {
-        const films = this.props.movies.map((el, i) => {
+    render () {   
+        let {movies} = this.props
+        const films = movies.map((el, i) => {            
             return (
                 <div className="tile" key={i}>
                     <div className="tile-media">
@@ -39,6 +40,7 @@ class Carousel extends Component {
                 </div>
             )
         })
+                
         return (
             <Fragment>
                 <div ref={this.Ref} className="ml-0 row row-car">

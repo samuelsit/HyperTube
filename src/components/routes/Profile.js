@@ -7,6 +7,7 @@ import axios from 'axios'
 import { connect } from 'react-redux'
 import translate from '../../i18n/translate'
 import { I18nProvider, LOCALES } from '../../i18n'
+import { Redirect } from 'react-router-dom'
 
 class Profile extends Component {
 
@@ -15,38 +16,55 @@ class Profile extends Component {
     state = {
         watched_movies: [],
         liked_movies: [],
-        picture: ''
+        picture: '',
+        redirect: false
     }
 
     componentDidMount() {        
         this._isMounted = true
-        axios.get('http://localhost:5000/api/v1/profile/' + this.props.match.params.pseudo, { headers: { token: this.props.token }})
-        .then(res => {
-            let {picture} = res.data.response
-            this.setState({picture: picture !== '' ? /^https.+/.test(picture) === true ? picture : `/pictures/${picture}` : '/pictures/noPic.png' })
-        })
-        axios.get('https://yts.mx/api/v2/list_movies.json?limit=24&sort_by=year&order_by=desc&genre=all&page=1&query_term=0', { useCredentails: true })
-        .then(res => {
-            if (this._isMounted) {
-                this.setState({watched_movies: res.data.data.movies})
-            }
-        })
-        axios.get('https://yts.mx/api/v2/list_movies.json?limit=24&sort_by=year&order_by=desc&genre=all&page=1&query_term=0', { useCredentails: true })
-        .then(res => {
-            if (this._isMounted) {
-                this.setState({liked_movies: res.data.data.movies})
-            }
-        })        
+        this.getLikes()
     }
 
     componentDidUpdate(previousProps, previousState) {
         if (this.props.location.key !== previousProps.location.key) {
-            axios.get('http://localhost:5000/api/v1/profile/' + this.props.match.params.pseudo, { headers: { token: this.props.token }})
-            .then(res => {
-                let {picture} = res.data.response
-                this.setState({picture: picture !== '' ? /^https.+/.test(picture) === true ? picture : `/pictures/${picture}` : '/pictures/noPic.png' })
-            })
+            this.getLikes()
         }
+    }
+
+    getLikes = async () => {
+        axios.get('http://localhost:5000/api/v1/profile/' + this.props.match.params.pseudo, { headers: { token: this.props.token }})
+        .then(res => {
+            let {picture, likes} = res.data.response
+            this.setState({picture: picture !== '' ? /^https.+/.test(picture) === true ? picture : `/pictures/${picture}` : '/pictures/noPic.png' }, this.handleLike(likes))
+        })
+        .catch(error => {
+            console.error(error);
+            this.setState({redirect: true})
+        })
+    }
+
+    handleLike = likes => {
+        let liked_movies = []
+        likes.map(el => {
+            axios.get('https://yts.mx/api/v2/movie_details.json?movie_id=' + el.movie_id)
+            .then(res => {    
+                let {movie} = res.data.data
+                movie.yt_trailer_code = new Date(el.date)
+                liked_movies.push(movie)
+                this.setState({liked_movies}, this.sortLike)
+            })
+            return true
+        })
+    }
+
+    sortLike = () => {
+        let {liked_movies} = this.state
+        liked_movies.sort((a, b) => (b.yt_trailer_code - a.yt_trailer_code))
+        this.setState({liked_movies})
+    }
+
+    handleRedirect = () => {
+        return this.state.redirect ? <Redirect to="/" /> : null
     }
 
     componentWillUnmount() {
@@ -56,6 +74,7 @@ class Profile extends Component {
     render () {
         return (
             <I18nProvider locale={this.props.lang === 'fr' ? LOCALES.FRENCH : LOCALES.ENGLISH }>
+                {this.handleRedirect()}
                 <Header/>
                 <CSSTransition
                     in={true}
@@ -77,7 +96,7 @@ class Profile extends Component {
                         </div>
                         <div className="card p-3 row m-lg-1 mt-lg-5 mt-5">
                             <h4 className="font-weight-bold"><i className="far fa-clock h2" style={{color: '#DD3444'}}></i> {translate('seen')}</h4>
-                            <Carousel movies={this.state.watched_movies} />
+                            {/* <Carousel movies={this.state.watched_movies} /> */}
                         </div>
                         <div className="card p-3 row m-lg-1">
                             <h4 className="font-weight-bold"><i className="far fa-heart h2" style={{color: '#DD3444'}}></i> {translate('liked')}</h4>

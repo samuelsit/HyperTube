@@ -45,8 +45,6 @@ class Film extends Component {
                 axios
                 .get('http://localhost:5000/api/v1/film/like/' + this.props.match.params.id, { headers: { token: this.props.token }})
                 .then(res => {
-                    console.log(res);
-                    
                     this.setState({isLike: res.data})
                 })
                 .catch(error => {
@@ -144,9 +142,6 @@ class Film extends Component {
                 movie_id: this.props.match.params.id,
                 movie_title: movie.title
             }, { headers: { token: token }})
-            .then(res => {
-                console.log(res);
-            })
             .catch(error => {
                 console.error(error)
             })
@@ -158,9 +153,6 @@ class Film extends Component {
                 movie_id: this.props.match.params.id
               },
               headers: { token: token }
-            })
-            .then(res => {
-                console.log(res);
             })
             .catch(error => {
                 console.error(error)
