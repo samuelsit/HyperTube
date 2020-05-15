@@ -12,7 +12,7 @@ class Nav extends Component {
                     <label htmlFor="select" className="w-100">
                         <div className="block-shadow text-center">
                             <select id="select" className="my-4 selectFilms text-center" onChange={this.props.genre}>
-                                <option value='all'>{translate('genre-all')}</option>
+                                {/* <option value='all'>{translate('genre-all')}</option>
                                 <option value='action'>{translate('genre-action')}</option>
                                 <option value='adventure'>{translate('genre-adventure')}</option>
                                 <option value='animation'>{translate('genre-animation')}</option>
@@ -32,7 +32,28 @@ class Nav extends Component {
                                 <option value='sport'>{translate('genre-sport')}</option>
                                 <option value='thriller'>{translate('genre-thriller')}</option>
                                 <option value='war'>{translate('genre-war')}</option>
-                                <option value='western'>{translate('genre-western')}</option>
+                                <option value='western'>{translate('genre-western')}</option> */}
+                                    <option value='all'>All</option>
+                                    <option value='action'>Action</option>
+                                    <option value='adventure'>Adventure</option>
+                                    <option value='animation'>Animation</option>
+                                    <option value='biography'>Biography</option>
+                                    <option value='comedy'>Comedy</option>
+                                    <option value='crime'>Crime</option>
+                                    <option value='documentary'>Documentary</option>
+                                    <option value='drama'>Drama</option>
+                                    <option value='family'>Family</option>
+                                    <option value='fantasy'>Fantasy</option>
+                                    <option value='history'>History</option>
+                                    <option value='horror'>Horror</option>
+                                    <option value='music'>Music</option>
+                                    <option value='mystery'>Mystery</option>
+                                    <option value='romance'>Romance</option>
+                                    <option value='sci-fi'>Sci-Fi</option>
+                                    <option value='sport'>Sport</option>
+                                    <option value='thriller'>Thriller</option>
+                                    <option value='war'>War</option>
+                                    <option value='western'>Western</option>
                             </select>
                         </div>
                     </label>

@@ -50,7 +50,7 @@ class Gallery extends Component {
     handleGenre = genre => {        
         let newOption = this.state.option.replace(/&genre=[\w-]+/i, '&genre=' + genre.target.value).replace(/&query_term=.*/gi, '&query_term=0').replace(/&page=\d+/i, '&page=1')
         if (this._isMounted) {
-            this.setState({page: 1, length: 24, option: newOption, title: genre.target.innerText}, this.handleChangeMovie)
+            this.setState({page: 1, length: 24, option: newOption, title: genre.target.value[0].toUpperCase() + genre.target.value.slice(1)}, this.handleChangeMovie)
         }
     }
 

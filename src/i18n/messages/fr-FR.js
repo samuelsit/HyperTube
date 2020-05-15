@@ -50,6 +50,7 @@ export default {
         'error-verification': 'Erreur lors de la verification.',
         'redirection': 'Vous allez être redirigé dans {time} seconde(s).',
         '404-error': 'Erreur 404',
-        '404-error-message': 'La page que vous cherchez n\'existe pas.'
+        '404-error-message': 'La page que vous cherchez n\'existe pas.',
+        'settings': 'Paramètres'
     }
 }

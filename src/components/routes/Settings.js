@@ -139,7 +139,7 @@ class Settings extends Component {
                     <div className="container container-log pb-lg-5">
                         <div className="row">
                             <div className="login-sec mx-auto">
-                                <h2 className="text-center">Paramètres</h2>
+                                <h2 className="text-center">{translate('settings')}</h2>
                             </div>
                         </div>
                         <div className="row">

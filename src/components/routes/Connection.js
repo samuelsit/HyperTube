@@ -222,15 +222,15 @@ class Connection extends Component {
                                         <div className="col-6">
                                             <GoogleLogin
                                                 clientId={process.env.REACT_APP_CLIENT_ID_GOOGLE}
-                                                buttonText=""
+                                                buttonText="Google"
                                                 onSuccess={this.responseGoogleSuccess}
                                                 onFailure={this.responseGoogleError}
                                                 cookiePolicy={'single_host_origin'}
                                             />
                                         </div>
                                         <div className="col-6">
-                                          <a className="btn btn-light border shadow-sm" href="https://api.intra.42.fr/oauth/authorize?client_id=d3f78a661206accafdeedd5e56d51f978f145000e5ac136ad21220f0b387ae4d&redirect_uri=http%3A%2F%2Flocalhost%3A3000&response_type=code">
-                                            <img id="42" src={Logo42} alt="42-authentificaton" className="img-fluid" width="30px"/>
+                                          <a className="btn btn-white oauth-42" href="https://api.intra.42.fr/oauth/authorize?client_id=d3f78a661206accafdeedd5e56d51f978f145000e5ac136ad21220f0b387ae4d&redirect_uri=http%3A%2F%2Flocalhost%3A3000&response_type=code">
+                                            <img id="42" src={Logo42} alt="42-authentificaton" className="img-fluid" width="30px"/><span className="text-secondary ml-3">42</span>
                                           </a>
                                         </div>
                                     </div>
