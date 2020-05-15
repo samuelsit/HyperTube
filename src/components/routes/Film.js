@@ -88,6 +88,16 @@ class Film extends Component {
                 .catch(error => {
                     console.error(error)
                 })
+                axios
+                .get('http://localhost:5000/api/v1/film/like/' + this.props.match.params.id, { headers: { token: this.props.token }})
+                .then(res => {
+                    console.log(res);
+                    
+                    this.setState({isLike: res.data})
+                })
+                .catch(error => {
+                    console.error(error)
+                })
             }
         }
     }
