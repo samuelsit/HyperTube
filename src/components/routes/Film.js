@@ -66,8 +66,9 @@ class Film extends Component {
             behavior: 'smooth'
         })
         if (previousProps !== this.props) {
-            if (document.referrer.match(/localhost:3000\/film\/\d+/)) {                
+            if (document.referrer.match(/localhost:3000\/film\/\d+/)) {                                
                 window.scrollTo(0, 0)
+                console.log(`[${this.props.match.params.id}] New film on update`);
                 axios.get('https://yts.mx/api/v2/movie_details.json?movie_id=' + this.props.match.params.id, { useCredentails: true }).then(res => {
                     if (this._isMounted) {
                         this.setState({movie: res.data.data.movie, genre: res.data.data.movie.genres})
@@ -89,8 +90,6 @@ class Film extends Component {
                 axios
                 .get('http://localhost:5000/api/v1/film/like/' + this.props.match.params.id, { headers: { token: this.props.token }})
                 .then(res => {
-                    console.log(res);
-                    
                     this.setState({isLike: res.data})
                 })
                 .catch(error => {
