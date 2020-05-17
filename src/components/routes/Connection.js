@@ -91,7 +91,7 @@ class Connection extends Component {
                 })
                 .catch(error => {
                     console.error(error)
-                    this.setState({ isCorrectPseudo: 'is-invalid', isCorrectPassword: 'is-invalid', erreur: 'Erreur à la connexion' })
+                    this.setState({ isCorrectPassword: 'is-invalid', erreur: 'Erreur à la connexion' })
                 })
             }
             if (this.state.isCorrectPseudo !== 'is-valid') {
