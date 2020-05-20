@@ -2,10 +2,11 @@ import React, { Component } from 'react'
 import axios from 'axios'
 import { Redirect } from "react-router-dom"
 import Header from '../utils/Header'
-import { CSSTransition } from 'react-transition-group'
 import { connect } from 'react-redux'
 import translate from '../../i18n/translate'
 import { I18nProvider, LOCALES } from '../../i18n'
+import { motion } from 'framer-motion'
+import { pageVariant, pageTransition } from '../../css/motion'
 
 class Confirm extends Component {
 
@@ -62,13 +63,13 @@ class Confirm extends Component {
             <I18nProvider locale={this.props.lang === 'fr' ? LOCALES.FRENCH : LOCALES.ENGLISH }>
                 {this.handleRedirect()}
                 <Header/>
-                <CSSTransition
-                    in={true}
-                    appear={true}
-                    timeout={500}
-                    classNames="fade"
-                >
-                <div className="grad-block">
+                <motion.div 
+                initial="initial"
+                animate="in"
+                exit="out"
+                variants={pageVariant}
+                transition={pageTransition}
+                className="grad-block">
                     <div className="container container-log">
                         <div className="row">
                             <div className="col login-sec">
@@ -80,8 +81,7 @@ class Confirm extends Component {
                             </div>
                         </div>
                     </div>
-                </div>
-                </CSSTransition>
+                </motion.div>
             </I18nProvider>
         )
     }

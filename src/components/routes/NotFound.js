@@ -3,13 +3,21 @@ import Header from '../utils/Header'
 import { connect } from 'react-redux'
 import translate from '../../i18n/translate'
 import { I18nProvider, LOCALES } from '../../i18n'
+import { motion } from 'framer-motion'
+import { pageVariant, pageTransition } from '../../css/motion'
 
 class NotFound extends Component {
     render () {
         return (
             <I18nProvider locale={this.props.lang === 'fr' ? LOCALES.FRENCH : LOCALES.ENGLISH }>
                 <Header/>
-                <div className="grad-block">
+                <motion.div 
+                initial="initial"
+                animate="in"
+                exit="out"
+                variants={pageVariant}
+                transition={pageTransition}
+                className="grad-block">
                     <div className="container container-log">
                         <div className="row">
                             <div className="col login-sec">
@@ -18,7 +26,7 @@ class NotFound extends Component {
                             </div>
                         </div>
                     </div>
-                </div>
+                </motion.div>
             </I18nProvider>
         )
     }

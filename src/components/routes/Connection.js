@@ -4,13 +4,14 @@ import '../../css/Connection.css'
 import galerie from '../../img/galerie.png'
 import { Redirect, Link } from 'react-router-dom'
 import { connect } from 'react-redux'
-import { CSSTransition } from 'react-transition-group'
 import GoogleLogin from 'react-google-login'
 import textLogo from '../../img/text.png'
 import axios from 'axios'
 import Logo42 from '../../img/42_Logo.png'
 import { I18nProvider, LOCALES } from '../../i18n'
 import translate from '../../i18n/translate'
+import { motion } from 'framer-motion'
+import { pageVariant, pageTransition } from '../../css/motion'
 
 class Connection extends Component {
 
@@ -191,13 +192,13 @@ class Connection extends Component {
             <I18nProvider locale={this.props.lang === 'fr' ? LOCALES.FRENCH : LOCALES.ENGLISH }>
                 {this.handleRedirect()}
                 <Header/>
-                <CSSTransition
-                    in={true}
-                    appear={true}
-                    timeout={500}
-                    classNames="fade"
-                >
-                <div className="grad-block">
+                <motion.div 
+                initial="initial"
+                animate="in"
+                exit="out"
+                variants={pageVariant}
+                transition={pageTransition}
+                className="grad-block">
                     <div className="container container-log">
                         <div className="row">
                             <div className="col login-sec">
@@ -259,8 +260,7 @@ class Connection extends Component {
                             </div>
                         </div>
                     </div>
-                </div>
-                </CSSTransition>
+                </motion.div>
             </I18nProvider>
         )
     }

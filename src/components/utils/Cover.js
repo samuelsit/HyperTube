@@ -1,6 +1,5 @@
 import React, { Component } from 'react'
 import '../../css/Cover.css'
-import { CSSTransition } from 'react-transition-group'
 import { Link } from 'react-router-dom'
 
 class Cover extends Component {
@@ -8,19 +7,12 @@ class Cover extends Component {
         const film = this.props.film
         return (
             <>
-            <CSSTransition
-                in={true}
-                appear={true}
-                timeout={600}
-                classNames="fade"
-            >
                 <div className={this.props.suggestion ? "col-3 p-1 pulse" : "col-lg-2 col-md-3 col-sm-4 col-4 p-1 pulse"}>
                     <Link to={`/film/` + film.id}>
                         <img className="img-fluid film text-center" src={film.medium_cover_image} alt="" />
                         <h1 className="text-nowrap font-weight-bold text-danger title_film">{film.title}</h1>
                     </Link>
                 </div>
-            </CSSTransition>
             </>
         )
     }

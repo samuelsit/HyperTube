@@ -2,13 +2,14 @@ import React, { Component, Fragment } from 'react'
 import Header from '../utils/Header'
 import Cover from '../utils/Cover'
 import '../../css/Gallery.css'
-import { CSSTransition } from 'react-transition-group'
 import axios from 'axios'
 import Nav from '../utils/Nav'
 import InfiniteScroll from 'react-infinite-scroll-component'
 import '../../css/loader.css'
 import Scroll from '../utils/Scroll'
 import { connect } from 'react-redux'
+import { motion } from 'framer-motion'
+import { pageVariant, pageTransition } from '../../css/motion'
 
 class Gallery extends Component {
 
@@ -30,6 +31,7 @@ class Gallery extends Component {
                 this.setState({movies: res.data.data.movies})
             }
         })
+        
     }
 
     componentDidUpdate(previousProps, previousState) {
@@ -100,13 +102,13 @@ class Gallery extends Component {
         return (
             <Fragment>
                 <Header selectVal={this.handleSearch}/>
-                <CSSTransition
-                    in={true}
-                    appear={true}
-                    timeout={600}
-                    classNames="fade"
-                >
-                <div className="grad-block-gal">
+                <motion.div 
+                initial="initial"
+                animate="in"
+                exit="out"
+                variants={pageVariant}
+                transition={pageTransition}
+                className="grad-block-gal">
                     <div className="container-fluid">
                         <div className="row">
                             <Nav genre={this.handleGenre}/>
@@ -133,8 +135,7 @@ class Gallery extends Component {
                             </div>
                         </div>
                     </div>
-                </div>
-                </CSSTransition>
+                </motion.div>
                 <Scroll />
             </Fragment>
         )

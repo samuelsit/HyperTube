@@ -1,11 +1,12 @@
 import React, { Component } from 'react'
 import Header from '../utils/Header'
-import { CSSTransition } from 'react-transition-group'
 import '../../css/Settings.css'
 import axios from 'axios'
 import { connect } from 'react-redux'
 import translate from '../../i18n/translate'
 import { I18nProvider, LOCALES } from '../../i18n'
+import { motion } from 'framer-motion'
+import { pageVariant, pageTransition } from '../../css/motion'
 
 class Settings extends Component {
 
@@ -129,13 +130,13 @@ class Settings extends Component {
         return (
             <I18nProvider locale={this.props.lang === 'fr' ? LOCALES.FRENCH : LOCALES.ENGLISH }>
                 <Header/>
-                <CSSTransition
-                    in={true}
-                    appear={true}
-                    timeout={600}
-                    classNames="fade"
-                >
-                <div className="grad-block">
+                <motion.div 
+                initial="initial"
+                animate="in"
+                exit="out"
+                variants={pageVariant}
+                transition={pageTransition}
+                className="grad-block">
                     <div className="container container-log pb-lg-5">
                         <div className="row">
                             <div className="login-sec mx-auto">
@@ -186,8 +187,7 @@ class Settings extends Component {
                             </form>
                         </div>
                     </div>
-                </div>
-                </CSSTransition>
+                </motion.div>
             </I18nProvider>
         )
     }

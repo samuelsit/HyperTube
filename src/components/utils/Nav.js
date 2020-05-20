@@ -59,28 +59,28 @@ class Nav extends Component {
                     </label>
                 </div>
                 <div className="mr-lg-4 col-lg-2 mb-5 mb-lg-0 displayLarge">
-                    <div className="block-shadow text-center displayLarge">
-                        <button className="btn btn-danger mt-3" value='all' onClick={this.props.genre}>{translate('genre-all')}</button><br/><hr/>
-                        <button className="btn btn-danger" value='action' onClick={this.props.genre}>{translate('genre-action')}</button><br/><hr/>
-                        <button className="btn btn-danger" value='adventure' onClick={this.props.genre}>{translate('genre-adventure')}</button><br/><hr/>
-                        <button className="btn btn-danger" value='animation' onClick={this.props.genre}>{translate('genre-animation')}</button><br/><hr/>
-                        <button className="btn btn-danger" value='biography' onClick={this.props.genre}>{translate('genre-biography')}</button><br/><hr/>
-                        <button className="btn btn-danger" value='comedy' onClick={this.props.genre}>{translate('genre-comedy')}</button><br/><hr/>
-                        <button className="btn btn-danger" value='crime' onClick={this.props.genre}>{translate('genre-crime')}</button><br/><hr/>
-                        <button className="btn btn-danger" value='documentary' onClick={this.props.genre}>{translate('genre-documentary')}</button><br/><hr/>
-                        <button className="btn btn-danger" value='drama' onClick={this.props.genre}>{translate('genre-drama')}</button><br/><hr/>
-                        <button className="btn btn-danger" value='family' onClick={this.props.genre}>{translate('genre-family')}</button><br/><hr/>
-                        <button className="btn btn-danger" value='fantasy' onClick={this.props.genre}>{translate('genre-fantasy')}</button><br/><hr/>
-                        <button className="btn btn-danger" value='history' onClick={this.props.genre}>{translate('genre-history')}</button><br/><hr/>
-                        <button className="btn btn-danger" value='horror' onClick={this.props.genre}>{translate('genre-horror')}</button><br/><hr/>
-                        <button className="btn btn-danger" value='music' onClick={this.props.genre}>{translate('genre-music')}</button><br/><hr/>
-                        <button className="btn btn-danger" value='mystery' onClick={this.props.genre}>{translate('genre-mystery')}</button><br/><hr/>
-                        <button className="btn btn-danger" value='romance' onClick={this.props.genre}>{translate('genre-romance')}</button><br/><hr/>
-                        <button className="btn btn-danger" value='sci-fi' onClick={this.props.genre}>{translate('genre-sci-fi')}</button><br/><hr/>
-                        <button className="btn btn-danger" value='sport' onClick={this.props.genre}>{translate('genre-sport')}</button><br/><hr/>
-                        <button className="btn btn-danger" value='thriller' onClick={this.props.genre}>{translate('genre-thriller')}</button><br/><hr/>
-                        <button className="btn btn-danger" value='war' onClick={this.props.genre}>{translate('genre-war')}</button><br/><hr/>
-                        <button className="btn btn-danger" value='western' onClick={this.props.genre}>{translate('genre-western')}</button><br/><hr/>
+                    <div className="block-shadow text-center displayLarge p-4">
+                        <button className="btn btn-block btn-danger" value='all' onClick={this.props.genre}>{translate('genre-all')}</button>
+                        <button className="btn btn-block btn-danger" value='action' onClick={this.props.genre}>{translate('genre-action')}</button>
+                        <button className="btn btn-block btn-danger" value='adventure' onClick={this.props.genre}>{translate('genre-adventure')}</button>
+                        <button className="btn btn-block btn-danger" value='animation' onClick={this.props.genre}>{translate('genre-animation')}</button>
+                        <button className="btn btn-block btn-danger" value='biography' onClick={this.props.genre}>{translate('genre-biography')}</button>
+                        <button className="btn btn-block btn-danger" value='comedy' onClick={this.props.genre}>{translate('genre-comedy')}</button>
+                        <button className="btn btn-block btn-danger" value='crime' onClick={this.props.genre}>{translate('genre-crime')}</button>
+                        <button className="btn btn-block btn-danger" value='documentary' onClick={this.props.genre}>{translate('genre-documentary')}</button>
+                        <button className="btn btn-block btn-danger" value='drama' onClick={this.props.genre}>{translate('genre-drama')}</button>
+                        <button className="btn btn-block btn-danger" value='family' onClick={this.props.genre}>{translate('genre-family')}</button>
+                        <button className="btn btn-block btn-danger" value='fantasy' onClick={this.props.genre}>{translate('genre-fantasy')}</button>
+                        <button className="btn btn-block btn-danger" value='history' onClick={this.props.genre}>{translate('genre-history')}</button>
+                        <button className="btn btn-block btn-danger" value='horror' onClick={this.props.genre}>{translate('genre-horror')}</button>
+                        <button className="btn btn-block btn-danger" value='music' onClick={this.props.genre}>{translate('genre-music')}</button>
+                        <button className="btn btn-block btn-danger" value='mystery' onClick={this.props.genre}>{translate('genre-mystery')}</button>
+                        <button className="btn btn-block btn-danger" value='romance' onClick={this.props.genre}>{translate('genre-romance')}</button>
+                        <button className="btn btn-block btn-danger" value='sci-fi' onClick={this.props.genre}>{translate('genre-sci-fi')}</button>
+                        <button className="btn btn-block btn-danger" value='sport' onClick={this.props.genre}>{translate('genre-sport')}</button>
+                        <button className="btn btn-block btn-danger" value='thriller' onClick={this.props.genre}>{translate('genre-thriller')}</button>
+                        <button className="btn btn-block btn-danger" value='war' onClick={this.props.genre}>{translate('genre-war')}</button>
+                        <button className="btn btn-block btn-danger" value='western' onClick={this.props.genre}>{translate('genre-western')}</button>
                     </div>
                 </div>
             </I18nProvider>

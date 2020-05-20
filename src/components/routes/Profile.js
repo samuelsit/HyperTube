@@ -1,13 +1,14 @@
 import React, { Component } from 'react'
 import Header from '../utils/Header'
 import '../../css/Profile.css'
-import { CSSTransition } from 'react-transition-group'
 import Carousel from '../utils/Carousel'
 import axios from 'axios'
 import { connect } from 'react-redux'
 import translate from '../../i18n/translate'
 import { I18nProvider, LOCALES } from '../../i18n'
 import { Redirect } from 'react-router-dom'
+import { motion } from 'framer-motion'
+import { pageVariant, pageTransition } from '../../css/motion'
 
 class Profile extends Component {
 
@@ -76,13 +77,13 @@ class Profile extends Component {
             <I18nProvider locale={this.props.lang === 'fr' ? LOCALES.FRENCH : LOCALES.ENGLISH }>
                 {this.handleRedirect()}
                 <Header/>
-                <CSSTransition
-                    in={true}
-                    appear={true}
-                    timeout={600}
-                    classNames="fade"
-                >
-                <div className="grad-block">
+                <motion.div 
+                initial="initial"
+                animate="in"
+                exit="out"
+                variants={pageVariant}
+                transition={pageTransition}
+                className="grad-block">
                     <div className="container container-log pb-lg-5">
                         <div className="row row-header">
                             <div className="mx-auto">
@@ -103,8 +104,7 @@ class Profile extends Component {
                             <Carousel movies={this.state.liked_movies} />
                         </div>
                     </div>
-                </div>
-                </CSSTransition>
+                </motion.div>
             </I18nProvider>
         )
     }

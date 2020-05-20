@@ -1,6 +1,6 @@
 import React from 'react'
 import ReactDOM from 'react-dom'
-import { BrowserRouter, Switch } from 'react-router-dom'
+import { BrowserRouter, Switch, Route } from 'react-router-dom'
 import 'bootstrap/dist/css/bootstrap.min.css'
 import './css/index.css'
 import { createStore } from 'redux'
@@ -22,6 +22,7 @@ import ChangePass from './components/routes/ChangePass'
 import Confirm from './components/routes/Confirm'
 import PrivateRoute from './components/PrivateRoute'
 import PublicRoute from './components/PublicRoute'
+import { AnimatePresence } from 'framer-motion'
 
 require('dotenv').config()
 
@@ -34,19 +35,23 @@ store.subscribe(() => {
 
 const Root = () => (
     <BrowserRouter>
-        <Switch>
-            <PublicRoute exact path='/' component={Connection} />
-            <PrivateRoute exact path='/galerie' component={Gallery} />
-            <PrivateRoute exact path='/utilisateurs' component={Users} />
-            <PrivateRoute exact path='/parametres' component={Settings} />
-            <PublicRoute exact path='/inscription' component={Authentication} />
-            <PublicRoute exact path='/oubli' component={Forgot} />
-            <PublicRoute path='/changement-de-mot-de-passe/:token' component={ChangePass} />
-            <PublicRoute path='/confirmation/:token' component={Confirm} />
-            <PrivateRoute path='/profil/:pseudo' component={Profile} />
-            <PrivateRoute path='/film/:id' component={Film} />
-            <PublicRoute component={NotFound} />
-        </Switch>
+        <AnimatePresence exitBeforeEnter>
+            <Route render={({location}) => (
+                <Switch location={location} key={location.key}>
+                    <PublicRoute exact path='/' component={Connection} />
+                    <PrivateRoute exact path='/galerie' component={Gallery} />
+                    <PrivateRoute exact path='/utilisateurs' component={Users} />
+                    <PrivateRoute exact path='/parametres' component={Settings} />
+                    <PublicRoute exact path='/inscription' component={Authentication} />
+                    <PublicRoute exact path='/oubli' component={Forgot} />
+                    <PublicRoute path='/changement-de-mot-de-passe/:token' component={ChangePass} />
+                    <PublicRoute path='/confirmation/:token' component={Confirm} />
+                    <PrivateRoute path='/profil/:pseudo' component={Profile} />
+                    <PrivateRoute path='/film/:id' component={Film} />
+                    <PublicRoute component={NotFound} />
+                </Switch>
+            )} />
+        </AnimatePresence>
    </BrowserRouter>
 )
 

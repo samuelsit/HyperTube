@@ -1,9 +1,10 @@
 import React, { Component, Fragment } from 'react'
 import Header from '../utils/Header'
 import UserCard from '../utils/UserCard'
-import { CSSTransition } from 'react-transition-group'
 import axios from 'axios'
 import { connect } from 'react-redux'
+import { motion } from 'framer-motion'
+import { pageVariant, pageTransition } from '../../css/motion'
 
 class Users extends Component {
 
@@ -71,13 +72,13 @@ class Users extends Component {
         return (
             <Fragment>
                 <Header/>
-                <CSSTransition
-                    in={true}
-                    appear={true}
-                    timeout={600}
-                    classNames="fade"
-                >
-                <div className="grad-block">
+                <motion.div 
+                initial="initial"
+                animate="in"
+                exit="out"
+                variants={pageVariant}
+                transition={pageTransition}
+                className="grad-block">
                     <div className="container container-log pb-lg-5">
                         <div className="row">
                             <div className="login-sec mx-auto">
@@ -88,8 +89,7 @@ class Users extends Component {
                             {this.state.users}
                         </div>
                     </div>
-                </div>
-                </CSSTransition>
+                </motion.div>
             </Fragment>
         )
     }

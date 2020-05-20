@@ -6,6 +6,8 @@ import Cover from '../utils/Cover'
 import { connect } from 'react-redux'
 import { I18nProvider, LOCALES } from '../../i18n'
 import translate from '../../i18n/translate'
+import { motion } from 'framer-motion'
+import { pageVariant, pageTransition } from '../../css/motion'
 
 class Film extends Component {
     constructor(props) {
@@ -220,7 +222,13 @@ class Film extends Component {
         return (
             <I18nProvider locale={this.props.lang === 'fr' ? LOCALES.FRENCH : LOCALES.ENGLISH }>
                 <Header/>
-                <div className="grad-block">
+                <motion.div 
+                initial="initial"
+                animate="in"
+                exit="out"
+                variants={pageVariant}
+                transition={pageTransition}
+                className="grad-block">
                     <div className="container container-log">
                         <div className="row">
                             <div className="col login-sec">
@@ -281,7 +289,7 @@ class Film extends Component {
                             </div>
                         </div>
                     </div>
-                </div>
+                </motion.div>
             </I18nProvider>
         )
     }
