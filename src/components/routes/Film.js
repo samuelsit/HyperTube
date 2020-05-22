@@ -15,6 +15,7 @@ class Film extends Component {
         super(props)
         this.state = {
             movie: [],
+            episodes: [],
             genre: [],
             suggestion: [],
             intervalId: 0,
@@ -64,6 +65,11 @@ class Film extends Component {
                     this.setState({movie: res.data})
                 }
                 
+            }
+        })
+        axios.get('https://eztv.io/api/get-torrents?imdb_id=' + this.props.match.params.id, { useCredentails: true }).then(res => {
+            if (res.data.torrents && this._isMounted) {
+                this.setState({episodes: res.data.torrents})
             }
         })
     }
@@ -257,7 +263,7 @@ class Film extends Component {
         var year = date.getFullYear();
         const suggestion = this.state.suggestion.map((el, i) => {
             return (
-                <Cover src={this.props.match.params.src} key={i} film={el} suggestion={true} />
+                <Cover src={this.props.match.params.src} key={i} film={el} suggestion={true} magnet={el.magnet_url ? el.magnet_url : ''} torrent={el.torrent_url ? el.torrent_url : ''} />
             )
         })
         let comments = this.state.comments.map((el, i) => {
@@ -335,10 +341,10 @@ class Film extends Component {
                                         <video controls width="100%" className="border"></video>
                                     </div>
                                     <div className="col-12 mt-4">
-                                    <div id="chat" ref={this.Chat} className="border shadow p-2">
-                                        {comments}
-                                    </div>
-                                    <form className="form-inline mt-5" onSubmit={this.handleSubmit}><input className="form-control mr-3 w-75 mx-auto" onChange={this.handleChange} value={this.state.comment} /><button className="btn btn-danger mx-auto">{translate('send')}</button></form>
+                                        <div id="chat" ref={this.Chat} className="border shadow p-2">
+                                            {comments}
+                                        </div>
+                                        <form className="form-inline mt-5" onSubmit={this.handleSubmit}><input className="form-control mr-3 w-75 mx-auto" onChange={this.handleChange} value={this.state.comment} /><button className="btn btn-danger mx-auto">{translate('send')}</button></form>
                                     </div>
                                 </div>
                             </div>
@@ -357,7 +363,44 @@ class Film extends Component {
                                 </div>
                             </div>
                         :
-                            null
+                            <div className="container container-log mt-5">
+                                <div className="row ml-lg-3">
+                                    <div className="col login-sec">
+                                        <h2 className="text-center">{translate('other-episodes')}</h2>
+                                        <div className="row">
+                                            <div className="col-12 mt-4">
+                                                <table className="table table-hover pb-0 mb-0">
+                                                    <thead>
+                                                        <tr>
+                                                            <th style={{width: '10%'}} className="text-center" scope="col">{translate('season')}</th>
+                                                            <th style={{width: '10%'}} className="text-center" scope="col">Episode</th>
+                                                            <th style={{width: '80%'}} scope="col">{translate('title')}</th>
+                                                        </tr>
+                                                    </thead>
+                                                </table>
+                                            </div>
+                                            <div className="col-12 episodes">
+                                                <table className="table table-hover">
+                                                    <tbody style={{overflow: 'scroll', height: '300px'}}>
+                                                        {
+                                                            this.state.episodes
+                                                            .sort((a, b) => a.season - b.season)
+                                                            .sort((a, b) => a.episode - b.episode)
+                                                            .map((el, i) => (
+                                                                <tr key={i} style={{cursor: 'pointer'}} onClick={() => {alert('magnet:\n' + el.magnet_url + '\n\ntorrent:\n' + el.torrent_url)}}>
+                                                                    <th style={{width: '10%'}} className="text-center" scope="row">{el.season}</th>
+                                                                    <th style={{width: '10%'}} className="text-center" scope="row">{el.episode}</th>
+                                                                    <td style={{width: '80%'}}>{el.title}</td>
+                                                                </tr>
+                                                            ))
+                                                        }
+                                                    </tbody>
+                                                </table>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
                     }
                 </motion.div>
             </I18nProvider>

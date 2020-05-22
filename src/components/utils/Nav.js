@@ -60,7 +60,7 @@ class Nav extends Component {
                 </div>
                 <div className="mr-lg-4 col-lg-2 mb-5 mb-lg-0 displayLarge">
                     <div className="block-shadow text-center displayLarge p-4">
-                        <button className="btn btn-block btn-danger" value='all' onClick={this.props.genre}>{translate('genre-all')}</button>
+                        <button className="btn btn-block btn-secondary sam" value='all' onClick={this.props.genre}>{translate('genre-all')}</button>
                         <button className="btn btn-block btn-danger" value='action' onClick={this.props.genre}>{translate('genre-action')}</button>
                         <button className="btn btn-block btn-danger" value='adventure' onClick={this.props.genre}>{translate('genre-adventure')}</button>
                         <button className="btn btn-block btn-danger" value='animation' onClick={this.props.genre}>{translate('genre-animation')}</button>

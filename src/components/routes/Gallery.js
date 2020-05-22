@@ -65,10 +65,16 @@ class Gallery extends Component {
         this.props.src === 'yts' ? this.getYTS() : this.getEZTV()
     }
 
-    handleGenre = genre => {        
+    handleGenre = genre => {
+        document.getElementsByClassName('btn-secondary sam')[0].classList.add('btn-danger')
+        document.getElementsByClassName('btn-secondary sam')[0].classList.remove('btn-secondary')
+        document.getElementsByClassName('sam')[0].classList.remove('sam')
+        genre.target.classList.remove('btn-danger')
+        genre.target.classList.add('btn-secondary')
+        genre.target.classList.add('sam')
         let newOption = this.state.option.replace(/&genre=[\w-]+/i, '&genre=' + genre.target.value).replace(/&query_term=.*/gi, '&query_term=0').replace(/&page=\d+/i, '&page=1')
         if (this._isMounted) {
-            this.setState({page: 1, length: 24, option: newOption, title: genre.target.value[0].toUpperCase() + genre.target.value.slice(1)}, this.handleChangeMovie)
+            this.setState({page: 1, length: 24, option: newOption}, this.handleChangeMovie)
         }
     }
 
@@ -154,7 +160,7 @@ class Gallery extends Component {
                                                 hasMore={true}
                                                 loader={<div className="lds-roller"><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div></div>}
                                             >
-                                            <div className="row ml-1">
+                                            <div className="row">
                                                 { films }
                                             </div>
                                             </InfiniteScroll>
