@@ -53,11 +53,25 @@ class Gallery extends Component {
     }
 
     getEZTV = () => {
-        axios.get('https://eztv.io/api/get-torrents?limit=50&page=' + this.state.page, { useCredentails: true }).then(res => {
+        axios.get('https://eztv.io/api/get-torrents?limit=70&page=' + this.state.page, { useCredentails: true }).then(res => {
             if (res.data.torrents && this._isMounted) {
-                this.setState({movies: res.data.torrents.filter(el => el.imdb_id !== '0')})
+                this.setState({movies: this.removeDoublons(res.data.torrents.filter(el => el.imdb_id !== '0'), 'imdb_id')})
             }
         })
+    }
+
+    removeDoublons = (originalArray, prop) => {
+        var newArray = [];
+        var lookupObject = {};
+   
+        for(var i in originalArray) {
+           lookupObject[originalArray[i][prop]] = originalArray[i];
+        }
+   
+        for(i in lookupObject) {
+            newArray.push(lookupObject[i]);
+        }
+        return newArray;
     }
 
     handleChangeMovie = () => {
@@ -91,9 +105,9 @@ class Gallery extends Component {
             })
         }
         else {
-            axios.get('https://eztv.io/api/get-torrents?limit=50&page=' + this.state.page, { useCredentails: true }).then(res => {
+            axios.get('https://eztv.io/api/get-torrents?limit=70&page=' + this.state.page, { useCredentails: true }).then(res => {
                 if (res.data.torrents && this._isMounted) {
-                    this.setState({movies: this.state.movies.concat(res.data.torrents.filter(el => el.imdb_id !== '0'))})
+                    this.setState({movies: this.state.movies.concat(this.removeDoublons(res.data.torrents.filter(el => el.imdb_id !== '0'), 'imdb_id'))})
                 }
             }).then(() => {
                 if (this._isMounted) {
