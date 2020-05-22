@@ -88,6 +88,7 @@ class Connection extends Component {
                     this.props.setUserIsAuth(true)
                     this.props.setUserToken(res.data.token)
                     this.props.setUserPseudo(res.data.user.pseudo)
+                    this.props.setUserSrc('yts')
                     this.setState({redirect: true})
                 })
                 .catch(error => {
@@ -130,6 +131,7 @@ class Connection extends Component {
               this.props.setUserIsAuth(true)
               this.props.setUserToken(res.data.token)
               this.props.setUserPseudo(res.data.user.pseudo)
+              this.props.setUserSrc('yts')
               this.setState({redirect: true})
           })
           .catch(error => {
@@ -171,6 +173,7 @@ class Connection extends Component {
                 this.props.setUserIsAuth(true)
                 this.props.setUserToken(res.data.token)
                 this.props.setUserPseudo(res.data.user.pseudo)
+                this.props.setUserSrc('yts')
                 this.setState({redirect: true})
             })
             .catch(error => {
@@ -276,6 +279,9 @@ const mapDispatchToProps = dispatch => {
         },
         setUserPseudo: (pseudo) => {
             dispatch({ type: 'SET_USER_PSEUDO', pseudo: pseudo })
+        },
+        setUserSrc: (src) => {
+            dispatch({ type: 'SET_USER_SRC', src: src })
         }
     }
 }

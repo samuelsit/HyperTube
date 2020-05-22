@@ -20,6 +20,8 @@
 .img-carou {
   width: 115px!important;
   object-fit:cover;
+  border-radius: 3px;
+  height: 200px; 
 }
 
 @media screen and (min-width: 1000px) {

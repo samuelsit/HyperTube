@@ -7,12 +7,21 @@ import { connect } from 'react-redux'
 
 class Header extends Component {
 
-    handleClick = () => {
+    handleClickLang = () => {
         if (this.props.lang === 'fr') {
             this.props.setUserLang('en')
         }
         else {
             this.props.setUserLang('fr')
+        }
+    }
+
+    handleClickSource = () => {
+        if (this.props.src === 'yts') {
+            this.props.setUserSrc('eztv')
+        }
+        else {
+            this.props.setUserSrc('yts')
         }
     }
 
@@ -37,7 +46,7 @@ class Header extends Component {
                                 <li className="nav-item"></li>
                             </ul>
                         </div>
-                        <label className="btn btn-light mt-2" style={{fontSize: '25px'}} onClick={this.handleClick}><span role="img" aria-label="flag-usa ">{this.props.lang === 'fr' ? '🇺🇸' : '🇫🇷'}</span></label>
+                        <label className="btn btn-light mt-2" style={{fontSize: '25px'}} onClick={this.handleClickLang}><span role="img" aria-label="flag-usa ">{this.props.lang === 'fr' ? '🇺🇸' : '🇫🇷'}</span></label>
                     </nav>
                 </header>
             )
@@ -59,7 +68,7 @@ class Header extends Component {
                                 <li className="nav-item"></li>
                             </ul>
                         </div>
-                        {this.props.selectVal
+                        {this.props.selectVal && this.props.src === 'yts'
                         ?
                         <div className="searchbar mr-1">
                             <input id="search" className="searchhead search_input" type="text" placeholder="Rechercher un film..." onChange={this.props.selectVal}/>
@@ -80,7 +89,8 @@ class Header extends Component {
                         <Link to="/">
                         <div className="text-light btn btn-danger mr-1" onClick={this.handleDisconnect}><i className="fas fa-sign-out-alt"></i></div>
                         </Link>
-                        <label className="btn btn-light mt-2" style={{fontSize: '25px'}} onClick={this.handleClick}><span role="img" aria-label="flag-usa ">{this.props.lang === 'fr' ? '🇺🇸' : '🇫🇷'}</span></label>
+                        {window.location.pathname === '/galerie' ? <label className="btn btn-light mt-2 mr-1" onClick={this.handleClickSource}><img src={require(`../../img/${this.props.src}.png`)} width="37px" alt="source stream" /></label> : null}
+                        <label className="btn btn-light mt-2" style={{fontSize: '25px'}} onClick={this.handleClickLang}><span role="img" aria-label="flag-usa ">{this.props.lang === 'fr' ? '🇫🇷' : '🇺🇸'}</span></label>
                     </nav>
                 </header>
             )
@@ -101,6 +111,9 @@ const mapDispatchToProps = dispatch => {
         },
         setUserLang: (lang) => {
             dispatch({ type: 'SET_USER_LANG', lang: lang })
+        },
+        setUserSrc: (src) => {
+            dispatch({ type: 'SET_USER_SRC', src: src })
         }
     }
 }
@@ -109,7 +122,8 @@ const mapStateToProps = state => {
     return {
         isAuth: state.isAuth,
         pseudo: state.pseudo,
-        lang: state.lang
+        lang: state.lang,
+        src: state.src
     }
 }
 

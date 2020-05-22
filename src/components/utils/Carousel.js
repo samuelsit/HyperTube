@@ -35,12 +35,12 @@ class Carousel extends Component {
             return (
                 <div className="tile" key={i}>
                     <div className="tile-media">
-                        <Link to={`/film/${el.id}`}><img src={el.medium_cover_image} className="img-carou" alt="background"/></Link>
+                        <Link to={`/film/${el.src}/${el.id}`}><img src={el.img} className="img-carou" alt="background"/></Link>
                     </div>
                 </div>
             )
         })
-                
+
         return (
             <Fragment>
                 <div ref={this.Ref} className="ml-0 row row-car">

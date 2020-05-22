@@ -18,7 +18,7 @@ class Gallery extends Component {
     state = {
         movies: [],
         option: '?limit=24&sort_by=year&order_by=desc&genre=all&page=1&query_term=0',
-        title: this.props.lang === 'fr' ? 'Tous' : 'All',
+        title: this.props.src.toUpperCase(),
         page: 1,
         length: 24,
         search: ''
@@ -26,27 +26,43 @@ class Gallery extends Component {
 
     componentDidMount() {
         this._isMounted = true
-        axios.get('https://yts.mx/api/v2/list_movies.json' + this.state.option, { useCredentails: true }).then(res => {
-            if (this._isMounted) {
-                this.setState({movies: res.data.data.movies})
-            }
-        })
-        
+        this.props.src === 'yts' ? this.getYTS() : this.getEZTV()        
     }
 
     componentDidUpdate(previousProps, previousState) {
-        // if (previousProps.lang !== this.props.lang) {
-            
-        // }
+        if (previousProps.src !== this.props.src && this._isMounted) {
+            this.setState({
+                movies: [],
+                option: '?limit=24&sort_by=year&order_by=desc&genre=all&page=1&query_term=0',
+                page: 1,
+                length: 24,
+                search: ''
+            }, this.props.src === 'yts' ? this.getYTS() : this.getEZTV())
+        }
+        if (previousProps.src !== this.props.src) {
+            this.setState({title: this.props.src.toUpperCase()})
+        }
     }
 
-    handleChangeMovie = () => {
+    getYTS = () => {
         axios.get('https://yts.mx/api/v2/list_movies.json' + this.state.option, { useCredentails: true }).then(res => {
             if (res.data.data.movies && this._isMounted) {
                 this.setState({movies: res.data.data.movies})
-                window.scrollTo(0, 0)
             }
         })
+    }
+
+    getEZTV = () => {
+        axios.get('https://eztv.io/api/get-torrents?limit=50&page=' + this.state.page, { useCredentails: true }).then(res => {
+            if (res.data.torrents && this._isMounted) {
+                this.setState({movies: res.data.torrents.filter(el => el.imdb_id !== '0')})
+            }
+        })
+    }
+
+    handleChangeMovie = () => {
+        window.scrollTo(0, 0)
+        this.props.src === 'yts' ? this.getYTS() : this.getEZTV()
     }
 
     handleGenre = genre => {        
@@ -57,15 +73,28 @@ class Gallery extends Component {
     }
 
     handleConcat = () => {
-        axios.get('https://yts.mx/api/v2/list_movies.json' + this.state.option, { useCredentails: true }).then(res => {
-            if (res.data.data.movies && this._isMounted) {
-                this.setState({movies: this.state.movies.concat(res.data.data.movies)})
-            }
-        }).then(() => {
-            if (this._isMounted) {
-                this.setState({length: this.state.length + 24})
-            }
-        })
+        if (this.props.src === 'yts') {
+            axios.get('https://yts.mx/api/v2/list_movies.json' + this.state.option, { useCredentails: true }).then(res => {
+                if (res.data.data.movies && this._isMounted) {
+                    this.setState({movies: this.state.movies.concat(res.data.data.movies)})
+                }
+            }).then(() => {
+                if (this._isMounted) {
+                    this.setState({length: this.state.length + 24})
+                }
+            })
+        }
+        else {
+            axios.get('https://eztv.io/api/get-torrents?limit=50&page=' + this.state.page, { useCredentails: true }).then(res => {
+                if (res.data.torrents && this._isMounted) {
+                    this.setState({movies: this.state.movies.concat(res.data.torrents.filter(el => el.imdb_id !== '0'))})
+                }
+            }).then(() => {
+                if (this._isMounted) {
+                    this.setState({length: this.state.length + 24})
+                }
+            })
+        }
     }
 
     handlePage = () => {
@@ -96,7 +125,7 @@ class Gallery extends Component {
     render () {
         const films = this.state.movies.map((el, i) => {
             return (
-                <Cover key={i} film={el} />
+                <Cover key={i} film={el} src={this.props.src} />
             )
         })
         return (
@@ -109,11 +138,11 @@ class Gallery extends Component {
                 variants={pageVariant}
                 transition={pageTransition}
                 className="grad-block-gal">
-                    <div className="container-fluid">
+                    <div className={this.props.src === 'yts' ? "container-fluid" : "container"}>
                         <div className="row">
-                            <Nav genre={this.handleGenre}/>
-                            <div className="mr-lg-4 col-lg-2 mb-5 mb-lg-0 d-none d-lg-block" style={{zIndex: '-10'}}></div>
-                            <div className="col-lg-9 col">
+                            { this.props.src === 'yts' ? <Nav genre={this.handleGenre}/> : null }
+                            { this.props.src === 'yts' ? <div className="mr-lg-4 col-lg-2 mb-5 mb-lg-0 d-none d-lg-block" style={{zIndex: '-10'}}></div> : null }
+                            <div className={this.props.src === 'yts' ? "col-lg-9 col" : "col"}>
                                 <div className="row">
                                     <div className="col login-sec block-shadow">
                                         <h2 className="text-center shadow-theme">{this.state.search ? this.state.search : this.state.title}</h2>
@@ -144,7 +173,8 @@ class Gallery extends Component {
 
 const mapStateToProps = state => { 
     return {
-        lang: state.lang
+        lang: state.lang,
+        src: state.src
     }
 }
 

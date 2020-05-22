@@ -8,6 +8,7 @@ import { I18nProvider, LOCALES } from '../../i18n'
 import translate from '../../i18n/translate'
 import { motion } from 'framer-motion'
 import { pageVariant, pageTransition } from '../../css/motion'
+import { Redirect } from 'react-router-dom'
 
 class Film extends Component {
     constructor(props) {
@@ -19,7 +20,8 @@ class Film extends Component {
             intervalId: 0,
             isLike: false,
             comment: '',
-            comments: []
+            comments: [],
+            redirect: false
         }
         this.Chat = React.createRef()
     }
@@ -30,34 +32,73 @@ class Film extends Component {
         this._isMounted = false
     }
 
-    componentDidMount() {   
-        this._isMounted = true
-        window.scrollTo(0, 0)
+    handleRedirect = () => (
+        this.state.redirect ? <Redirect to="/" /> : null
+    )
+
+    handleYTS = () => {
         axios.get('https://yts.mx/api/v2/movie_details.json?movie_id=' + this.props.match.params.id, { useCredentails: true }).then(res => {
             if (this._isMounted) {
-                this.setState({movie: res.data.data.movie, genre: res.data.data.movie.genres})
-                axios
-                .get('http://localhost:5000/api/v1/film/comment/' + this.props.match.params.id, { headers: { token: this.props.token }})
-                .then(res => {
-                    this.setState({comments: res.data})
-                })
-                .catch(error => {
-                    console.error(error)
-                })
-                axios
-                .get('http://localhost:5000/api/v1/film/like/' + this.props.match.params.id, { headers: { token: this.props.token }})
-                .then(res => {
-                    this.setState({isLike: res.data})
-                })
-                .catch(error => {
-                    console.error(error)
-                })
+                if (res.data.data.movie.url === 'https://yts.mx/movie/') {
+                    this.setState({redirect: true})
+                }
+                else {
+                    this.setState({movie: res.data.data.movie, genre: res.data.data.movie.genres})
+                }
             }
         })
         axios.get('https://yts.mx/api/v2/movie_suggestions.json?movie_id=' + this.props.match.params.id, { useCredentails: true }).then(res => {
             if (this._isMounted) {
                 this.setState({suggestion: res.data.data.movies})
             }
+        })
+    }
+
+    handleEZTV = () => {
+        axios.get('http://www.omdbapi.com/?i=tt' + this.props.match.params.id + '&apikey=22f35880', { useCredentails: true }).then(res => {
+            if (this._isMounted) {
+                if (res.data.Error) {
+                    this.setState({redirect: true})
+                }
+                else {
+                    this.setState({movie: res.data})
+                }
+                
+            }
+        })
+    }
+
+    componentDidMount() {
+        this._isMounted = true
+        if (this._isMounted) {
+            if (this.props.match.params.src !== 'eztv' && this.props.match.params.src !== 'yts') {
+                this.setState({redirect: true})
+            }
+        }
+        window.scrollTo(0, 0)
+        if (this.props.match.params.src === 'yts') {
+            this.handleYTS()
+        }
+        else {
+            this.handleEZTV()
+        }
+        axios
+        .get('http://localhost:5000/api/v1/film/comment/' + this.props.match.params.src + '/' + this.props.match.params.id, { headers: { token: this.props.token }})
+        .then(res => {
+            this.setState({comments: res.data})
+        })
+        .catch(error => {
+            console.error(error)
+            this.setState({redirect: true})
+        })
+        axios
+        .get('http://localhost:5000/api/v1/film/like/' + this.props.match.params.src + '/' + this.props.match.params.id, { headers: { token: this.props.token }})
+        .then(res => {
+            this.setState({isLike: res.data})
+        })
+        .catch(error => {
+            console.error(error)
+            this.setState({redirect: true})
         })
     }
 
@@ -71,31 +112,29 @@ class Film extends Component {
             if (document.referrer.match(/localhost:3000\/film\/\d+/)) {                                
                 window.scrollTo(0, 0)
                 console.log(`[${this.props.match.params.id}] New film on update`);
-                axios.get('https://yts.mx/api/v2/movie_details.json?movie_id=' + this.props.match.params.id, { useCredentails: true }).then(res => {
-                    if (this._isMounted) {
-                        this.setState({movie: res.data.data.movie, genre: res.data.data.movie.genres})
-                    }
-                })
-                axios.get('https://yts.mx/api/v2/movie_suggestions.json?movie_id=' + this.props.match.params.id, { useCredentails: true }).then(res => {
-                    if (this._isMounted) {
-                        this.setState({suggestion: res.data.data.movies})
-                    }
-                })
+                if (this.props.match.params.src === 'yts') {
+                    this.handleYTS()
+                }
+                else {
+                    this.handleEZTV()
+                }
                 axios
-                .get('http://localhost:5000/api/v1/film/comment/' + this.props.match.params.id, { headers: { token: this.props.token }})
+                .get('http://localhost:5000/api/v1/film/comment/' + this.props.match.params.src + '/' + this.props.match.params.id, { headers: { token: this.props.token }})
                 .then(res => {
                     this.setState({comments: res.data})
                 })
                 .catch(error => {
                     console.error(error)
+                    this.setState({redirect: true})
                 })
                 axios
-                .get('http://localhost:5000/api/v1/film/like/' + this.props.match.params.id, { headers: { token: this.props.token }})
+                .get('http://localhost:5000/api/v1/film/like/' + this.props.match.params.src + '/' + this.props.match.params.id, { headers: { token: this.props.token }})
                 .then(res => {
                     this.setState({isLike: res.data})
                 })
                 .catch(error => {
                     console.error(error)
+                    this.setState({redirect: true})
                 })
             }
         }
@@ -111,11 +150,12 @@ class Film extends Component {
         axios
         .post('http://localhost:5000/api/v1/film/comment', {
             movie_id: this.props.match.params.id,
+            movie_src: this.props.match.params.src,
             value: this.state.comment
         }, { headers: { token: this.props.token }})
         .then(res => {
             axios
-            .get('http://localhost:5000/api/v1/film/comment/' + this.props.match.params.id, { headers: { token: this.props.token }})
+            .get('http://localhost:5000/api/v1/film/comment/' + this.props.match.params.src + '/' + this.props.match.params.id, { headers: { token: this.props.token }})
             .then(res => {
                 this.setState({comments: res.data})
                 this.Chat.current.scrollTo({
@@ -126,10 +166,12 @@ class Film extends Component {
             })
             .catch(error => {
                 console.error(error)
+                this.setState({redirect: true})
             })
         })
         .catch(error => {
             console.error(error)
+            this.setState({redirect: true})
         })
     }
 
@@ -141,22 +183,26 @@ class Film extends Component {
             axios
             .post('http://localhost:5000/api/v1/film/like', {
                 movie_id: this.props.match.params.id,
-                movie_title: movie.title
+                movie_src: this.props.match.params.src,
+                movie_title: this.props.match.params.src === 'yts' ? movie.title : movie.Title
             }, { headers: { token: token }})
             .catch(error => {
                 console.error(error)
+                this.setState({redirect: true})
             })
         }
         else {
             axios
             .delete('http://localhost:5000/api/v1/film/dislike', {
               data: {
-                movie_id: this.props.match.params.id
+                movie_id: this.props.match.params.id,
+                movie_src: this.props.match.params.src
               },
               headers: { token: token }
             })
             .catch(error => {
                 console.error(error)
+                this.setState({redirect: true})
             })
         }
     }
@@ -179,12 +225,13 @@ class Film extends Component {
             .delete('http://localhost:5000/api/v1/film/comment',  {
               data: {
                 comment_id: e.target.id,
+                movie_src: this.props.match.params.src
               },
               headers: { token: this.props.token }
             })
             .then(res => {
               axios
-              .get('http://localhost:5000/api/v1/film/comment/' + this.props.match.params.id, { headers: { token: this.props.token }})
+              .get('http://localhost:5000/api/v1/film/comment/' + this.props.match.params.src + '/' + this.props.match.params.id, { headers: { token: this.props.token }})
               .then(res => {
                   this.setState({comments: res.data})
                   this.Chat.current.scrollTo({
@@ -196,6 +243,7 @@ class Film extends Component {
             })
             .catch(error => {
                 console.error(error)
+                this.setState({redirect: true})
             })
         }
     }
@@ -209,7 +257,7 @@ class Film extends Component {
         var year = date.getFullYear();
         const suggestion = this.state.suggestion.map((el, i) => {
             return (
-                <Cover key={i} film={el} suggestion={true} />
+                <Cover src={this.props.match.params.src} key={i} film={el} suggestion={true} />
             )
         })
         let comments = this.state.comments.map((el, i) => {
@@ -221,6 +269,7 @@ class Film extends Component {
         })
         return (
             <I18nProvider locale={this.props.lang === 'fr' ? LOCALES.FRENCH : LOCALES.ENGLISH }>
+                {this.handleRedirect()}
                 <Header/>
                 <motion.div 
                 initial="initial"
@@ -247,21 +296,37 @@ class Film extends Component {
                                     transition: 'all .3s',
                                     transform: 'scale(3)'
                                 }}>{!isLike ? <i className="far fa-heart text-danger"></i> : <i className="fas fa-heart text-danger"></i>}</label></div>
-                                <h2 className="text-center">{movie.title}</h2>
+                                {movie.title ? <h2 className="text-center">{movie.title}</h2> : null}
+                                {movie.Title ? <h2 className="text-center">{movie.Title}</h2> : null}
                                 <br/><br/>
                                 <div className="row">
                                     <div className="col-12 text-center col-lg-6">
-                                        <img className="img-fluid film text-center" src={movie.large_cover_image} alt="" />
+                                        {this.props.match.params.src === 'yts' ? movie.large_cover_image ? <img className="img-fluid film text-center" src={movie.large_cover_image} alt="" /> : <img className="img-fluid film text-center" src={require('../../img/yts.png')} alt="" /> : null}
+                                        {this.props.match.params.src === 'eztv' ? movie.Poster && movie.Poster !== 'N/A' ? <img className="img-fluid film text-center" src={movie.Poster} alt="" /> : <img className="img-fluid film text-center" src={require('../../img/eztv.png')} alt="" /> : null}
                                     </div>
                                     <div className="col mt-3 mt-lg-0">
-                                        <p><span className="data font-weight-bold">Evaluation:</span> {movie.rating}/10</p>
-                                        <p><span className="data font-weight-bold">{translate('upload')}:</span> {day && month && year ? day + ' ' + month + ' ' + year : ''}</p>
-                                        <p><span className="data font-weight-bold">Genres:</span> {genre.join(', ')}</p>
-                                        <p><span className="data font-weight-bold">{translate('language')}:</span> {movie.language}</p>
-                                        <p><span className="data font-weight-bold">{translate('duration')}:</span> {movie.runtime} minutes</p>
-                                        <p><span className="data font-weight-bold">Description:</span> {movie.description_full}</p>
+                                        {this.props.match.params.src === 'eztv' ? movie.Plot && movie.Plot !== 'N/A' ? <p><span className="data font-weight-bold">Description:</span> {movie.Plot}</p> : null : null}
+                                        {this.props.match.params.src === 'eztv' ? movie.Actors && movie.Actors !== 'N/A' ? <p><span className="data font-weight-bold">{translate('actors')}:</span> {movie.Actors}</p> : null : null}
+                                        {this.props.match.params.src === 'eztv' ? movie.Awards && movie.Awards !== 'N/A' ? <p><span className="data font-weight-bold">{translate('awards')}:</span> {movie.Awards}</p> : null : null}
+                                        {this.props.match.params.src === 'eztv' ? movie.Genre && movie.Genre !== 'N/A' ? <p><span className="data font-weight-bold">Genre:</span> {movie.Genre}</p> : null : null}
+                                        {this.props.match.params.src === 'eztv' ? movie.Released && movie.Released !== 'N/A' ? <p><span className="data font-weight-bold">{translate('released')}:</span> {movie.Released}</p> : null : null}
+                                        {this.props.match.params.src === 'eztv' ? movie.Language && movie.Language !== 'N/A' ? <p><span className="data font-weight-bold">{translate('language')}:</span> {movie.Language}</p> : null : null}
+                                        {this.props.match.params.src === 'eztv' ? movie.Runtime && movie.Runtime !== 'N/A' ? <p><span className="data font-weight-bold">{translate('runtime')}:</span> {movie.Runtime}</p> : null : null}
+                                        {this.props.match.params.src === 'eztv' ? movie.Director && movie.Director !== 'N/A' ? <p><span className="data font-weight-bold">{translate('director')}:</span> {movie.Director}</p> : null : null}
+                                        {this.props.match.params.src === 'eztv' ? movie.Country && movie.Country !== 'N/A' ? <p><span className="data font-weight-bold">{translate('country')}:</span> {movie.Country}</p> : null : null}
+                                        {this.props.match.params.src === 'eztv' ? movie.imdbRating && movie.imdbRating !== 'N/A' ? <p><span className="data font-weight-bold">{translate('rating')}:</span> {movie.imdbRating}/10</p> : null : null}
+                                        {this.props.match.params.src === 'yts' ? movie.rating ? <p><span className="data font-weight-bold">{translate('rating')}:</span> {movie.rating}/10</p> : null : null}
+                                        {this.props.match.params.src === 'yts' ? day && month && year ? <p><span className="data font-weight-bold">{translate('upload')}:</span> {day + ' ' + month + ' ' + year}</p> : null : null}
+                                        {this.props.match.params.src === 'yts' ? genre.length !== 0 ? <p><span className="data font-weight-bold">Genres:</span> {genre.join(', ')}</p> : null : null}
+                                        {this.props.match.params.src === 'yts' ? movie.language ? <p><span className="data font-weight-bold">{translate('language')}:</span> {movie.language}</p> : null : null}
+                                        {this.props.match.params.src === 'yts' ? movie.runtime ? <p><span className="data font-weight-bold">{translate('duration')}:</span> {movie.runtime} minutes</p> : null : null}
+                                        {this.props.match.params.src === 'yts' ? movie.description_full ? <p><span className="data font-weight-bold">Description:</span> {movie.description_full}</p> : null : null}
+                                        {this.props.match.params.src === 'yts' ? movie.description_full ?
+                                        <>
                                         <p><span className="data font-weight-bold">{translate('trailer')}:</span></p>
                                         <iframe width="100%" src={`https://www.youtube.com/embed/` + movie.yt_trailer_code} frameBorder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" title="yt" allowFullScreen></iframe>
+                                        </>
+                                        : null : null}
                                     </div>
                                 </div>
                                 <div className="row mt-3">
@@ -279,16 +344,21 @@ class Film extends Component {
                             </div>
                         </div>
                     </div>
-                    <div className="container container-log mt-5">
-                        <div className="row ml-lg-3">
-                            <div className="col login-sec">
-                                <h2 className="text-center">{translate('like-also')}</h2>
-                                <div className="row">
-                                    {suggestion}
+                    { 
+                        this.props.match.params.src === 'yts' ?
+                            <div className="container container-log mt-5">
+                                <div className="row ml-lg-3">
+                                    <div className="col login-sec">
+                                        <h2 className="text-center">{translate('like-also')}</h2>
+                                        <div className="row">
+                                            {suggestion}
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
-                        </div>
-                    </div>
+                        :
+                            null
+                    }
                 </motion.div>
             </I18nProvider>
         )
@@ -299,7 +369,8 @@ const mapStateToProps = state => {
     return {
         token: state.token,
         pseudo: state.pseudo,
-        lang: state.lang
+        lang: state.lang,
+        src: state.src
     }
 }
 

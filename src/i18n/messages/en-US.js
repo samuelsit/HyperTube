@@ -51,6 +51,13 @@ export default {
         'redirection': 'You will be redirected in {time} second(s).',
         '404-error': '404 Error',
         '404-error-message': 'The page you are looking for does not exist.',
-        'settings': 'Settings'
+        'settings': 'Settings',
+        'rating': 'Rating',
+        'country': 'Country',
+        'director': 'Director',
+        'runtime': 'Runtime',
+        'released': 'Released',
+        'awards': 'Awards',
+        'actors': 'Actors'
     }
 }

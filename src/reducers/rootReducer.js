@@ -2,7 +2,8 @@ const initState = {
     isAuth: false,
     pseudo: '',
     token: '',
-    lang: 'en'
+    lang: 'en',
+    src: 'yts'
 }
 
 const rootReducer = (state  = initState, action) => {
@@ -28,6 +29,12 @@ const rootReducer = (state  = initState, action) => {
         return {
             ...state,
             lang: action.lang
+        }
+    }
+    else if (action.type === 'SET_USER_SRC') {
+        return {
+            ...state,
+            src: action.src
         }
     }
     return state

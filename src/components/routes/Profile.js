@@ -33,35 +33,60 @@ class Profile extends Component {
     }
 
     getLikes = async () => {
-        axios.get('http://localhost:5000/api/v1/profile/' + this.props.match.params.pseudo, { headers: { token: this.props.token }})
-        .then(res => {
-            let {picture, likes} = res.data.response
-            this.setState({picture: picture !== '' ? /^https.+/.test(picture) === true ? picture : `/pictures/${picture}` : '/pictures/noPic.png' }, this.handleLike(likes))
-        })
-        .catch(error => {
-            console.error(error);
-            this.setState({redirect: true})
-        })
+        if (this._isMounted) {
+            axios.get('http://localhost:5000/api/v1/profile/' + this.props.match.params.pseudo, { headers: { token: this.props.token }})
+            .then(res => {
+                let {picture, likes} = res.data.response
+                this.setState({picture: picture !== '' ? /^https.+/.test(picture) === true ? picture : `/pictures/${picture}` : '/pictures/noPic.png' }, this.handleLike(likes))
+            })
+            .catch(error => {
+                console.error(error);
+                // this.setState({redirect: true})
+            })
+        }
     }
 
-    handleLike = likes => {
-        let liked_movies = []
-        likes.map(el => {
-            axios.get('https://yts.mx/api/v2/movie_details.json?movie_id=' + el.movie_id)
-            .then(res => {    
-                let {movie} = res.data.data
-                movie.yt_trailer_code = new Date(el.date)
-                liked_movies.push(movie)
-                this.setState({liked_movies}, this.sortLike)
+    handleLike = likes => {      
+        if (this._isMounted) {  
+            let liked_movies = []
+            likes.map(el => {
+                if (el.movie_src === 'yts') {
+                    axios.get('https://yts.mx/api/v2/movie_details.json?movie_id=' + el.movie_id)
+                    .then(res => {
+                        let mov = {
+                            id: el.movie_id,
+                            src: el.movie_src,
+                            img: res.data.data.movie.medium_cover_image,
+                            date: new Date(el.date)
+                        }
+                        liked_movies.push(mov)
+                        this.setState({liked_movies}, this.sortLike)
+                    })
+                }
+                else {
+                    axios.get('http://www.omdbapi.com/?i=tt' + el.movie_id + '&apikey=22f35880')
+                    .then(res => {
+                        let mov = {
+                            id: el.movie_id,
+                            src: el.movie_src,
+                            img: res.data.Poster,
+                            date: new Date(el.date)
+                        }
+                        liked_movies.push(mov)
+                        this.setState({liked_movies}, this.sortLike)
+                    })
+                }
+                return true
             })
-            return true
-        })
+        }
     }
 
     sortLike = () => {
-        let {liked_movies} = this.state
-        liked_movies.sort((a, b) => (b.yt_trailer_code - a.yt_trailer_code))
-        this.setState({liked_movies})
+        if (this._isMounted) {
+            let {liked_movies} = this.state
+            liked_movies.sort((a, b) => (b.date - a.date))
+            this.setState({liked_movies})
+        }
     }
 
     handleRedirect = () => {

@@ -6,3 +6,22 @@
     text-overflow: ellipsis;
     white-space: nowrap;
 }
+
+.film-gal {
+    border-radius: 3px;
+    width: 250px; 
+    height: 250px; 
+    object-fit: cover; 
+}
+
+.episode {
+    position: absolute;
+    width: 95%;
+    background: linear-gradient(to bottom right, #FFB88C, #DC3445) no-repeat center center fixed;
+    border-top-left-radius: 3px;
+    border-top-right-radius: 3px;
+    border-bottom: white 2px solid;
+    padding-top: 13px;
+    color: white;
+    font-weight: bold;
+}
