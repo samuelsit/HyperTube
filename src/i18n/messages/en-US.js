@@ -59,8 +59,9 @@ export default {
         'released': 'Released',
         'awards': 'Awards',
         'actors': 'Actors',
-        'other-episodes': 'Other episodes',
+        'other-episodes': 'Other links',
         'title': 'Title',
-        'season': 'Season'
+        'season': 'Season',
+        'quality': 'Quality'
     }
 }

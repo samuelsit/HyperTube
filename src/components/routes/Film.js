@@ -255,7 +255,7 @@ class Film extends Component {
     }
 
     render () {
-        let {movie, genre, isLike} = this.state
+        let {movie, genre, isLike, episodes} = this.state
         var date = new Date(movie.date_uploaded_unix * 1000)
         var months_arr = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
         var day = date.getDate();
@@ -352,6 +352,43 @@ class Film extends Component {
                     </div>
                     { 
                         this.props.match.params.src === 'yts' ?
+                        <>
+                            <div className="container container-log mt-5">
+                                <div className="row ml-lg-3">
+                                    <div className="col login-sec">
+                                        <h2 className="text-center">{translate('other-episodes')}</h2>
+                                        <div className="row">
+                                            <div className="col-12 mt-4">
+                                                <table className="table table-hover pb-0 mb-0">
+                                                    <thead>
+                                                        <tr>
+                                                            <th style={{width: '33%'}} className="text-center" scope="col">#</th>
+                                                            <th style={{width: '33%'}} className="text-center" scope="col">{translate('quality')}</th>
+                                                            <th style={{width: '33%'}} className="text-center" scope="col">Type</th>
+                                                        </tr>
+                                                    </thead>
+                                                </table>
+                                            </div>
+                                            <div className="col-12 episodes">
+                                                <table className="table table-hover">
+                                                    <tbody style={{overflow: 'scroll', height: '300px'}}>
+                                                        {   
+                                                            movie.torrents ?
+                                                            movie.torrents.map((el, i) => (
+                                                                <tr key={i} style={{cursor: 'pointer'}} onClick={() => {alert('magnet:?xt=urn:btih:' + el.hash + '&dn=' + movie.slug + '&tr=http://track.one:1234/announce&tr=udp://track.two:80')}}>
+                                                                    <th style={{width: '33%'}}  className="text-center" scope="row">{i}</th>
+                                                                    <td style={{width: '33%'}}  className="text-center">{el.quality}</td>
+                                                                    <td style={{width: '33%'}}  className="text-center">{el.type}</td>
+                                                                </tr>
+                                                            )) : null
+                                                        }
+                                                    </tbody>
+                                                </table>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
                             <div className="container container-log mt-5">
                                 <div className="row ml-lg-3">
                                     <div className="col login-sec">
@@ -362,6 +399,7 @@ class Film extends Component {
                                     </div>
                                 </div>
                             </div>
+                        </>
                         :
                             <div className="container container-log mt-5">
                                 <div className="row ml-lg-3">
@@ -383,11 +421,11 @@ class Film extends Component {
                                                 <table className="table table-hover">
                                                     <tbody style={{overflow: 'scroll', height: '300px'}}>
                                                         {
-                                                            this.state.episodes
+                                                            episodes
                                                             .sort((a, b) => a.season - b.season)
                                                             .sort((a, b) => a.episode - b.episode)
                                                             .map((el, i) => (
-                                                                <tr key={i} style={{cursor: 'pointer'}} onClick={() => {alert('magnet:\n' + el.magnet_url + '\n\ntorrent:\n' + el.torrent_url)}}>
+                                                                <tr key={i} style={{cursor: 'pointer'}} onClick={() => {alert(el.magnet_url)}}>
                                                                     <th style={{width: '10%'}} className="text-center" scope="row">{el.season}</th>
                                                                     <th style={{width: '10%'}} className="text-center" scope="row">{el.episode}</th>
                                                                     <td style={{width: '80%'}}>{el.title}</td>
