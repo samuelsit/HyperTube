@@ -23,5 +23,6 @@ yarn-debug.log*
 yarn-error.log*
 
 
-# pictures
+# pictures and movies
 /public/pictures
+/public/movies

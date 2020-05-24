@@ -44,6 +44,7 @@ class Film extends Component {
                 }
                 else {
                     this.setState({movie: res.data.data.movie, genre: res.data.data.movie.genres})
+                    console.log(res.data.data.movie)
                 }
             }
         })
@@ -62,6 +63,7 @@ class Film extends Component {
                 }
                 else {
                     this.setState({movie: res.data})
+                    console.log(res.data)
                 }
                 
             }
