@@ -62,6 +62,7 @@ export default {
         'other-episodes': 'Other links',
         'title': 'Title',
         'season': 'Season',
-        'quality': 'Quality'
+        'quality': 'Quality',
+        'be the first to watch it !': 'Be the first to watch it !'
     }
 }

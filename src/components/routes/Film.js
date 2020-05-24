@@ -22,7 +22,9 @@ class Film extends Component {
             isLike: false,
             comment: '',
             comments: [],
-            redirect: false
+            redirect: false,
+            movieSrc: "",
+            hash: ""
         }
         this.Chat = React.createRef()
     }
@@ -44,7 +46,7 @@ class Film extends Component {
                     this.setState({redirect: true})
                 }
                 else {
-                    this.setState({movie: res.data.data.movie, genre: res.data.data.movie.genres})
+                    this.setState({movie: res.data.data.movie, genre: res.data.data.movie.genres, hash: res.data.data.movie.torrents[0].hash})
                     console.log(res.data.data.movie)
                 }
             }
@@ -107,6 +109,16 @@ class Film extends Component {
         .catch(error => {
             console.error(error)
             this.setState({redirect: true})
+        })
+        axios
+        .get('http://localhost:5000/api/v1/film/file/'+ this.props.match.params.src + "/" + this.props.match.params.id, { headers: { token: this.props.token }})
+        .then(res => {
+          console.log(res.data);
+          if (res.data)
+            this.setState({ movieSrc: res.data });
+        })
+        .catch(error => {
+          console.error(error)
         })
     }
 
@@ -227,6 +239,35 @@ class Film extends Component {
     //     }
     // }
 
+    firstView = () => {
+      let body = {};
+      if (this.props.match.params.src === "yts") {
+        body = {
+          source: "yts",
+          movie_id: this.props.match.params.id,
+          title: this.state.movie.title,
+          hash: this.state.hash
+        }
+      } else if (this.props.match.params.src === "eztv") {
+        body = {
+          source: "eztv", 
+          movie_id: this.props.match.params.id,
+          title: this.state.movie.title,
+          magnet: ""    //don't know where to find eztv magnet url
+        }
+
+      }
+      axios
+      .post('http://localhost:5000/api/v1/film/watch', body, { headers: { token: this.props.token}})
+      .then(res => {
+        console.log(res);
+        this.setState({movieSrc: res.data});
+      })
+      .catch(error => {
+        console.error(error);
+      })
+    }
+
     handleDelCom = e => {
         if (window.confirm("Souhaitez-vous vraiment supprimer votre commentaire?")) {
             axios
@@ -340,7 +381,8 @@ class Film extends Component {
                                 <div className="row mt-3">
                                     <div className="col text-center">
                                         <p><span className="data font-weight-bold float-left d-lg-none">{translate('movie')}:</span></p>
-                                        <video controls width="100%" className="border"></video>
+                                        <video controls width="100%" className="border" src={this.state.movieSrc}></video>
+                                        {this.state.movieSrc ? null : <button className="btn btn-danger mx-auto" onClick={this.firstView}>{translate('be the first to watch it !')}</button>}
                                     </div>
                                     <div className="col-12 mt-4">
                                         <div id="chat" ref={this.Chat} className="border shadow p-2">
