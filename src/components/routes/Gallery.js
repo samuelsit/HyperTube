@@ -53,11 +53,25 @@ class Gallery extends Component {
     }
 
     getEZTV = () => {
-        axios.get('https://eztv.io/api/get-torrents?limit=50&page=' + this.state.page, { useCredentails: true }).then(res => {
+        axios.get('https://eztv.io/api/get-torrents?limit=70&page=' + this.state.page, { useCredentails: true }).then(res => {
             if (res.data.torrents && this._isMounted) {
-                this.setState({movies: res.data.torrents.filter(el => el.imdb_id !== '0')})
+                this.setState({movies: this.removeDoublons(res.data.torrents.filter(el => el.imdb_id !== '0'), 'imdb_id')})
             }
         })
+    }
+
+    removeDoublons = (originalArray, prop) => {
+        var newArray = [];
+        var lookupObject = {};
+   
+        for(var i in originalArray) {
+           lookupObject[originalArray[i][prop]] = originalArray[i];
+        }
+   
+        for(i in lookupObject) {
+            newArray.push(lookupObject[i]);
+        }
+        return newArray;
     }
 
     handleChangeMovie = () => {
@@ -65,10 +79,16 @@ class Gallery extends Component {
         this.props.src === 'yts' ? this.getYTS() : this.getEZTV()
     }
 
-    handleGenre = genre => {        
+    handleGenre = genre => {
+        document.getElementsByClassName('btn-secondary sam')[0].classList.add('btn-danger')
+        document.getElementsByClassName('btn-secondary sam')[0].classList.remove('btn-secondary')
+        document.getElementsByClassName('sam')[0].classList.remove('sam')
+        genre.target.classList.remove('btn-danger')
+        genre.target.classList.add('btn-secondary')
+        genre.target.classList.add('sam')
         let newOption = this.state.option.replace(/&genre=[\w-]+/i, '&genre=' + genre.target.value).replace(/&query_term=.*/gi, '&query_term=0').replace(/&page=\d+/i, '&page=1')
         if (this._isMounted) {
-            this.setState({page: 1, length: 24, option: newOption, title: genre.target.value[0].toUpperCase() + genre.target.value.slice(1)}, this.handleChangeMovie)
+            this.setState({page: 1, length: 24, option: newOption}, this.handleChangeMovie)
         }
     }
 
@@ -85,9 +105,9 @@ class Gallery extends Component {
             })
         }
         else {
-            axios.get('https://eztv.io/api/get-torrents?limit=50&page=' + this.state.page, { useCredentails: true }).then(res => {
+            axios.get('https://eztv.io/api/get-torrents?limit=70&page=' + this.state.page, { useCredentails: true }).then(res => {
                 if (res.data.torrents && this._isMounted) {
-                    this.setState({movies: this.state.movies.concat(res.data.torrents.filter(el => el.imdb_id !== '0'))})
+                    this.setState({movies: this.state.movies.concat(this.removeDoublons(res.data.torrents.filter(el => el.imdb_id !== '0'), 'imdb_id'))})
                 }
             }).then(() => {
                 if (this._isMounted) {
@@ -154,7 +174,7 @@ class Gallery extends Component {
                                                 hasMore={true}
                                                 loader={<div className="lds-roller"><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div></div>}
                                             >
-                                            <div className="row ml-1">
+                                            <div className="row">
                                                 { films }
                                             </div>
                                             </InfiniteScroll>

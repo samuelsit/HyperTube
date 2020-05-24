@@ -31,7 +31,7 @@ class Carousel extends Component {
 
     render () {   
         let {movies} = this.props
-        const films = movies.map((el, i) => {            
+        const films = movies.map((el, i) => {
             return (
                 <div className="tile" key={i}>
                     <div className="tile-media">

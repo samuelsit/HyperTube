@@ -58,6 +58,10 @@ export default {
         'runtime': 'Runtime',
         'released': 'Released',
         'awards': 'Awards',
-        'actors': 'Actors'
+        'actors': 'Actors',
+        'other-episodes': 'Other links',
+        'title': 'Title',
+        'season': 'Season',
+        'quality': 'Quality'
     }
 }

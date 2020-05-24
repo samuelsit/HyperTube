@@ -8,7 +8,8 @@ class Cover extends Component {
     _isMounted = false
 
     state = {
-        poster: ''
+        poster: '',
+        title: ''
     }
 
     componentDidMount() {
@@ -17,7 +18,7 @@ class Cover extends Component {
         if (src !== 'yts' && film.imdb_id !== '0') {
             axios.get('http://www.omdbapi.com/?i=tt' + film.imdb_id + '&apikey=22f35880', { useCredentails: true }).then(res => {
                 if (this._isMounted) {
-                    this.setState({poster: res.data.Poster})
+                    this.setState({poster: res.data.Poster, title: res.data.Title})
                 }
             })
         }
@@ -53,7 +54,7 @@ class Cover extends Component {
                         <Link to={`/film/eztv/` + film.imdb_id} style={{textDecoration: 'none'}}>
                             {film.episode !== '0' ? <div className="episode text-center px-3 py-1">Episode {film.episode}</div> : null }
                             <img className={this.props.suggestion ? "img-fluid text-center" : "img-fluid film-gal text-center"} src={this.state.poster !== "N/A" && this.state.poster !== undefined ? this.state.poster : require('../../img/eztv.png')} alt="" />
-                            <h1 className="text-nowrap font-weight-bold text-danger title_film">{film.title}</h1>
+                            <h1 className="text-nowrap font-weight-bold text-danger title_film">{this.state.title !== '' ? this.state.title : film.title}</h1>
                         </Link>
                     </div>
                 </>
