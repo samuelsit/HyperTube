@@ -36,19 +36,20 @@ class Profile extends Component {
         if (this._isMounted) {
             axios.get('http://localhost:5000/api/v1/profile/' + this.props.match.params.pseudo, { headers: { token: this.props.token }})
             .then(res => {
-                let {picture, likes} = res.data.response
-                this.setState({picture: picture !== '' ? /^https.+/.test(picture) === true ? picture : `/pictures/${picture}` : require('../../img/noPicAccueil.png') }, this.handleLike(likes))
+                let {picture, likes, view} = res.data.response
+                this.setState({picture: picture !== '' ? /^https.+/.test(picture) === true ? picture : `/pictures/${picture}` : require('../../img/noPicAccueil.png') }, this.handleMov(likes, view))
             })
             .catch(error => {
                 console.error(error);
-                // this.setState({redirect: true})
+                this.setState({redirect: true})
             })
         }
     }
 
-    handleLike = likes => {      
+    handleMov = (likes, view) => {      
         if (this._isMounted) {  
             let liked_movies = []
+            let watched_movies = []
             likes.map(el => {
                 if (el.movie_src === 'yts') {
                     axios.get('https://yts.mx/api/v2/movie_details.json?movie_id=' + el.movie_id)
@@ -78,6 +79,35 @@ class Profile extends Component {
                 }
                 return true
             })
+            view.map(el => {
+                if (el.movie_src === 'yts') {
+                    axios.get('https://yts.mx/api/v2/movie_details.json?movie_id=' + el.movie_id)
+                    .then(res => {
+                        let mov = {
+                            id: el.movie_id,
+                            src: el.movie_src,
+                            img: res.data.data.movie.medium_cover_image,
+                            date: new Date(el.date)
+                        }
+                        watched_movies.push(mov)
+                        this.setState({watched_movies}, this.sortView)
+                    })
+                }
+                else {
+                    axios.get('http://www.omdbapi.com/?i=tt' + el.movie_id + '&apikey=22f35880')
+                    .then(res => {
+                        let mov = {
+                            id: el.movie_id,
+                            src: el.movie_src,
+                            img: res.data.Poster,
+                            date: new Date(el.date)
+                        }
+                        watched_movies.push(mov)
+                        this.setState({watched_movies}, this.sortView)
+                    })
+                }
+                return true
+            })
         }
     }
 
@@ -86,6 +116,14 @@ class Profile extends Component {
             let {liked_movies} = this.state
             liked_movies.sort((a, b) => (b.date - a.date))
             this.setState({liked_movies})
+        }
+    }
+
+    sortView = () => {
+        if (this._isMounted) {
+            let {watched_movies} = this.state
+            watched_movies.sort((a, b) => (b.date - a.date))
+            this.setState({watched_movies})
         }
     }
 
@@ -122,7 +160,7 @@ class Profile extends Component {
                         </div>
                         <div className="card p-3 row m-lg-1 mt-lg-5 mt-5">
                             <h4 className="font-weight-bold"><i className="far fa-clock h2" style={{color: '#DD3444'}}></i> {translate('seen')}</h4>
-                            {/* <Carousel movies={this.state.watched_movies} /> */}
+                            <Carousel movies={this.state.watched_movies} />
                         </div>
                         <div className="card p-3 row m-lg-1">
                             <h4 className="font-weight-bold"><i className="far fa-heart h2" style={{color: '#DD3444'}}></i> {translate('liked')}</h4>
