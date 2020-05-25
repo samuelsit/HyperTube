@@ -9,7 +9,9 @@ class Cover extends Component {
 
     state = {
         poster: '',
-        title: ''
+        title: '',
+        rating: '',
+        year: ''
     }
 
     componentDidMount() {
@@ -18,7 +20,7 @@ class Cover extends Component {
         if (src !== 'yts' && film.imdb_id !== '0') {
             axios.get('http://www.omdbapi.com/?i=tt' + film.imdb_id + '&apikey=22f35880', { useCredentails: true }).then(res => {
                 if (this._isMounted) {
-                    this.setState({poster: res.data.Poster, title: res.data.Title})
+                    this.setState({poster: res.data.Poster, title: res.data.Title, rating: res.data.imdbRating, year: res.data.Year})
                 }
             })
         }
@@ -40,6 +42,7 @@ class Cover extends Component {
                 <>
                     <div className={this.props.suggestion ? "col-3 p-1 pulse" : "col-lg-2 col-md-3 col-sm-4 col-4 p-1 pulse"}>
                         <Link to={`/film/yts/` + film.id}>
+                            <div className="episode text-center px-3 py-1">{film.year} &bull; {film.rating}/10</div>
                             <img className={this.props.suggestion ? "img-fluid text-center" : "img-fluid film-gal text-center"} src={film.medium_cover_image} alt="" />
                             <h1 className="text-nowrap font-weight-bold text-danger title_film">{film.title}</h1>
                         </Link>
@@ -52,9 +55,9 @@ class Cover extends Component {
                 <>
                     <div className={this.props.suggestion ? "col-3 p-1 pulse" : "col-lg-2 col-md-3 col-sm-4 col-4 p-1 pulse"}>
                         <Link to={`/film/eztv/` + film.imdb_id} style={{textDecoration: 'none'}}>
-                            {film.episode !== '0' ? <div className="episode text-center px-3 py-1">Episode {film.episode}</div> : null }
-                            <img className={this.props.suggestion ? "img-fluid text-center" : "img-fluid film-gal text-center"} src={this.state.poster !== "N/A" && this.state.poster !== undefined ? this.state.poster : require('../../img/eztv.png')} alt="" />
-                            <h1 className="text-nowrap font-weight-bold text-danger title_film">{this.state.title !== '' ? this.state.title : film.title}</h1>
+                            {this.state.rating !== 'N/A' && this.state.year !== undefined ? <div className="episode text-center px-3 py-1">{this.state.year.substr(0,4)} &bull; {this.state.rating}/10</div> : null}
+                            <img className={this.props.suggestion ? "img-fluid text-center border" : "img-fluid film-gal text-center border"} src={this.state.poster !== "N/A" && this.state.poster !== undefined ? this.state.poster : require('../../img/eztv.png')} alt="" />
+                            <div className="text-nowrap font-weight-bold text-danger title_film">{this.state.title !== '' ? this.state.title : film.title}</div>
                         </Link>
                     </div>
                 </>

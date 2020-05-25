@@ -16,12 +16,11 @@
 
 .episode {
     position: absolute;
-    width: 95%;
+    width: 96%;
     background: linear-gradient(to bottom right, #FFB88C, #DC3445) no-repeat center center fixed;
     border-top-left-radius: 3px;
     border-top-right-radius: 3px;
     border-bottom: white 2px solid;
     padding-top: 13px;
     color: white;
-    font-weight: bold;
 }
