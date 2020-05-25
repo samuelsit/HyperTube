@@ -36,7 +36,7 @@ class Settings extends Component {
         .then(res => {
             let {email, lastname, firstname, picture} = res.data.response
             this.setState({
-              picture: picture !== '' ? /^https.+/.test(picture) === true ? picture : `/pictures/${picture}` : '/pictures/noPic.png',
+              picture: picture !== '' ? /^https.+/.test(picture) === true ? picture : `/pictures/${picture}` : require('../../img/noPic.png'),
               email: email,
               lastname: lastname,
               firstname: firstname

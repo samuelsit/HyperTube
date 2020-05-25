@@ -37,7 +37,7 @@ class Profile extends Component {
             axios.get('http://localhost:5000/api/v1/profile/' + this.props.match.params.pseudo, { headers: { token: this.props.token }})
             .then(res => {
                 let {picture, likes} = res.data.response
-                this.setState({picture: picture !== '' ? /^https.+/.test(picture) === true ? picture : `/pictures/${picture}` : '/pictures/noPic.png' }, this.handleLike(likes))
+                this.setState({picture: picture !== '' ? /^https.+/.test(picture) === true ? picture : `/pictures/${picture}` : require('../../img/noPicAccueil.png') }, this.handleLike(likes))
             })
             .catch(error => {
                 console.error(error);
