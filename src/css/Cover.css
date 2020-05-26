@@ -17,10 +17,15 @@
 .episode {
     position: absolute;
     width: 96%;
+    object-fit: cover; 
     background: linear-gradient(to bottom right, #FFB88C, #DC3445) no-repeat center center fixed;
     border-top-left-radius: 3px;
     border-top-right-radius: 3px;
     border-bottom: white 2px solid;
     padding-top: 13px;
     color: white;
+}
+
+.w-96 {
+    width: 99%;
 }

@@ -21,7 +21,8 @@ class Gallery extends Component {
         title: this.props.src.toUpperCase(),
         page: 1,
         length: 24,
-        search: ''
+        search: '',
+        searchEZ: false
     }
 
     componentDidMount() {
@@ -80,6 +81,7 @@ class Gallery extends Component {
     }
 
     handleGenre = genre => {
+        this.setState({searchEZ: false})
         document.getElementsByClassName('btn-secondary sam')[0].classList.add('btn-danger')
         document.getElementsByClassName('btn-secondary sam')[0].classList.remove('btn-secondary')
         document.getElementsByClassName('sam')[0].classList.remove('sam')
@@ -104,7 +106,7 @@ class Gallery extends Component {
                 }
             })
         }
-        else {
+        else if (!this.state.searchEZ) {
             axios.get('https://eztv.io/api/get-torrents?limit=70&page=' + this.state.page, { useCredentails: true }).then(res => {
                 if (res.data.torrents && this._isMounted) {
                     this.setState({movies: this.state.movies.concat(this.removeDoublons(res.data.torrents.filter(el => el.imdb_id !== '0'), 'imdb_id'))})
@@ -132,9 +134,24 @@ class Gallery extends Component {
 
     handleSearch = event => {
         let value = event.target.value === '' ? '0' : event.target.value
-        let newOption = this.state.option.replace(/&query_term=.*/gi, '&query_term=' + value).replace(/&page=\d+/i, '&page=1').replace(/&genre=[\w-]+/i, '&genre=all')
-        if (this._isMounted) {
-            this.setState({search: event.target.value, page: 1, length: 24, option: newOption}, this.handleChangeMovie)
+        if (this.props.src === 'yts') {
+            let newOption = this.state.option.replace(/&query_term=.*/gi, '&query_term=' + value).replace(/&page=\d+/i, '&page=1').replace(/&genre=[\w-]+/i, '&genre=all')
+            if (this._isMounted) {
+                this.setState({searchEZ: true, search: event.target.value, page: 1, length: 24, option: newOption}, this.handleChangeMovie)
+            }
+        }
+        else {
+            if (this._isMounted) {
+                if (value !== '0') {
+                    axios.get('http://www.omdbapi.com/?s=' + value + '&apikey=22f35880', { useCredentails: true }).then(res => {
+                        this.setState({searchEZ: true, movies: res.data.Search})
+                    })
+                }
+                else {
+                    this.setState({searchEZ: false})
+                    this.getEZTV()
+                }
+            }
         }
     }
 
@@ -143,11 +160,11 @@ class Gallery extends Component {
     }
 
     render () {
-        const films = this.state.movies.map((el, i) => {
+        const films = this.state.movies ? this.state.movies.map((el, i) => {
             return (
-                <Cover key={i} film={el} src={this.props.src} />
+                <Cover key={i} film={el} src={this.props.src} searchEZ={this.state.searchEZ}/>
             )
-        })
+        }) : null
         return (
             <Fragment>
                 <Header selectVal={this.handleSearch}/>
@@ -171,7 +188,7 @@ class Gallery extends Component {
                                                 className="overflow-hidden p-lg-5 p-sm-0"
                                                 dataLength={this.state.length}
                                                 next={this.fetchMoreData}
-                                                hasMore={true}
+                                                hasMore={!this.state.searchEZ}
                                                 loader={<div className="lds-roller"><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div></div>}
                                             >
                                             <div className="row">

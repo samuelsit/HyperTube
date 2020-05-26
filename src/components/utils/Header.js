@@ -68,7 +68,7 @@ class Header extends Component {
                                 <li className="nav-item"></li>
                             </ul>
                         </div>
-                        {this.props.selectVal && this.props.src === 'yts'
+                        {this.props.selectVal// && this.props.src === 'yts'
                         ?
                         <div className="searchbar mr-1">
                             <input id="search" className="searchhead search_input" type="text" placeholder="Rechercher un film..." onChange={this.props.selectVal}/>

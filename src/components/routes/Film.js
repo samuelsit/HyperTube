@@ -10,6 +10,7 @@ import { motion } from 'framer-motion'
 import { pageVariant, pageTransition } from '../../css/motion'
 import { Redirect } from 'react-router-dom'
 
+
 class Film extends Component {
     constructor(props) {
         super(props)
@@ -24,7 +25,8 @@ class Film extends Component {
             comments: [],
             redirect: false,
             movieSrc: "",
-            hash: ""
+            hash: "",
+            subtitle: []
         }
         this.Chat = React.createRef()
     }
@@ -298,7 +300,7 @@ class Film extends Component {
     }
 
     render () {
-        let {movie, genre, isLike, episodes} = this.state
+        let {movie, genre, isLike, episodes, subtitle} = this.state
         var date = new Date(movie.date_uploaded_unix * 1000)
         var months_arr = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
         var day = date.getDate();
@@ -381,8 +383,14 @@ class Film extends Component {
                                 <div className="row mt-3">
                                     <div className="col text-center">
                                         <p><span className="data font-weight-bold float-left d-lg-none">{translate('movie')}:</span></p>
-                                        <video controls width="100%" className="border" src={this.state.movieSrc}></video>
-                                        {this.state.movieSrc ? null : <button className="btn btn-danger mx-auto" onClick={this.firstView}>{translate('be the first to watch it !')}</button>}
+                                        <video controls width="100%" className="border" src={this.state.movieSrc}>
+                                            {
+                                                subtitle.map((el, i) => 
+                                                    <track src={`/movies/${this.props.match.params.src}/${this.props.match.params.id}/${el}`} kind="subtitles" srcLang={el} label={el}/>
+                                                )
+                                            }
+                                        </video>
+                                        {this.state.movieSrc ? null : <button className="btn btn-danger mx-auto" onClick={this.firstView}>be the first to watch it !</button>}
                                     </div>
                                     <div className="col-12 mt-4">
                                         <div id="chat" ref={this.Chat} className="border shadow p-2">
