@@ -64,7 +64,7 @@ class Cover extends Component {
             return (
                 <>
                     <div className={this.props.suggestion ? "col-3 p-1 pulse" : "col-lg-2 col-md-3 col-sm-4 col-4 p-1 pulse"}>
-                        <Link to={searchEZ ? `/film/eztv/` + this.state.id : `/film/eztv/` + film.id} style={{textDecoration: 'none'}}>
+                        <Link to={searchEZ ? `/film/eztv/` + this.state.id : `/film/eztv/` + film.imdb_id} style={{textDecoration: 'none'}}>
                             {this.state.rating !== 'N/A' && this.state.year !== undefined ? <div className="episode text-center px-3 py-1">{this.state.year.substr(0,4)} &bull; {this.state.rating}/10</div> : null}
                             <img className="img-fluid film-gal text-center border" src={this.state.poster !== "N/A" && this.state.poster !== undefined ? this.state.poster : require('../../img/eztv.png')} alt="" />
                             <div className="text-nowrap font-weight-bold text-danger title_film">{this.state.title !== '' ? this.state.title : film.title}</div>
