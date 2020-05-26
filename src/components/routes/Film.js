@@ -228,18 +228,6 @@ class Film extends Component {
         }
     }
 
-    // handleView = () => {
-    //     if (firstview) {
-    //         axios
-    //         .post('http://localhost:5000/api/v1/film/view', {
-    //             movie_id: this.props.match.params.id
-    //         }, { headers: { token: token }})
-    //         .catch(error => {
-    //             console.error(error)
-    //         })
-    //     }
-    // }
-
     firstView = () => {
       let body = {};
       if (this.props.match.params.src === "yts") {
@@ -269,7 +257,7 @@ class Film extends Component {
     }
 
     handleDelCom = e => {
-        if (window.confirm("Souhaitez-vous vraiment supprimer votre commentaire?")) {
+        if (window.confirm("Souhaitez-vous vraiment supprimer votre commentaire ?")) {
             axios
             .delete('http://localhost:5000/api/v1/film/comment',  {
               data: {
