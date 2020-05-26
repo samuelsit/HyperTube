@@ -175,7 +175,7 @@ class Gallery extends Component {
                 variants={pageVariant}
                 transition={pageTransition}
                 className="grad-block-gal">
-                    <div className={this.props.src === 'yts' ? "container-fluid" : "container"}>
+                    <div className="container-fluid">
                         <div className="row">
                             { this.props.src === 'yts' ? <Nav genre={this.handleGenre}/> : null }
                             { this.props.src === 'yts' ? <div className="mr-lg-4 col-lg-2 mb-5 mb-lg-0 d-none d-lg-block" style={{zIndex: '-10'}}></div> : null }
