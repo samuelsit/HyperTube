@@ -63,6 +63,6 @@ export default {
         'title': 'Title',
         'season': 'Season',
         'quality': 'Quality',
-        'be the first to watch it !': 'Be the first to watch it !'
+        'be-the-first': 'Be the first to watch it !'
     }
 }

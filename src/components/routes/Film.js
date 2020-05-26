@@ -72,6 +72,8 @@ class Film extends Component {
             }
         })
         axios.get('https://eztv.io/api/get-torrents?imdb_id=' + this.props.match.params.id, { useCredentails: true }).then(res => {
+            console.log(res);
+            
             if (res.data.torrents && this._isMounted) {
                 this.setState({episodes: res.data.torrents, hash: res.data.torrents[0].hash})
             }
@@ -371,7 +373,7 @@ class Film extends Component {
                                         {this.props.match.params.src === 'yts' ? movie.description_full ?
                                         <>
                                         <p><span className="data font-weight-bold">{translate('trailer')}:</span></p>
-                                        <iframe width="100%" src={`https://www.youtube.com/embed/` + movie.yt_trailer_code} frameBorder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" title="yt" allowFullScreen></iframe>
+                                        <iframe width="100%" height="285" src={`https://www.youtube.com/embed/` + movie.yt_trailer_code} frameBorder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" title="yt" allowFullScreen></iframe>
                                         </>
                                         : null : null}
                                     </div>
@@ -379,14 +381,20 @@ class Film extends Component {
                                 <div className="row mt-3">
                                     <div className="col text-center">
                                         <p><span className="data font-weight-bold float-left d-lg-none">{translate('movie')}:</span></p>
-                                        <video controls width="100%" className="border" src={this.state.movieSrc}>
-                                            {
-                                                subtitle.map((el, i) => 
-                                                    <track src={`/movies/${this.props.match.params.src}/${this.props.match.params.id}/${el}`} kind="subtitles" srcLang={el} label={el}/>
-                                                )
-                                            }
-                                        </video>
-                                        {this.state.movieSrc ? null : <button className="btn btn-danger mx-auto" onClick={this.firstView}>be the first to watch it !</button>}
+                                        {
+                                            this.state.hash !== '' ?
+                                            <>
+                                            <video controls width="100%" className="border" src={this.state.movieSrc}>
+                                                {
+                                                    subtitle.map((el, i) => 
+                                                        <track src={`/movies/${this.props.match.params.src}/${this.props.match.params.id}/${el}`} kind="subtitles" srcLang={el} label={el}/>
+                                                    )
+                                                }
+                                            </video>
+                                            {this.state.movieSrc ? null : <button className="btn btn-outline-danger mx-auto" onClick={this.firstView}>{translate('be-the-first')}</button>}
+                                            </>
+                                            : null
+                                        }
                                     </div>
                                     <div className="col-12 mt-4">
                                         <div id="chat" ref={this.Chat} className="border shadow p-2">
