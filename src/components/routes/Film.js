@@ -115,8 +115,10 @@ class Film extends Component {
         axios
         .get('http://localhost:5000/api/v1/film/file/'+ this.props.match.params.src + "/" + this.props.match.params.id, { headers: { token: this.props.token }})
         .then(res => {
+            console.log(res);
+            
           if (res.data)
-            this.setState({ movieSrc: res.data });
+            this.setState({ movieSrc: require('../../' + res.data) });
         })
         .catch(error => {
           console.error(error)

@@ -25,4 +25,4 @@ yarn-error.log*
 
 # pictures and movies
 /public/pictures
-/public/movies
+/src/movies
