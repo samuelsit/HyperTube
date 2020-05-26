@@ -25,7 +25,7 @@ class Cover extends Component {
         }
         else {
             if (src !== 'yts' && film.imdb_id !== '0') {
-                let url = searchEZ ? 'http://www.omdbapi.com/?i=' + film.imdb_id + '&apikey=22f35880' : 'http://www.omdbapi.com/?i=tt' + film.imdb_id + '&apikey=22f35880'
+                let url = searchEZ ? 'http://www.omdbapi.com/?i=' + film.imdb_id + '&apikey=' + process.env.REACT_APP_KEY_OMDB : 'http://www.omdbapi.com/?i=tt' + film.imdb_id + '&apikey=' + process.env.REACT_APP_KEY_OMDB
                 axios.get(url, { useCredentails: true }).then(res => {
                     if (this._isMounted) {
                         this.setState({poster: res.data.Poster, title: res.data.Title, rating: res.data.imdbRating, year: res.data.Year})

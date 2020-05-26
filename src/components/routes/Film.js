@@ -61,7 +61,7 @@ class Film extends Component {
     }
 
     handleEZTV = () => {
-        axios.get('http://www.omdbapi.com/?i=tt' + this.props.match.params.id + '&apikey=22f35880', { useCredentails: true }).then(res => {
+        axios.get('http://www.omdbapi.com/?i=tt' + this.props.match.params.id + '&apikey=' + process.env.REACT_APP_KEY_OMDB, { useCredentails: true }).then(res => {
             if (this._isMounted) {
                 if (res.data.Error) {
                     this.setState({redirect: true})

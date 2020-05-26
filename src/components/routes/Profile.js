@@ -65,7 +65,7 @@ class Profile extends Component {
                     })
                 }
                 else {
-                    axios.get('http://www.omdbapi.com/?i=tt' + el.movie_id + '&apikey=22f35880')
+                    axios.get('http://www.omdbapi.com/?i=tt' + el.movie_id + '&apikey=' + process.env.REACT_APP_KEY_OMDB)
                     .then(res => {
                         let mov = {
                             id: el.movie_id,
@@ -94,7 +94,7 @@ class Profile extends Component {
                     })
                 }
                 else {
-                    axios.get('http://www.omdbapi.com/?i=tt' + el.movie_id + '&apikey=22f35880')
+                    axios.get('http://www.omdbapi.com/?i=tt' + el.movie_id + '&apikey=' + process.env.REACT_APP_KEY_OMDB)
                     .then(res => {
                         let mov = {
                             id: el.movie_id,
