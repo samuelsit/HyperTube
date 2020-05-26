@@ -73,7 +73,7 @@ class Film extends Component {
         })
         axios.get('https://eztv.io/api/get-torrents?imdb_id=' + this.props.match.params.id, { useCredentails: true }).then(res => {
             if (res.data.torrents && this._isMounted) {
-                this.setState({episodes: res.data.torrents})
+                this.setState({episodes: res.data.torrents, hash: res.data.torrents[0].hash})
             }
         })
     }
@@ -251,8 +251,8 @@ class Film extends Component {
         body = {
           source: "eztv", 
           movie_id: this.props.match.params.id,
-          title: this.state.movie.title,
-          magnet: ""    //don't know where to find eztv magnet url
+          title: this.state.movie.Title,
+          hash: this.state.hash
         }
 
       }
