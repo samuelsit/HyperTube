@@ -240,7 +240,7 @@ class Film extends Component {
       axios
       .post('http://localhost:5000/api/v1/film/watch', body, { headers: { token: this.props.token}})
       .then(res => {
-        this.setState({movieSrc: res.data});
+        this.setState({movieSrc: require('../../' + res.data)});
       })
       .catch(error => {
         console.error(error);
