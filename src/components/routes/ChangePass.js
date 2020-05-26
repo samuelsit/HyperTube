@@ -53,7 +53,6 @@ class ChangePass extends Component {
                 repeat: repeat
             })
             .then(res => {
-                console.log(res)
                 if (this._isMounted) {
                     this.setState({message: 'Mot de passe changé avec succes'})
                 }

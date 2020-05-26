@@ -51,25 +51,16 @@ class Settings extends Component {
             axios.put('http://localhost:5000/api/v1/profile/email', {
                 email: email
             }, { headers: { token: token }})
-            .then(res => {
-                console.log(res);
-            })
         }
         if (verifyLast === 'is-valid') {
             axios.put('http://localhost:5000/api/v1/profile/lastname', {
                 lastname: lastname
             }, { headers: { token: token }})
-            .then(res => {
-                console.log(res);
-            })
         }
         if (verifyFirst === 'is-valid') {
             axios.put('http://localhost:5000/api/v1/profile/firstname', {
                 firstname: firstname
             }, { headers: { token: token }})
-            .then(res => {
-                console.log(res);
-            })
         }
     }
 
@@ -109,7 +100,6 @@ class Settings extends Component {
 
     handlePicture = event => {
         let {token} = this.props
-        console.log(this.state)
         if (event.target.files) {
           const fd = new FormData()
           fd.append('picture', event.target.files[0], event.target.files[0].name)

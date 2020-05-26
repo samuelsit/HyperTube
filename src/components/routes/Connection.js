@@ -84,7 +84,6 @@ class Connection extends Component {
                     password: this.state.password
                 })
                 .then(res => {
-                    console.log(res);
                     this.props.setUserIsAuth(true)
                     this.props.setUserToken(res.data.token)
                     this.props.setUserPseudo(res.data.user.pseudo)
@@ -127,7 +126,6 @@ class Connection extends Component {
               code: query.get('code')
           })
           .then(res => {
-              console.log(res)
               this.props.setUserIsAuth(true)
               this.props.setUserToken(res.data.token)
               this.props.setUserPseudo(res.data.user.pseudo)
@@ -167,9 +165,7 @@ class Connection extends Component {
             .post('http://localhost:5000/api/v1/auth/googleoauth', {
                 id_token: response.tokenObj.id_token
             })
-            .then(res => {
-                console.log(res);
-                
+            .then(res => {                
                 this.props.setUserIsAuth(true)
                 this.props.setUserToken(res.data.token)
                 this.props.setUserPseudo(res.data.user.pseudo)

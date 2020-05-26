@@ -36,13 +36,9 @@ class Forgot extends Component {
         const {email, verify} = this.state
 
         if (verify === 'is-valid') {
-            console.log(email);
             axios
             .post('http://localhost:5000/api/v1/auth/forgotPassword', {
                 email: email
-            })
-            .then(res => {
-                console.log(res)
             })
         }
     }

@@ -33,7 +33,6 @@ class Confirm extends Component {
         axios
         .post('http://localhost:5000/api/v1/auth/verifyEmail/' + token)
         .then(res => {
-            console.log(res)
             if (this._isMounted) {
                 this.setState({ error: false })
                 this.interval = setInterval(() => {

@@ -49,7 +49,6 @@ class Film extends Component {
                 }
                 else {
                     this.setState({movie: res.data.data.movie, genre: res.data.data.movie.genres, hash: res.data.data.movie.torrents[0].hash})
-                    console.log(res.data.data.movie)
                 }
             }
         })
@@ -68,7 +67,6 @@ class Film extends Component {
                 }
                 else {
                     this.setState({movie: res.data})
-                    console.log(res.data)
                 }
                 
             }
@@ -115,7 +113,6 @@ class Film extends Component {
         axios
         .get('http://localhost:5000/api/v1/film/file/'+ this.props.match.params.src + "/" + this.props.match.params.id, { headers: { token: this.props.token }})
         .then(res => {
-          console.log(res.data);
           if (res.data)
             this.setState({ movieSrc: res.data });
         })
@@ -262,7 +259,6 @@ class Film extends Component {
       axios
       .post('http://localhost:5000/api/v1/film/watch', body, { headers: { token: this.props.token}})
       .then(res => {
-        console.log(res);
         this.setState({movieSrc: res.data});
       })
       .catch(error => {

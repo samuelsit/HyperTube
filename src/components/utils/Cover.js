@@ -18,8 +18,6 @@ class Cover extends Component {
     componentDidMount() {
         this._isMounted = true
         let {film, src, searchEZ} = this.props
-        console.log(film);
-        
         if (searchEZ) {
             this.setState({poster: film.Poster, title: film.Title, rating: film.imdbRating, year: film.Year, id: film.imdbID === undefined ? '' : film.imdbID.replace(/([^0-9]?)/g, '')})
         }
