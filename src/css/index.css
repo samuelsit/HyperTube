@@ -20,6 +20,8 @@ html {
   color: #DE6262!important;
 }
 
+video:focus:active,
+video,
 textarea:focus:active,
 select:focus:active,
 input[type="text"]:focus:active,
