@@ -21,7 +21,7 @@ class Cover extends Component {
         console.log(film);
         
         if (searchEZ) {
-            this.setState({poster: film.Poster, title: film.Title, rating: film.imdbRating, year: film.Year, id: film.imdbID.substring(2, film.imdbID.length)})
+            this.setState({poster: film.Poster, title: film.Title, rating: film.imdbRating, year: film.Year, id: film.imdbID === undefined ? '' : film.imdbID.substring(2, film.imdbID.length)})
         }
         else {
             if (src !== 'yts' && film.imdb_id !== '0') {

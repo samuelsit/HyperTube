@@ -143,7 +143,7 @@ class Gallery extends Component {
         else {
             if (this._isMounted) {
                 if (value !== '0') {
-                    axios.get('http://www.omdbapi.com/?s=' + value + '&apikey=22f35880', { useCredentails: true }).then(res => {
+                    axios.get('http://www.omdbapi.com/?s=' + value + '&type=series&apikey=22f35880', { useCredentails: true }).then(res => {
                         this.setState({searchEZ: true, movies: res.data.Search})
                     })
                 }
