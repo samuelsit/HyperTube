@@ -24,7 +24,7 @@ class Film extends Component {
             comment: '',
             comments: [],
             redirect: false,
-            movieSrc: "",
+            movieSrc: null,
             hash: "",
             subtitle: []
         }
@@ -231,6 +231,7 @@ class Film extends Component {
     }
 
     firstView = () => {
+        this.setState({movieSrc: ''});
       let body = {};
       if (this.props.match.params.src === "yts") {
         body = {
@@ -284,6 +285,11 @@ class Film extends Component {
                 this.setState({redirect: true})
             })
         }
+    }
+
+    handleIsLoad = () => {
+        if (this.state.movieSrc === '')
+            return <div className="load btn btn-lg btn-outline-light">{translate('loading-video')}</div>
     }
 
     render () {
@@ -373,6 +379,8 @@ class Film extends Component {
                                         {
                                             this.state.hash !== '' ?
                                             <>
+                                            <div>
+                                            {this.handleIsLoad()}
                                             <video controls width="100%" className="border" src={this.state.movieSrc}>
                                                 {
                                                     subtitle.map((el, i) => 
@@ -380,6 +388,7 @@ class Film extends Component {
                                                     )
                                                 }
                                             </video>
+                                            </div>
                                             {this.state.movieSrc ? null : <button className="btn btn-outline-danger mx-auto" onClick={this.firstView}>{translate('be-the-first')}</button>}
                                             </>
                                             : null
