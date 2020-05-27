@@ -231,12 +231,22 @@ class Film extends Component {
     }
 
     firstView = () => {
-      let body = {
-          source: this.props.match.params.src,
+      let body = {};
+      if (this.props.match.params.src === "yts") {
+        body = {
+          source: "yts",
           movie_id: this.props.match.params.id,
           title: this.state.movie.title,
           hash: this.state.hash
         }
+      } else if (this.props.match.params.src === "eztv") {
+        body = {
+          source: "eztv", 
+          movie_id: this.props.match.params.id,
+          title: this.state.movie.Title,
+          hash: this.state.hash
+        }
+    }
       axios
       .post('http://localhost:5000/api/v1/film/watch', body, { headers: { token: this.props.token}})
       .then(res => {
