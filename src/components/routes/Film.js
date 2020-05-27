@@ -118,7 +118,10 @@ class Film extends Component {
             console.log(res);
             
           if (res.data)
-            this.setState({ movieSrc: require('../../' + res.data) });
+            this.setState({
+              movieSrc: require('../../' + res.data.movie_path),
+              subtitle: res.data.subtitles
+            });
         })
         .catch(error => {
           console.error(error)
@@ -251,7 +254,11 @@ class Film extends Component {
       axios
       .post('http://localhost:5000/api/v1/film/watch', body, { headers: { token: this.props.token}})
       .then(res => {
-        this.setState({movieSrc: require('../../' + res.data)});
+        console.log(res.data);
+        this.setState({
+          movieSrc: require('../../' + res.data.movie_path),
+          subtitle: res.data.subtitles
+        });
       })
       .catch(error => {
         console.error(error);
