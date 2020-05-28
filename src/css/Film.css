@@ -28,9 +28,9 @@ i {
 }
 
 .load {
-  position: absolute;
-  top: 10vh;
+  position: relative;
   width: 100%;
+  top: 10vh;
   z-index: 400;
   animation: fade;
   animation-duration: .8s;
@@ -44,4 +44,8 @@ i {
 @keyframes fade {
   from {opacity: 0;}
   to {opacity: 1;}
+}
+
+#video {
+  max-height: 700px;
 }

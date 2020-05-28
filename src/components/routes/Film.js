@@ -10,7 +10,6 @@ import { motion } from 'framer-motion'
 import { pageVariant, pageTransition } from '../../css/motion'
 import { Redirect } from 'react-router-dom'
 
-
 class Film extends Component {
     constructor(props) {
         super(props)
@@ -259,7 +258,7 @@ class Film extends Component {
         this.setState({
           movieSrc: require('../../' + res.data.movie_path),
           subtitle: res.data.subtitles
-        });
+        }, this.Video.current.load());
       })
       .catch(error => {
         console.error(error);
@@ -297,8 +296,7 @@ class Film extends Component {
 
     handleIsLoad = () => {
         if (this.state.movieSrc === '') {
-            this.Video.current.load()
-            return <div className="load btn btn-lg btn-outline-light" style={{borderRadius: '0'}}>{translate('loading-video')}</div>
+            return <div className="load bg-white mx-auto text-center p-2" style={{borderRadius: '0'}}>{translate('loading-video')}</div>
         }
     }
 
@@ -391,13 +389,14 @@ class Film extends Component {
                                             <>
                                             <div>
                                             {this.handleIsLoad()}
-                                            <video ref={this.Video} controls width="100%" className="border">
+                                            <video id="video" ref={this.Video} onClick={e => {e.target.load()}} controls width="100%" className="border" poster={this.props.src === 'yts' ? this.state.movie.background_image_original : this.state.movie.Poster}>
                                                 <source src={this.state.movieSrc}/>
                                                 {
                                                     subtitle.map((el, i) =>
                                                         <track key={i} src={require(`../../${el.file}`)} kind="subtitles" srcLang={el.file} label={el.language}/>
                                                     )
                                                 }
+                                                <p>This browser does not support the video element.</p>
                                             </video>
                                             </div>
                                             {this.state.movieSrc ? null : <button className="btn btn-outline-danger mx-auto" onClick={this.firstView}>{translate('be-the-first')}</button>}
