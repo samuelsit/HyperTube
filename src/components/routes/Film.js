@@ -23,7 +23,8 @@ class Film extends Component {
             comment: '',
             comments: [],
             redirect: false,
-            movieSrc: null,
+            movieSrc: '',
+            isLoad: false,
             hash: "",
             subtitle: []
         }
@@ -234,7 +235,7 @@ class Film extends Component {
     }
 
     firstView = () => {
-        this.setState({movieSrc: ''});
+        this.setState({isLoad: true})
       let body = {};
       if (this.props.match.params.src === "yts") {
         body = {
@@ -257,7 +258,8 @@ class Film extends Component {
         console.log(res.data);
         this.setState({
           movieSrc: require('../../' + res.data.movie_path),
-          subtitle: res.data.subtitles
+          subtitle: res.data.subtitles,
+          isLoad: false
         }, this.Video.current.load());
       })
       .catch(error => {
@@ -295,7 +297,7 @@ class Film extends Component {
     }
 
     handleIsLoad = () => {
-        if (this.state.movieSrc === '') {
+        if (this.state.isLoad === true) {
             return <div className="load bg-white mx-auto text-center p-2" style={{borderRadius: '0'}}>{translate('loading-video')}</div>
         }
     }
