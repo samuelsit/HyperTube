@@ -29,6 +29,7 @@ class Film extends Component {
             subtitle: []
         }
         this.Chat = React.createRef()
+        this.Video = React.createRef()
     }
 
     _isMounted = false
@@ -295,8 +296,10 @@ class Film extends Component {
     }
 
     handleIsLoad = () => {
-        if (this.state.movieSrc === '')
-            return <div className="load btn btn-lg btn-outline-light">{translate('loading-video')}</div>
+        if (this.state.movieSrc === '') {
+            this.Video.current.load()
+            return <div className="load btn btn-lg btn-outline-light" style={{borderRadius: '0'}}>{translate('loading-video')}</div>
+        }
     }
 
     render () {
@@ -388,10 +391,11 @@ class Film extends Component {
                                             <>
                                             <div>
                                             {this.handleIsLoad()}
-                                            <video controls width="100%" className="border" src={this.state.movieSrc}>
+                                            <video ref={this.Video} controls width="100%" className="border">
+                                                <source src={this.state.movieSrc}/>
                                                 {
-                                                    subtitle.map((el, i) => 
-                                                        <track src={`/movies/${this.props.match.params.src}/${this.props.match.params.id}/${el}`} kind="subtitles" srcLang={el} label={el}/>
+                                                    subtitle.map((el, i) =>
+                                                        <track key={i} src={require(`../../${el.file}`)} kind="subtitles" srcLang={el.file} label={el.language}/>
                                                     )
                                                 }
                                             </video>
