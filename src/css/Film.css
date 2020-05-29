@@ -28,7 +28,7 @@ i {
 }
 
 .load {
-  position: relative;
+  position: absolute;
   width: 100%;
   top: 10vh;
   z-index: 400;

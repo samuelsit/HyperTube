@@ -236,20 +236,20 @@ class Film extends Component {
 
     firstView = () => {
         this.setState({isLoad: true})
-      let body = {};
-      if (this.props.match.params.src === "yts") {
-        body = {
-          source: "yts",
-          movie_id: this.props.match.params.id,
-          title: this.state.movie.title,
-          hash: this.state.hash
-        }
-      } else if (this.props.match.params.src === "eztv") {
-        body = {
-          source: "eztv", 
-          movie_id: this.props.match.params.id,
-          title: this.state.movie.Title,
-          hash: this.state.hash
+        let body = {};
+        if (this.props.match.params.src === "yts") {
+            body = {
+                source: "yts",
+                movie_id: this.props.match.params.id,
+                title: this.state.movie.title,
+                hash: this.state.hash
+            }
+        } else if (this.props.match.params.src === "eztv") {
+            body = {
+                source: "eztv", 
+                movie_id: this.props.match.params.id,
+                title: this.state.movie.Title,
+                hash: this.state.hash
         }
     }
       axios
@@ -298,8 +298,20 @@ class Film extends Component {
 
     handleIsLoad = () => {
         if (this.state.isLoad === true) {
-            return <div className="load bg-white mx-auto text-center p-2" style={{borderRadius: '0'}}>{translate('loading-video')}</div>
+            return <div className="load bg-white mx-auto text-center p-2">{translate('loading-video')}</div>
         }
+    }
+
+    Play = (e) => {
+        e.preventDefault()
+        e.target.play()
+    }
+
+    Load = (e) => {
+        e.preventDefault()
+        var time = e.target.currentTime
+        e.target.load()
+        e.target.currentTime = time
     }
 
     render () {
@@ -391,7 +403,7 @@ class Film extends Component {
                                             <>
                                             <div>
                                             {this.handleIsLoad()}
-                                            <video id="video" ref={this.Video} onClick={e => {e.target.load()}} controls width="100%" className="border" poster={this.props.src === 'yts' ? this.state.movie.background_image_original : this.state.movie.Poster}>
+                                            <video id="video" ref={this.Video} onClick={this.state.movieSrc ? this.Load : this.firstView} /*controlsList="nodownload"*/ onCanPlayThrough={this.Play} controls width="100%" className="border" poster={this.props.src === 'yts' ? this.state.movie.background_image_original : this.state.movie.Poster}>
                                                 <source src={this.state.movieSrc}/>
                                                 {
                                                     subtitle.map((el, i) =>
@@ -401,7 +413,6 @@ class Film extends Component {
                                                 <p>This browser does not support the video element.</p>
                                             </video>
                                             </div>
-                                            {this.state.movieSrc ? null : <button className="btn btn-outline-danger mx-auto" onClick={this.firstView}>{translate('be-the-first')}</button>}
                                             </>
                                             : null
                                         }
