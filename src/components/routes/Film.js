@@ -453,7 +453,7 @@ class Film extends Component {
                                                             movie.torrents ?
                                                             movie.torrents.map((el, i) => (
                                                                 <tr key={i} style={{cursor: 'pointer'}} onClick={() => {alert('magnet:?xt=urn:btih:' + el.hash + '&dn=' + movie.slug + '&tr=http://track.one:1234/announce&tr=udp://track.two:80')}}>
-                                                                    <th style={{width: '33%'}}  className="text-center" scope="row">{i}</th>
+                                                                    <th style={{width: '33%'}}  className="text-center" scope="row">{i+1}</th>
                                                                     <td style={{width: '33%'}}  className="text-center">{el.quality}</td>
                                                                     <td style={{width: '33%'}}  className="text-center">{el.type}</td>
                                                                 </tr>
