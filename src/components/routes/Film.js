@@ -29,7 +29,6 @@ class Film extends Component {
             subtitle: []
         }
         this.Chat = React.createRef()
-        this.Video = React.createRef()
     }
 
     _isMounted = false
@@ -53,6 +52,7 @@ class Film extends Component {
                 }
             }
         })
+        .then(this.getFile)
         axios.get('https://yts.mx/api/v2/movie_suggestions.json?movie_id=' + this.props.match.params.id, { useCredentails: true }).then(res => {
             if (this._isMounted) {
                 this.setState({suggestion: res.data.data.movies})
@@ -78,7 +78,7 @@ class Film extends Component {
             if (res.data.torrents && this._isMounted) {
                 this.setState({episodes: res.data.torrents, hash: res.data.torrents[0].hash})
             }
-        })
+        }).then(this.getFile)
     }
 
     componentDidMount() {
@@ -113,16 +113,23 @@ class Film extends Component {
             console.error(error)
             this.setState({redirect: true})
         })
+    }
+
+    getFile = () => {
         axios
         .get('http://localhost:5000/api/v1/film/file/'+ this.props.match.params.src + "/" + this.props.match.params.id, { headers: { token: this.props.token }})
         .then(res => {
             console.log(res);
-            
-          if (res.data)
-            this.setState({
-              movieSrc: require('../../' + res.data.movie_path),
-              subtitle: res.data.subtitles
-            });
+            if (res.data)
+                this.setState({
+                    movieSrc: require('../../' + res.data.movie_path),
+                    subtitle: res.data.subtitles
+                });
+            else
+                this.setState({
+                    movieSrc: `http://localhost:5000/api/v1/film/stream?source=${this.props.match.params.src}&movie_id=${this.props.match.params.id}&title=${this.props.match.params.src === 'yts' ? this.state.movie.title : this.state.movie.Title}&hash=${this.state.hash}&token=${this.props.token}`,
+                    subtitle: `http://localhost:5000/api/v1/film/subtitle?source=${this.props.match.params.src}&movie_id=${this.props.match.params.id}&title=${this.props.match.params.src === 'yts' ? this.state.movie.title : this.state.movie.Title}&hash=${this.state.hash}&token=${this.props.token}`
+                });
         })
         .catch(error => {
           console.error(error)
@@ -234,38 +241,38 @@ class Film extends Component {
         }
     }
 
-    firstView = () => {
-        this.setState({isLoad: true})
-        let body = {};
-        if (this.props.match.params.src === "yts") {
-            body = {
-                source: "yts",
-                movie_id: this.props.match.params.id,
-                title: this.state.movie.title,
-                hash: this.state.hash
-            }
-        } else if (this.props.match.params.src === "eztv") {
-            body = {
-                source: "eztv", 
-                movie_id: this.props.match.params.id,
-                title: this.state.movie.Title,
-                hash: this.state.hash
-        }
-    }
-      axios
-      .post('http://localhost:5000/api/v1/film/watch', body, { headers: { token: this.props.token}})
-      .then(res => {
-        console.log(res.data);
-        this.setState({
-          movieSrc: require('../../' + res.data.movie_path),
-          subtitle: res.data.subtitles,
-          isLoad: false
-        }, this.Video.current.load());
-      })
-      .catch(error => {
-        console.error(error);
-      })
-    }
+    // firstView = () => {
+    //     this.setState({isLoad: true})
+    //     let body = {};
+    //     if (this.props.match.params.src === "yts") {
+    //         body = {
+    //             source: "yts",
+    //             movie_id: this.props.match.params.id,
+    //             title: this.state.movie.title,
+    //             hash: this.state.hash
+    //         }
+    //     } else if (this.props.match.params.src === "eztv") {
+    //         body = {
+    //             source: "eztv", 
+    //             movie_id: this.props.match.params.id,
+    //             title: this.state.movie.Title,
+    //             hash: this.state.hash
+    //     }
+    // }
+    //   axios
+    //   .post('http://localhost:5000/api/v1/film/watch', body, { headers: { token: this.props.token}})
+    //   .then(res => {
+    //     console.log(res.data);
+    //     this.setState({
+    //       movieSrc: require('../../' + res.data.movie_path),
+    //       subtitle: res.data.subtitles,
+    //       isLoad: false
+    //     });
+    //   })
+    //   .catch(error => {
+    //     console.error(error);
+    //   })
+    // }
 
     handleDelCom = e => {
         if (window.confirm("Souhaitez-vous vraiment supprimer votre commentaire ?")) {
@@ -294,17 +301,6 @@ class Film extends Component {
                 this.setState({redirect: true})
             })
         }
-    }
-
-    handleIsLoad = () => {
-        if (this.state.isLoad === true) {
-            return <div className="load bg-white mx-auto text-center p-2">{translate('loading-video')}</div>
-        }
-    }
-
-    Play = (e) => {
-        e.preventDefault()
-        e.target.play()
     }
 
     Load = (e) => {
@@ -402,13 +398,22 @@ class Film extends Component {
                                             this.state.hash !== '' ?
                                             <>
                                             <div>
-                                            {this.handleIsLoad()}
-                                            <video id="video" ref={this.Video} onClick={this.state.movieSrc ? this.Load : this.firstView} /*controlsList="nodownload"*/ onCanPlayThrough={this.Play} controls width="100%" className="border" poster={this.props.src === 'yts' ? this.state.movie.background_image_original : this.state.movie.Poster}>
-                                                <source src={this.state.movieSrc}/>
+                                            {this.state.isLoad ? <div className="load bg-white mx-auto text-center p-2">{translate('loading-video')}</div> : null}
+                                            <video
+                                            id="video"
+                                            /*controlsList="nodownload"*/
+                                            controls
+                                            width="100%"
+                                            className="border"
+                                            preload="auto"
+                                            autoPlay
+                                            poster={this.props.src === 'yts' ? this.state.movie.background_image_original : this.state.movie.Poster}>
+                                                {/* <source src={this.state.movieSrc}/> */}
+                                                <source src={`http://localhost:5000/api/v1/film/stream?source=${this.props.match.params.src}&movie_id=${this.props.match.params.id}&title=${this.props.match.params.src === 'yts' ? this.state.movie.title : this.state.movie.Title}&hash=${this.state.hash}&token=${this.props.token}`}/>
                                                 {
-                                                    subtitle.map((el, i) =>
-                                                        <track key={i} src={require(`../../${el.file}`)} kind="subtitles" srcLang={el.file} label={el.language}/>
-                                                    )
+                                                    // subtitle.map((el, i) =>
+                                                    //     <track key={i} src={require(`../../${el.file}`)} kind="subtitles" srcLang={el.file} label={el.language}/>
+                                                    // )
                                                 }
                                                 <p>This browser does not support the video element.</p>
                                             </video>
