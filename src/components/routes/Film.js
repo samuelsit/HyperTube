@@ -29,6 +29,7 @@ class Film extends Component {
             subtitle: []
         }
         this.Chat = React.createRef()
+        this.Video = React.createRef()
     }
 
     _isMounted = false
@@ -115,21 +116,24 @@ class Film extends Component {
         })
     }
 
-    getFile = () => {
+    getFile = (getSubtitle) => {
         axios
         .get('http://localhost:5000/api/v1/film/file/'+ this.props.match.params.src + "/" + this.props.match.params.id, { headers: { token: this.props.token }})
         .then(res => {
             console.log(res);
-            if (res.data)
+            if (res.data.movie_path && getSubtitle !== true)
                 this.setState({
                     movieSrc: require('../../' + res.data.movie_path),
                     subtitle: res.data.subtitles
-                });
+                }, this.Video.current.load());
             else
-                this.setState({
-                    movieSrc: `http://localhost:5000/api/v1/film/stream?source=${this.props.match.params.src}&movie_id=${this.props.match.params.id}&title=${this.props.match.params.src === 'yts' ? this.state.movie.title : this.state.movie.Title}&hash=${this.state.hash}&token=${this.props.token}`,
-                    subtitle: `http://localhost:5000/api/v1/film/subtitle?source=${this.props.match.params.src}&movie_id=${this.props.match.params.id}&title=${this.props.match.params.src === 'yts' ? this.state.movie.title : this.state.movie.Title}&hash=${this.state.hash}&token=${this.props.token}`
-                });
+                if (getSubtitle !== true) {
+                    this.setState({movieSrc: `http://localhost:5000/api/v1/film/stream?source=${this.props.match.params.src}&movie_id=${this.props.match.params.id}&title=${this.props.match.params.src === 'yts' ? this.state.movie.title : this.state.movie.Title}&hash=${this.state.hash}&token=${this.props.token}`},
+                        this.Video.current.load());
+                }
+                else {
+                    this.setState({subtitle: res.data.subtitles});
+                }
         })
         .catch(error => {
           console.error(error)
@@ -400,20 +404,21 @@ class Film extends Component {
                                             <div>
                                             {this.state.isLoad ? <div className="load bg-white mx-auto text-center p-2">{translate('loading-video')}</div> : null}
                                             <video
+                                            ref={this.Video}
                                             id="video"
                                             /*controlsList="nodownload"*/
                                             controls
                                             width="100%"
                                             className="border"
                                             preload="auto"
+                                            onPlay={() => {setTimeout(() => {this.getFile(true)}, 5000);}}
                                             autoPlay
                                             poster={this.props.src === 'yts' ? this.state.movie.background_image_original : this.state.movie.Poster}>
-                                                {/* <source src={this.state.movieSrc}/> */}
-                                                <source src={`http://localhost:5000/api/v1/film/stream?source=${this.props.match.params.src}&movie_id=${this.props.match.params.id}&title=${this.props.match.params.src === 'yts' ? this.state.movie.title : this.state.movie.Title}&hash=${this.state.hash}&token=${this.props.token}`}/>
+                                                <source src={this.state.movieSrc}/>
                                                 {
-                                                    // subtitle.map((el, i) =>
-                                                    //     <track key={i} src={require(`../../${el.file}`)} kind="subtitles" srcLang={el.file} label={el.language}/>
-                                                    // )
+                                                    subtitle ? subtitle.map((el, i) =>
+                                                        <track key={i} src={require(`../../${el.file}`)} kind="subtitles" srcLang={el.file} label={el.language}/>
+                                                    ) : null
                                                 }
                                                 <p>This browser does not support the video element.</p>
                                             </video>
