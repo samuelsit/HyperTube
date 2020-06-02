@@ -118,7 +118,7 @@ class Film extends Component {
 
     getFile = (getSubtitle) => {
         axios
-        .get('http://localhost:5000/api/v1/film/file/'+ this.props.match.params.src + "/" + this.props.match.params.id, { headers: { token: this.props.token }})
+        .get(`http://localhost:5000/api/v1/film/file/${this.props.match.params.src}/${this.props.match.params.id}/${this.props.match.params.src === 'yts' ? this.state.movie.title : this.state.movie.Title}`, { headers: { token: this.props.token }})
         .then(res => {
             console.log(res);
             if (res.data.movie_path && getSubtitle !== true)
