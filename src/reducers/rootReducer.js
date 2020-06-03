@@ -3,7 +3,8 @@ const initState = {
     pseudo: '',
     token: '',
     lang: 'en',
-    src: 'yts'
+    src: 'yts',
+    currentTorrent: 0
 }
 
 const rootReducer = (state  = initState, action) => {
@@ -35,6 +36,12 @@ const rootReducer = (state  = initState, action) => {
         return {
             ...state,
             src: action.src
+        }
+    }
+    else if (action.type === 'SET_CURRENT_TORRENT') {
+        return {
+            ...state,
+            currentTorrent: action.currentTorrent
         }
     }
     return state

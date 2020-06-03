@@ -26,7 +26,8 @@ class Film extends Component {
             movieSrc: '',
             isLoad: false,
             hash: "",
-            subtitle: []
+            subtitle: [],
+            torrent_i: 0
         }
         this.Chat = React.createRef()
         this.Video = React.createRef()
@@ -45,15 +46,19 @@ class Film extends Component {
     handleYTS = () => {
         axios.get('https://yts.mx/api/v2/movie_details.json?movie_id=' + this.props.match.params.id, { useCredentails: true }).then(res => {
             if (this._isMounted) {
-                if (res.data.data.movie.url === 'https://yts.mx/movie/') {
-                    this.setState({redirect: true})
+                if (res.data) {                    
+                    if (res.data.data.movie.url === 'https://yts.mx/movie/') {
+                        this.setState({redirect: true})
+                    }
+                    else {
+                        this.setState({movie: res.data.data.movie, genre: res.data.data.movie.genres, hash: res.data.data.movie.torrents[this.state.torrent_i].hash}, this.getFile(false, this.props.match.params.id))
+                    }
                 }
                 else {
-                    this.setState({movie: res.data.data.movie, genre: res.data.data.movie.genres, hash: res.data.data.movie.torrents[0].hash})
+                    this.setState({redirect: true})
                 }
             }
         })
-        .then(this.getFile)
         axios.get('https://yts.mx/api/v2/movie_suggestions.json?movie_id=' + this.props.match.params.id, { useCredentails: true }).then(res => {
             if (this._isMounted) {
                 this.setState({suggestion: res.data.data.movies})
@@ -77,14 +82,17 @@ class Film extends Component {
             console.log(res);
             
             if (res.data.torrents && this._isMounted) {
-                this.setState({episodes: res.data.torrents, hash: res.data.torrents[0].hash})
+                this.setState({episodes: res.data.torrents, hash: res.data.torrents[this.state.torrent_i].hash}, this.getFile(false, this.props.match.params.id))
             }
-        }).then(this.getFile)
+        })
     }
 
     componentDidMount() {
         this._isMounted = true
         if (this._isMounted) {
+            if (isNaN(this.props.match.params.id)) {
+                this.setState({redirect: true})
+            }
             if (this.props.match.params.src !== 'eztv' && this.props.match.params.src !== 'yts') {
                 this.setState({redirect: true})
             }
@@ -116,20 +124,20 @@ class Film extends Component {
         })
     }
 
-    getFile = (getSubtitle) => {
+    getFile = (getSubtitle, id) => {
         axios
-        .get(`http://localhost:5000/api/v1/film/file/${this.props.match.params.src}/${this.props.match.params.id}`, { headers: { token: this.props.token }})
+        .get(`http://localhost:5000/api/v1/film/file/${this.props.match.params.src}/${id}`, { headers: { token: this.props.token }})
         .then(res => {
             console.log(res);
             if (res.data.movie_path && getSubtitle !== true)
                 this.setState({
                     movieSrc: require('../../' + res.data.movie_path),
                     subtitle: res.data.subtitles
-                }, this.Video.current.load());
+                }, this.Video.current ? this.Video.current.load() : null);
             else
                 if (getSubtitle !== true) {
-                    this.setState({movieSrc: `http://localhost:5000/api/v1/film/stream?source=${this.props.match.params.src}&movie_id=${this.props.match.params.id}&title=${this.props.match.params.src === 'yts' ? this.state.movie.title : this.state.movie.Title}&hash=${this.state.hash}&token=${this.props.token}`},
-                        this.Video.current.load());
+                    this.setState({movieSrc: `http://localhost:5000/api/v1/film/stream?source=${this.props.match.params.src}&movie_id=${id}&title=${this.props.match.params.src === 'yts' ? this.state.movie.title : this.state.movie.Title}&hash=${this.state.hash}&token=${this.props.token}`},
+                    this.Video.current ? this.Video.current.load() : null);
                 }
                 else {
                     this.setState({subtitle: res.data.subtitles});
@@ -141,6 +149,12 @@ class Film extends Component {
     }
 
     componentDidUpdate(previousProps, previousState) {
+        if (this.props.match.params.id !== previousProps.match.params.id) {
+            this.props.setCurrentTorrent(0)
+        }
+        else {
+            this.props.setCurrentTorrent(this.state.torrent_i)
+        }
         this.Chat.current.scrollTo({
             top: 999999,
             left: 0,
@@ -245,39 +259,6 @@ class Film extends Component {
         }
     }
 
-    // firstView = () => {
-    //     this.setState({isLoad: true})
-    //     let body = {};
-    //     if (this.props.match.params.src === "yts") {
-    //         body = {
-    //             source: "yts",
-    //             movie_id: this.props.match.params.id,
-    //             title: this.state.movie.title,
-    //             hash: this.state.hash
-    //         }
-    //     } else if (this.props.match.params.src === "eztv") {
-    //         body = {
-    //             source: "eztv", 
-    //             movie_id: this.props.match.params.id,
-    //             title: this.state.movie.Title,
-    //             hash: this.state.hash
-    //     }
-    // }
-    //   axios
-    //   .post('http://localhost:5000/api/v1/film/watch', body, { headers: { token: this.props.token}})
-    //   .then(res => {
-    //     console.log(res.data);
-    //     this.setState({
-    //       movieSrc: require('../../' + res.data.movie_path),
-    //       subtitle: res.data.subtitles,
-    //       isLoad: false
-    //     });
-    //   })
-    //   .catch(error => {
-    //     console.error(error);
-    //   })
-    // }
-
     handleDelCom = e => {
         if (window.confirm("Souhaitez-vous vraiment supprimer votre commentaire ?")) {
             axios
@@ -312,6 +293,15 @@ class Film extends Component {
         var time = e.target.currentTime
         e.target.load()
         e.target.currentTime = time
+    }
+
+    handleChangeTorrent = (el, i) => {
+        this.setState(
+        {
+            torrent_i: i,
+            hash: el.hash
+        }, this.getFile(false, i === 0 ? this.props.match.params.id : this.props.match.params.id + '_' + i ))
+        window.scrollTo(0, 0)
     }
 
     render () {
@@ -411,7 +401,7 @@ class Film extends Component {
                                             width="100%"
                                             className="border"
                                             preload="auto"
-                                            onPlay={() => {setTimeout(() => {this.getFile(true)}, 5000);}}
+                                            onPlay={() => {setTimeout(() => {this.getFile(true, this.props.match.params.id)}, 5000);}}
                                             autoPlay
                                             poster={this.props.src === 'yts' ? this.state.movie.background_image_original : this.state.movie.Poster}>
                                                 <source src={this.state.movieSrc}/>
@@ -462,7 +452,7 @@ class Film extends Component {
                                                         {   
                                                             movie.torrents ?
                                                             movie.torrents.map((el, i) => (
-                                                                <tr key={i} style={{cursor: 'pointer'}} onClick={() => {alert('magnet:?xt=urn:btih:' + el.hash + '&dn=' + movie.slug + '&tr=http://track.one:1234/announce&tr=udp://track.two:80')}}>
+                                                                <tr key={i} style={{cursor: 'pointer'}} onClick={() => {this.handleChangeTorrent(el, i)}}>
                                                                     <th style={{width: '33%'}}  className="text-center" scope="row">{i+1}</th>
                                                                     <td style={{width: '33%'}}  className="text-center">{el.quality}</td>
                                                                     <td style={{width: '33%'}}  className="text-center">{el.type}</td>
@@ -512,7 +502,7 @@ class Film extends Component {
                                                             .sort((a, b) => a.season - b.season)
                                                             .sort((a, b) => a.episode - b.episode)
                                                             .map((el, i) => (
-                                                                <tr key={i} style={{cursor: 'pointer'}} onClick={() => {alert(el.magnet_url)}}>
+                                                                <tr key={i} style={{cursor: 'pointer'}} onClick={() => {this.handleChangeTorrent(el, i)}}>
                                                                     <th style={{width: '10%'}} className="text-center" scope="row">{el.season}</th>
                                                                     <th style={{width: '10%'}} className="text-center" scope="row">{el.episode}</th>
                                                                     <td style={{width: '80%'}}>{el.title}</td>
@@ -533,13 +523,22 @@ class Film extends Component {
     }
 }
 
+const mapDispatchToProps = dispatch => {
+    return {
+        setCurrentTorrent: (currentTorrent) => {
+            dispatch({ type: 'SET_CURRENT_TORRENT', currentTorrent: currentTorrent })
+        }
+    }
+}
+
 const mapStateToProps = state => { 
     return {
         token: state.token,
         pseudo: state.pseudo,
         lang: state.lang,
-        src: state.src
+        src: state.src,
+        currentTorrent: state.currentTorrent
     }
 }
 
-export default connect(mapStateToProps, null)(Film)
+export default connect(mapStateToProps, mapDispatchToProps)(Film)

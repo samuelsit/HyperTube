@@ -29,6 +29,7 @@ class Header extends Component {
         this.props.setUserIsAuth(false)
         this.props.setUserToken('')
         this.props.setUserPseudo('')
+        this.props.setCurrentTorrent(0)
     }
 
     render () {
@@ -114,6 +115,9 @@ const mapDispatchToProps = dispatch => {
         },
         setUserSrc: (src) => {
             dispatch({ type: 'SET_USER_SRC', src: src })
+        },
+        setCurrentTorrent: (currentTorrent) => {
+            dispatch({ type: 'SET_CURRENT_TORRENT', currentTorrent: currentTorrent })
         }
     }
 }

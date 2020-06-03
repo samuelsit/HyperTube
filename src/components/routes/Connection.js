@@ -88,6 +88,7 @@ class Connection extends Component {
                     this.props.setUserToken(res.data.token)
                     this.props.setUserPseudo(res.data.user.pseudo)
                     this.props.setUserSrc('yts')
+                    this.props.setCurrentTorrent(0)
                     this.setState({redirect: true})
                 })
                 .catch(error => {
@@ -130,6 +131,7 @@ class Connection extends Component {
               this.props.setUserToken(res.data.token)
               this.props.setUserPseudo(res.data.user.pseudo)
               this.props.setUserSrc('yts')
+              this.props.setCurrentTorrent(0)
               this.setState({redirect: true})
           })
           .catch(error => {
@@ -170,6 +172,7 @@ class Connection extends Component {
                 this.props.setUserToken(res.data.token)
                 this.props.setUserPseudo(res.data.user.pseudo)
                 this.props.setUserSrc('yts')
+                this.props.setCurrentTorrent(0)
                 this.setState({redirect: true})
             })
             .catch(error => {
@@ -278,6 +281,9 @@ const mapDispatchToProps = dispatch => {
         },
         setUserSrc: (src) => {
             dispatch({ type: 'SET_USER_SRC', src: src })
+        },
+        setCurrentTorrent: (currentTorrent) => {
+            dispatch({ type: 'SET_CURRENT_TORRENT', currentTorrent: currentTorrent })
         }
     }
 }
