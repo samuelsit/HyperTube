@@ -111,16 +111,24 @@ class Film extends Component {
         })
         .catch(error => {
             console.error(error)
-            this.setState({redirect: true})
+            if (error.response.status === 401) {
+              this.handleDisconnect()
+            } else {
+              this.setState({redirect: true})
+            }
         })
         axios
         .get('http://localhost:5000/api/v1/film/like/' + this.props.match.params.src + '/' + this.props.match.params.id, { headers: { token: this.props.token }})
         .then(res => {
-            this.setState({isLike: res.data})
+            this.setState({isLike: res.data.liked})
         })
         .catch(error => {
             console.error(error)
+            if (error.response.status === 401) {
+              this.handleDisconnect();
+            } else {
             this.setState({redirect: true})
+            }
         })
     }
 
@@ -145,6 +153,11 @@ class Film extends Component {
         })
         .catch(error => {
           console.error(error)
+          if (error.response.status === 401) {
+            this.handleDisconnect()
+          } else {
+            this.setState({redirect: true})
+          }
         })
     }
 
@@ -177,20 +190,37 @@ class Film extends Component {
                 })
                 .catch(error => {
                     console.error(error)
-                    this.setState({redirect: true})
+                    if (error.response.status === 401) {
+                      this.handleDisconnect()
+                    } else {
+                      this.setState({redirect: true})
+                    }
                 })
                 axios
                 .get('http://localhost:5000/api/v1/film/like/' + this.props.match.params.src + '/' + this.props.match.params.id, { headers: { token: this.props.token }})
                 .then(res => {
-                    this.setState({isLike: res.data})
+                  console.log(res.data);
+                    this.setState({isLike: res.data.liked})
+                    this.props.setUserToken(res.data.token)
                 })
                 .catch(error => {
                     console.error(error)
-                    this.setState({redirect: true})
+                    if (error.response.status === 401) {
+                      this.handleDisconnect()
+                    } else {
+                      this.setState({redirect: true})
+                    }
                 })
             }
         }
     }
+
+    handleDisconnect = () => {
+      this.props.setUserIsAuth(false)
+      this.props.setUserToken('')
+      this.props.setUserPseudo('')
+      this.props.setCurrentTorrent(0)
+  }
 
     handleChange = e => {
         this.setState({comment: e.target.value})
@@ -218,12 +248,20 @@ class Film extends Component {
             })
             .catch(error => {
                 console.error(error)
-                this.setState({redirect: true})
+                if (error.response.status === 401) {
+                  this.handleDisconnect()
+                } else {
+                  this.setState({redirect: true})
+                }
             })
         })
         .catch(error => {
             console.error(error)
-            this.setState({redirect: true})
+            if (error.response.status === 401) {
+              this.handleDisconnect()
+            } else {
+              this.setState({redirect: true})
+            }
         })
     }
 
@@ -240,7 +278,11 @@ class Film extends Component {
             }, { headers: { token: token }})
             .catch(error => {
                 console.error(error)
-                this.setState({redirect: true})
+                if (error.response.status === 401) {
+                  this.handleDisconnect()
+                } else {
+                  this.setState({redirect: true})
+                }
             })
         }
         else {
@@ -254,7 +296,11 @@ class Film extends Component {
             })
             .catch(error => {
                 console.error(error)
-                this.setState({redirect: true})
+                if (error.response.status === 401) {
+                  this.handleDisconnect()
+                } else {
+                  this.setState({redirect: true})
+                }
             })
         }
     }
@@ -283,7 +329,11 @@ class Film extends Component {
             })
             .catch(error => {
                 console.error(error)
-                this.setState({redirect: true})
+                if (error.response.status === 401) {
+                  this.handleDisconnect()
+                } else {
+                  this.setState({redirect: true})
+                }
             })
         }
     }
@@ -527,6 +577,15 @@ const mapDispatchToProps = dispatch => {
     return {
         setCurrentTorrent: (currentTorrent) => {
             dispatch({ type: 'SET_CURRENT_TORRENT', currentTorrent: currentTorrent })
+        },
+        setUserIsAuth: (isAuth) => {
+          dispatch({ type: 'SET_USER_AUTH', isAuth: isAuth })
+        },
+        setUserToken: (token) => {
+            dispatch({ type: 'SET_USER_TOKEN', token: token })
+        },
+        setUserPseudo: (pseudo) => {
+            dispatch({ type: 'SET_USER_PSEUDO', pseudo: pseudo })
         }
     }
 }

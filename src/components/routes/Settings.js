@@ -42,6 +42,12 @@ class Settings extends Component {
               firstname: firstname
             })
         })
+        .catch(error => {
+          console.error(error)
+          if (error.response.status) {
+            this.handleDisconnect()
+          }
+        })
     }
 
     handleOnBlurSubmit = () => {
@@ -113,7 +119,20 @@ class Settings extends Component {
                     this.setState({picture: `/pictures/${res.data.pictureName}`})
                 }
             })
+          .catch(error => {
+            console.error(error)
+            if (error.response.status === 401) {
+              this.handleDisconnect()
+            }
+          })
         }
+    }
+
+    handleDisconnect = () => {
+      this.props.setUserIsAuth(false)
+      this.props.setUserToken('')
+      this.props.setUserPseudo('')
+      this.props.setCurrentTorrent(0)
     }
 
     render () {
@@ -183,6 +202,23 @@ class Settings extends Component {
     }
 }
 
+const mapDispatchToProps = dispatch => {
+  return {
+      setCurrentTorrent: (currentTorrent) => {
+          dispatch({ type: 'SET_CURRENT_TORRENT', currentTorrent: currentTorrent })
+      },
+      setUserIsAuth: (isAuth) => {
+        dispatch({ type: 'SET_USER_AUTH', isAuth: isAuth })
+      },
+      setUserToken: (token) => {
+          dispatch({ type: 'SET_USER_TOKEN', token: token })
+      },
+      setUserPseudo: (pseudo) => {
+          dispatch({ type: 'SET_USER_PSEUDO', pseudo: pseudo })
+      }
+  }
+}
+
 const mapStateToProps = state => { 
     return {
         pseudo: state.pseudo,
@@ -191,4 +227,4 @@ const mapStateToProps = state => {
     }
 }
 
-export default connect(mapStateToProps, null)(Settings)
+export default connect(mapStateToProps, mapDispatchToProps)(Settings)

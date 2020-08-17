@@ -41,9 +41,20 @@ class Profile extends Component {
             })
             .catch(error => {
                 console.error(error);
-                this.setState({redirect: true})
+                if (error.response.status === 401) {
+                  this.handleDisconnect()
+                } else {
+                  this.setState({redirect: true})
+                }
             })
         }
+    }
+
+    handleDisconnect = () => {
+      this.props.setUserIsAuth(false)
+      this.props.setUserToken('')
+      this.props.setUserPseudo('')
+      this.props.setCurrentTorrent(0)
     }
 
     handleMov = (likes, view) => {      
@@ -173,6 +184,23 @@ class Profile extends Component {
     }
 }
 
+const mapDispatchToProps = dispatch => {
+  return {
+      setCurrentTorrent: (currentTorrent) => {
+          dispatch({ type: 'SET_CURRENT_TORRENT', currentTorrent: currentTorrent })
+      },
+      setUserIsAuth: (isAuth) => {
+        dispatch({ type: 'SET_USER_AUTH', isAuth: isAuth })
+      },
+      setUserToken: (token) => {
+          dispatch({ type: 'SET_USER_TOKEN', token: token })
+      },
+      setUserPseudo: (pseudo) => {
+          dispatch({ type: 'SET_USER_PSEUDO', pseudo: pseudo })
+      }
+  }
+}
+
 const mapStateToProps = state => { 
     return {
         pseudo: state.pseudo,
@@ -181,4 +209,4 @@ const mapStateToProps = state => {
     }
 }
 
-export default connect(mapStateToProps, null)(Profile)
+export default connect(mapStateToProps, mapDispatchToProps)(Profile)
