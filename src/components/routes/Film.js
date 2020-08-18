@@ -137,11 +137,13 @@ class Film extends Component {
         .get(`http://localhost:5000/api/v1/film/file/${this.props.match.params.src}/${id}`, { headers: { token: this.props.token }})
         .then(res => {
             console.log(res);
-            if (res.data.movie_path && getSubtitle !== true)
+            if (res.data.movie_path && getSubtitle !== true) {
                 this.setState({
                     movieSrc: require('../../' + res.data.movie_path),
                     subtitle: res.data.subtitles
                 }, this.Video.current ? this.Video.current.load() : null);
+                axios.put(`http://localhost:5000/api/v1/film/view`, {'movie_id': id, 'movie_src': this.props.match.params.src } ,{ headers: { token: this.props.token }});
+              }
             else
                 if (getSubtitle !== true) {
                     this.setState({movieSrc: `http://localhost:5000/api/v1/film/stream?source=${this.props.match.params.src}&movie_id=${id}&title=${this.props.match.params.src === 'yts' ? this.state.movie.title : this.state.movie.Title}&hash=${this.state.hash}&token=${this.props.token}`},
