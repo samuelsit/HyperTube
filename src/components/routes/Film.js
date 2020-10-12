@@ -9,6 +9,8 @@ import translate from '../../i18n/translate'
 import { motion } from 'framer-motion'
 import { pageVariant, pageTransition } from '../../css/motion'
 import { Redirect } from 'react-router-dom'
+import VideoPlayer from 'react-video-js-player'
+
 
 class Film extends Component {
     constructor(props) {
@@ -98,6 +100,7 @@ class Film extends Component {
             }
         }
         window.scrollTo(0, 0)
+
         if (this.props.match.params.src === 'yts') {
             this.handleYTS()
         }
@@ -146,7 +149,8 @@ class Film extends Component {
               }
             else
                 if (getSubtitle !== true) {
-                    this.setState({movieSrc: `http://localhost:5000/api/v1/film/stream?source=${this.props.match.params.src}&movie_id=${id}&title=${this.props.match.params.src === 'yts' ? this.state.movie.title : this.state.movie.Title}&hash=${this.state.hash}&token=${this.props.token}`},
+                  console.log("req streaming");
+                    this.setState({movieSrc: `http://localhost:5000/api/v1/film/stream?source=${this.props.match.params.src}&movie_id=${id}&title=${this.props.match.params.src === 'yts' ? this.state.movie.title : this.state.movie.Title}&hash=${this.state.hash}&token=${this.props.token}` + '#.mp4'},
                     this.Video.current ? this.Video.current.load() : null);
                 }
                 else {
@@ -356,6 +360,40 @@ class Film extends Component {
         window.scrollTo(0, 0)
     }
 
+    //////////////////
+
+    onPlayerReady(player){
+      console.log("Player is ready: ", player);
+      console.log("this.state.movieSrc: ", this.state.movieSrc)
+      this.player = player;
+    }
+
+    onVideoPlay(duration){
+        console.log("Video played at: ", duration);
+    }
+
+    onVideoPause(duration){
+        console.log("Video paused at: ", duration);
+    }
+
+    onVideoTimeUpdate(duration){
+        console.log("Time updated: ", duration);
+    }
+
+    onVideoSeeking(duration){
+        console.log("Video seeking: ", duration);
+    }
+
+    onVideoSeeked(from, to){
+        console.log(`Video seeked from ${from} to ${to}`);
+    }
+
+    onVideoEnd(){
+        console.log("Video ended");
+    }
+
+  
+
     render () {
         let {movie, genre, isLike, episodes, subtitle} = this.state
         var date = new Date(movie.date_uploaded_unix * 1000)
@@ -445,15 +483,17 @@ class Film extends Component {
                                             <>
                                             <div>
                                             {this.state.isLoad ? <div className="load bg-white mx-auto text-center p-2">{translate('loading-video')}</div> : null}
-                                            <video
+                                            {/* <video
                                             ref={this.Video}
                                             id="video"
-                                            /*controlsList="nodownload"*/
-                                            controls
+                                            onTimeUpdate={ this.handleTimeUpdate } */}
+                                            {/* /*controlsList="nodownload"*/ }
+                                            {/* controls
                                             width="100%"
                                             className="border"
                                             preload="auto"
-                                            onPlay={() => {setTimeout(() => {this.getFile(true, this.props.match.params.id)}, 5000);}}
+                                            onSeeking={ this.handleSeeking }
+                                            // onPlay={() => {setTimeout(() => {this.getFile(true, this.props.match.params.id)}, 5000);}}
                                             autoPlay
                                             poster={this.props.src === 'yts' ? this.state.movie.background_image_original : this.state.movie.Poster}>
                                                 <source src={this.state.movieSrc}/>
@@ -463,7 +503,26 @@ class Film extends Component {
                                                     ) : null
                                                 }
                                                 <p>This browser does not support the video element.</p>
-                                            </video>
+                                            </video> */}
+                                            {this.state.movieSrc ?
+                                              <VideoPlayer
+                                              ref={this.Video}
+                                              id="video"
+                                              controls={true}
+                                              src={ this.state.movieSrc}
+                                              poster={this.props.src === 'yts' ? this.state.movie.background_image_original : this.state.movie.Poster}
+                                              // width="auto"
+                                              preload="auto"
+                                              onReady={this.onPlayerReady.bind(this)}
+                                              onPlay={this.onVideoPlay.bind(this)}
+                                              onPause={this.onVideoPause.bind(this)}
+                                              onTimeUpdate={this.onVideoTimeUpdate.bind(this)}
+                                              onSeeking={this.onVideoSeeking.bind(this)}
+                                              onSeeked={this.onVideoSeeked.bind(this)}
+                                              onEnd={this.onVideoEnd.bind(this)}
+                                            />
+                                          : null
+                                          }
                                             </div>
                                             </>
                                             : null
