@@ -9,7 +9,9 @@ import translate from '../../i18n/translate'
 import { motion } from 'framer-motion'
 import { pageVariant, pageTransition } from '../../css/motion'
 import { Redirect } from 'react-router-dom'
-import VideoPlayer from 'react-video-js-player'
+import ReactPlayer from 'react-player'
+
+
 
 
 class Film extends Component {
@@ -29,7 +31,8 @@ class Film extends Component {
             isLoad: false,
             hash: "",
             subtitle: [],
-            torrent_i: 0
+            torrent_i: 0,
+            played: {}
         }
         this.Chat = React.createRef()
         this.Video = React.createRef()
@@ -90,6 +93,8 @@ class Film extends Component {
     }
 
     componentDidMount() {
+
+      
         this._isMounted = true
         if (this._isMounted) {
             if (isNaN(this.props.match.params.id)) {
@@ -141,16 +146,19 @@ class Film extends Component {
         .then(res => {
             console.log(res);
             if (res.data.movie_path && getSubtitle !== true) {
+              let listSubtitle = res.data.subtitles.map(el => {
+                return {kind: "subtitles", src:require(`../../${el.file}`), srcLang:el.file, label:el.language}
+              });
                 this.setState({
                     movieSrc: require('../../' + res.data.movie_path),
-                    subtitle: res.data.subtitles
+                    subtitle: listSubtitle
                 }, this.Video.current ? this.Video.current.load() : null);
                 axios.put(`http://localhost:5000/api/v1/film/view`, {'movie_id': id, 'movie_src': this.props.match.params.src } ,{ headers: { token: this.props.token }});
               }
             else
                 if (getSubtitle !== true) {
                   console.log("req streaming");
-                    this.setState({movieSrc: `http://localhost:5000/api/v1/film/stream?source=${this.props.match.params.src}&movie_id=${id}&title=${this.props.match.params.src === 'yts' ? this.state.movie.title : this.state.movie.Title}&hash=${this.state.hash}&token=${this.props.token}` + '#.mp4'},
+                    this.setState({movieSrc: `http://localhost:5000/api/v1/film/stream?source=${this.props.match.params.src}&movie_id=${id}&title=${this.props.match.params.src === 'yts' ? this.state.movie.title : this.state.movie.Title}&hash=${this.state.hash}&token=${this.props.token}`},
                     this.Video.current ? this.Video.current.load() : null);
                 }
                 else {
@@ -159,6 +167,7 @@ class Film extends Component {
         })
         .catch(error => {
           console.error(error)
+
           if (error.response.status === 401) {
             this.handleDisconnect()
           } else {
@@ -360,40 +369,6 @@ class Film extends Component {
         window.scrollTo(0, 0)
     }
 
-    //////////////////
-
-    onPlayerReady(player){
-      console.log("Player is ready: ", player);
-      console.log("this.state.movieSrc: ", this.state.movieSrc)
-      this.player = player;
-    }
-
-    onVideoPlay(duration){
-        console.log("Video played at: ", duration);
-    }
-
-    onVideoPause(duration){
-        console.log("Video paused at: ", duration);
-    }
-
-    onVideoTimeUpdate(duration){
-        console.log("Time updated: ", duration);
-    }
-
-    onVideoSeeking(duration){
-        console.log("Video seeking: ", duration);
-    }
-
-    onVideoSeeked(from, to){
-        console.log(`Video seeked from ${from} to ${to}`);
-    }
-
-    onVideoEnd(){
-        console.log("Video ended");
-    }
-
-  
-
     render () {
         let {movie, genre, isLike, episodes, subtitle} = this.state
         var date = new Date(movie.date_uploaded_unix * 1000)
@@ -505,22 +480,23 @@ class Film extends Component {
                                                 <p>This browser does not support the video element.</p>
                                             </video> */}
                                             {this.state.movieSrc ?
-                                              <VideoPlayer
+                                              <ReactPlayer
                                               ref={this.Video}
                                               id="video"
                                               controls={true}
-                                              src={ this.state.movieSrc}
+                                              url={ this.state.movieSrc}
+                                              // url="https://www.youtube.com/watch?v=uXGeO3t182o"
                                               poster={this.props.src === 'yts' ? this.state.movie.background_image_original : this.state.movie.Poster}
-                                              // width="auto"
-                                              preload="auto"
-                                              onReady={this.onPlayerReady.bind(this)}
-                                              onPlay={this.onVideoPlay.bind(this)}
-                                              onPause={this.onVideoPause.bind(this)}
-                                              onTimeUpdate={this.onVideoTimeUpdate.bind(this)}
-                                              onSeeking={this.onVideoSeeking.bind(this)}
-                                              onSeeked={this.onVideoSeeked.bind(this)}
-                                              onEnd={this.onVideoEnd.bind(this)}
-                                            />
+
+                                              width="100%"
+                                              height="100%"
+
+                                              onPlay={this.handlePlay}
+
+                                              config={{ file: {
+                                                tracks: this.state.subtitle
+                                              }}}
+                                              />
                                           : null
                                           }
                                             </div>
