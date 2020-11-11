@@ -35,7 +35,7 @@ class Carousel extends Component {
             return (
                 <div className="tile" key={i}>
                     <div className="tile-media">
-                        <Link to={`/film/${el.src}/${el.id}`}><img src={el.img} className="img-carou" alt="background"/></Link>
+                        <Link to={`/film/${el.src}/${el.id}/0`}><img src={el.img} className="img-carou" alt="background"/></Link>
                     </div>
                 </div>
             )

@@ -47,7 +47,7 @@ const Root = () => (
                     <PublicRoute path='/changement-de-mot-de-passe/:token' component={ChangePass} />
                     <PublicRoute path='/confirmation/:token' component={Confirm} />
                     <PrivateRoute path='/profil/:pseudo' component={Profile} />
-                    <PrivateRoute path='/film/:src/:id' component={Film} />
+                    <PrivateRoute path='/film/:src/:id/:torrent_i' component={Film} />
                     <PublicRoute component={NotFound} />
                 </Switch>
             )} />
