@@ -58,6 +58,7 @@ class Film extends Component {
                     else {
                         this.setState({movie: res.data.data.movie, genre: res.data.data.movie.genres, hash: res.data.data.movie.torrents[this.state.torrent_i].hash}, this.getFile(false, this.props.match.params.id))
                     }
+                    // console.log('torrents: ', this.state.movie.torrents)
                 }
                 else {
                     this.setState({redirect: true})
@@ -518,9 +519,10 @@ class Film extends Component {
                                                 <table className="table table-hover pb-0 mb-0">
                                                     <thead>
                                                         <tr>
-                                                            <th style={{width: '33%'}} className="text-center" scope="col">#</th>
-                                                            <th style={{width: '33%'}} className="text-center" scope="col">{translate('quality')}</th>
-                                                            <th style={{width: '33%'}} className="text-center" scope="col">Type</th>
+                                                            <th style={{width: '25%'}} className="text-center" scope="col">#</th>
+                                                            <th style={{width: '25%'}} className="text-center" scope="col">{translate('quality')}</th>
+                                                            <th style={{width: '25%'}} className="text-center" scope="col">Type</th>
+                                                            <th style={{width: '25%'}} className="text-center" scope="col">Seeds</th>
                                                         </tr>
                                                     </thead>
                                                 </table>
@@ -531,11 +533,14 @@ class Film extends Component {
                                                         {   
                                                             movie.torrents ?
                                                             movie.torrents.map((el, i) => (
+                                                              el.seeds > 100 ?
                                                                 <tr key={i} style={{cursor: 'pointer'}} onClick={() => {this.handleChangeTorrent(el, i)}}>
-                                                                    <th style={{width: '33%'}}  className="text-center" scope="row">{i+1}</th>
-                                                                    <td style={{width: '33%'}}  className="text-center">{el.quality}</td>
-                                                                    <td style={{width: '33%'}}  className="text-center">{el.type}</td>
+                                                                    <th style={{width: '25%'}}  className="text-center" scope="row">{i+1}</th>
+                                                                    <td style={{width: '25%'}}  className="text-center">{el.quality}</td>
+                                                                    <td style={{width: '25%'}}  className="text-center">{el.type}</td>
+                                                                    <td style={{width: '25%'}}  className="text-center">{el.seeds}</td>
                                                                 </tr>
+                                                                : null
                                                             )) : null
                                                         }
                                                     </tbody>
