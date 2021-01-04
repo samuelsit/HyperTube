@@ -48,15 +48,15 @@ class Gallery extends Component {
     getYTS = () => {
         axios.get('https://yts.mx/api/v2/list_movies.json' + this.state.option, { useCredentails: true }).then(res => {
             if (res.data.data.movies && this._isMounted) {
-                this.setState({ movies: this.removeBadSeeds(res.data.data.movies) })
+                this.setState({ movies: this.removeBadSeeds(res.data.data.movies, 'yts') })
             }
         })
     }
 
     getEZTV = () => {
-        axios.get('https://eztv.io/api/get-torrents?limit=70&page=' + this.state.page, { useCredentails: true }).then(res => {
+        axios.get('https://eztv.re/api/get-torrents?limit=100&page=' + this.state.page, { useCredentails: true }).then(res => {
             if (res.data.torrents && this._isMounted) {
-                let goodSeeds = this.removeBadSeeds(this.removeDoublons(res.data.torrents.filter(el => el.imdb_id !== '0'), 'imdb_id'))
+                let goodSeeds = this.removeBadSeeds(this.removeDoublons(res.data.torrents.filter(el => el.imdb_id !== '0'), 'imdb_id'), 'eztv')
                 this.setState({movies: goodSeeds})
             }
         })
@@ -76,13 +76,22 @@ class Gallery extends Component {
         return newArray;
     }
 
-    removeBadSeeds = (movies) => {
+    removeBadSeeds = (movies, src) => {
       let goodSeeds = [];
-      movies.map(movie => {
-        if (movie.torrents[0].seeds > 100) {
-          goodSeeds.push(movie);
-        }
-      })
+      if (src === 'yts') {
+        movies.map(movie => {
+          if (movie.torrents[0].seeds > 100) {
+            goodSeeds.push(movie);
+          }
+        })
+      } else if (src === 'eztv') {
+        movies.map(movie => {
+          if (movie.seeds > 30) {
+            goodSeeds.push(movie);
+          }
+        })
+      }
+      
       return goodSeeds;
     }
 
@@ -109,7 +118,7 @@ class Gallery extends Component {
         if (this.props.src === 'yts') {
             axios.get('https://yts.mx/api/v2/list_movies.json' + this.state.option, { useCredentails: true }).then(res => {
                 if (res.data.data.movies && this._isMounted) {
-                    let goodSeeds = this.removeBadSeeds(res.data.data.movies)
+                    let goodSeeds = this.removeBadSeeds(res.data.data.movies, 'yts')
                     this.setState({movies: this.state.movies.concat(goodSeeds)})
                 }
             }).then(() => {
@@ -119,9 +128,9 @@ class Gallery extends Component {
             })
         }
         else if (!this.state.searchEZ) {
-            axios.get('https://eztv.io/api/get-torrents?limit=70&page=' + this.state.page, { useCredentails: true }).then(res => {
+            axios.get('https://eztv.re/api/get-torrents?limit=100&page=' + this.state.page, { useCredentails: true }).then(res => {
                 if (res.data.torrents && this._isMounted) {
-                    let goodSeeds = this.removeBadSeeds(this.removeDoublons(res.data.torrents.filter(el => el.imdb_id !== '0'), 'imdb_id'))
+                    let goodSeeds = this.removeBadSeeds(this.removeDoublons(res.data.torrents.filter(el => el.imdb_id !== '0'), 'imdb_id'), 'eztv')
                     this.setState({movies: this.state.movies.concat(goodSeeds)})
                 }
             }).then(() => {
@@ -157,7 +166,7 @@ class Gallery extends Component {
             if (this._isMounted) {
                 if (value !== '0') {
                     axios.get('http://www.omdbapi.com/?s=' + value + '&type=series&apikey=' + process.env.REACT_APP_KEY_OMDB, { useCredentails: true }).then(res => {
-                        this.setState({searchEZ: true, movies: this.removeBadSeeds(res.data.Search)})
+                        this.setState({searchEZ: true, movies:res.data.Search})
                     })
                 }
                 else {

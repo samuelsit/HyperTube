@@ -84,7 +84,7 @@ class Film extends Component {
                 
             }
         })
-        axios.get('https://eztv.io/api/get-torrents?imdb_id=' + this.props.match.params.id, { useCredentails: true }).then(res => {
+        axios.get('https://eztv.re/api/get-torrents?imdb_id=' + this.props.match.params.id, { useCredentails: true }).then(res => {
             console.log(res);
             
             if (res.data.torrents && this._isMounted) {
