@@ -1,0 +1,29 @@
+.selectFilms {
+    text-align-last: center;
+    border: 0;
+	-moz-appearance: none;
+	-webkit-appearance: none;
+    appearance: none;
+    background-color: white;
+}
+
+@media screen and (max-width: 1000px) {
+    .displaySmall {
+        display: block;
+    }
+    .displayLarge {
+        display: none;
+    }
+}
+
+@media screen and (min-width: 1000px) {
+    .displaySmall {
+        display: none;
+    }
+    .displayLarge {
+        position: fixed;
+        height: 82vh;
+        overflow: scroll;
+        width: 14%;
+    }
+}

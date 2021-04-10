@@ -1,0 +1,169 @@
+body {
+  margin: 0;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+* {
+  font-family: 'PT Sans Caption', sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+.btn-danger {
+  background: #DE6262!important;
+}
+
+.text-danger {
+  color: #DE6262!important;
+}
+
+video:focus:active,
+video,
+textarea:focus:active,
+select:focus:active,
+input[type="text"]:focus:active,
+input[type="password"]:focus:active,
+input[type="datetime"]:focus:active,
+input[type="datetime-local"]:focus:active,
+input[type="date"]:focus:active,
+input[type="month"]:focus:active,
+input[type="time"]:focus:active,
+input[type="week"]:focus:active,
+input[type="number"]:focus:active,
+input[type="email"]:focus:active,
+input[type="url"]:focus:active,
+input[type="search"]:focus:active,
+input[type="tel"]:focus:active,
+input[type="color"]:focus:active,
+.uneditable-input:focus:active
+.btn-invisible-border {
+  outline: 0 none!important;
+  border: solid rgba(0, 0, 0, 0.05) 2px!important;
+}
+
+@media screen and (max-width: 550px) {
+  .grad-block {
+    margin: 80px 20px;
+  }
+  body {
+    background: #DC3445;
+    background: -webkit-linear-gradient(to bottom right, #FFB88C, #DC3445);
+    background: linear-gradient(to bottom right, #FFB88C, #DC3445) no-repeat center center fixed;
+  }
+}
+
+@media screen and (min-width: 550px) {
+  .grad-block {
+    margin: 120px 50px;
+  }
+  body {
+    background: #DC3445;
+    background: -webkit-linear-gradient(to bottom right, #FFB88C, #DC3445);
+    background: linear-gradient(to bottom right, #FFB88C, #DC3445) no-repeat center center fixed;
+  }
+}
+
+.block-shadow {
+    background:#fff;
+    border-radius: 10px;
+    box-shadow:15px 20px 0px rgba(0,0,0,0.1);
+}
+
+.btn-warning {
+  background-color: #FEB48A;
+  color: white;
+}
+
+.btn-warning:hover {
+  background-color: #F38C73;
+  color: white;
+}
+
+.btn-danger {
+  background-color: #DE6162;
+  color: white;
+}
+
+.btn-danger:hover {
+  background-color: #DC3445!important;
+  color: white;
+}
+
+.shadow-theme {
+  text-shadow: 1.5px 3px 0px rgba(0,0,0,0.1);
+
+}
+
+h1::selection {
+  background: rgba(254, 180, 138, 0.541);
+  color: white;
+}
+
+h2::selection {
+  background: rgba(254, 180, 138, 0.541);
+  color: white;
+}
+
+h3::selection {
+  background: rgba(254, 180, 138, 0.541);
+  color: white;
+}
+
+h4::selection {
+  background: rgba(254, 180, 138, 0.541);
+  color: white;
+}
+
+h5::selection {
+  background: rgba(254, 180, 138, 0.541);
+  color: white;
+}
+
+h6::selection {
+  background: rgba(254, 180, 138, 0.541);
+  color: white;
+}
+
+p::selection {
+  background: rgba(254, 180, 138, 0.541);
+  color: white;
+}
+
+div::selection {
+  background: rgba(254, 180, 138, 0.541);
+  color: white;
+}
+
+.pulse:hover {
+  transition: all .25s;
+  transform: scale3d(1.08, 1.08, 1.08);
+}
+
+.pulse {
+  transition: all .25s;
+  transform: scale3d(1, 1, 1);
+  -webkit-animation: flickerAnimation 1.5s;
+  -moz-animation: flickerAnimation 1.5s;
+  -o-animation: flickerAnimation 1.5s;
+  animation: flickerAnimation 1.5s;
+}
+
+@keyframes flickerAnimation {
+  0%   { transform: scale3d(0.92, 0.92, 0.92); opacity:0; }
+  100% { transform: scale3d(1, 1, 1); opacity:1; }
+}
+@-o-keyframes flickerAnimation{
+  0%   { transform: scale3d(0.92, 0.92, 0.92); opacity:0; }
+  100% { transform: scale3d(1, 1, 1); opacity:1; }
+}
+@-moz-keyframes flickerAnimation{
+  0%   { transform: scale3d(0.92, 0.92, 0.92); opacity:0; }
+  100% { transform: scale3d(1, 1, 1); opacity:1; }
+}
+@-webkit-keyframes flickerAnimation{
+  0%   { transform: scale3d(0.92, 0.92, 0.92); opacity:0; }
+  100% { transform: scale3d(1, 1, 1); opacity:1; }
+}
